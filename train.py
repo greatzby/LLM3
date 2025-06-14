@@ -373,7 +373,17 @@ while True:
         param_group['lr'] = lr
 
     # 定期评估 loss 并保存 checkpoint
-    if iter_num % eval_interval == 0 and master_process:
+    # 定期评估 loss 并保存 checkpoint
+    # 新的checkpoint保存逻辑：前10k每1k保存，之后每20k保存
+    should_save_checkpoint = False
+    if iter_num < 10000 and iter_num % 1000 == 0:
+        should_save_checkpoint = True
+    elif iter_num >= 10000 and iter_num % 20000 == 0:
+        should_save_checkpoint = True
+    elif iter_num % eval_interval == 0:  # 保留原有的eval_interval逻辑
+        should_save_checkpoint = True
+
+    if should_save_checkpoint and master_process:
         losses = {}
         model.eval()  # 切换到评估模式
         for split in ['train', 'val']:
