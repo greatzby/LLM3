@@ -1,0 +1,194 @@
+[2025-06-15 20:13:42,451][INFO] step 0: train loss 4.6602, val loss 4.6576
+[2025-06-15 20:13:42,458][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/0_ckpt_20.pt
+[2025-06-15 20:13:43,096][INFO] Iteration 0: Teacher Forcing Accuracy = 0.6783 (±0.0035), Autoregressive (Lenient) Accuracy = 0.0000
+[2025-06-15 20:13:43,153][INFO] iter 0: loss 9.3106, beta 2.00
+[2025-06-15 20:14:11,177][INFO] step 1000: train loss 2.0730, val loss 2.1225
+[2025-06-15 20:14:11,186][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/1000_ckpt_20.pt
+[2025-06-15 20:14:39,193][INFO] step 2000: train loss 0.8408, val loss 1.0553
+[2025-06-15 20:14:39,202][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/2000_ckpt_20.pt
+[2025-06-15 20:14:39,761][INFO] Iteration 2000: Teacher Forcing Accuracy = 0.1552 (±0.0057), Autoregressive (Lenient) Accuracy = 0.5334
+[2025-06-15 20:14:39,784][INFO] iter 2000: loss 1.6678, beta 2.00
+[2025-06-15 20:15:07,702][INFO] step 3000: train loss 0.7455, val loss 1.1181
+[2025-06-15 20:15:07,710][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/3000_ckpt_20.pt
+[2025-06-15 20:15:35,743][INFO] step 4000: train loss 0.7253, val loss 1.1925
+[2025-06-15 20:15:35,752][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/4000_ckpt_20.pt
+[2025-06-15 20:15:36,315][INFO] Iteration 4000: Teacher Forcing Accuracy = 0.1557 (±0.0036), Autoregressive (Lenient) Accuracy = 0.9174
+[2025-06-15 20:15:36,338][INFO] iter 4000: loss 1.4492, beta 2.00
+[2025-06-15 20:16:04,484][INFO] step 5000: train loss 0.7194, val loss 1.2588
+[2025-06-15 20:16:04,493][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/5000_ckpt_20.pt
+[2025-06-15 20:16:32,464][INFO] step 6000: train loss 0.7125, val loss 1.2883
+[2025-06-15 20:16:32,472][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/6000_ckpt_20.pt
+[2025-06-15 20:16:33,047][INFO] Iteration 6000: Teacher Forcing Accuracy = 0.8536 (±0.0083), Autoregressive (Lenient) Accuracy = 0.9530
+[2025-06-15 20:16:33,070][INFO] iter 6000: loss 1.4170, beta 2.00
+[2025-06-15 20:17:01,023][INFO] step 7000: train loss 0.7134, val loss 1.3250
+[2025-06-15 20:17:01,032][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/7000_ckpt_20.pt
+[2025-06-15 20:17:29,113][INFO] step 8000: train loss 0.7116, val loss 1.3455
+[2025-06-15 20:17:29,122][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/8000_ckpt_20.pt
+[2025-06-15 20:17:29,691][INFO] Iteration 8000: Teacher Forcing Accuracy = 0.9114 (±0.0036), Autoregressive (Lenient) Accuracy = 0.9515
+[2025-06-15 20:17:29,691][INFO]     *** Critical checkpoint - monitoring for TF accuracy drop ***
+[2025-06-15 20:17:29,714][INFO] iter 8000: loss 1.4085, beta 2.00
+[2025-06-15 20:17:57,744][INFO] step 9000: train loss 0.7081, val loss 1.3583
+[2025-06-15 20:17:57,753][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/9000_ckpt_20.pt
+[2025-06-15 20:18:22,098][INFO] Iteration 10000: Teacher Forcing Accuracy = 0.9110 (±0.0031), Autoregressive (Lenient) Accuracy = 0.9558
+[2025-06-15 20:18:22,098][INFO]     *** Critical checkpoint - monitoring for TF accuracy drop ***
+[2025-06-15 20:18:22,120][INFO] iter 10000: loss 1.4028, beta 2.00
+[2025-06-15 20:19:10,368][INFO] Iteration 12000: Teacher Forcing Accuracy = 0.9021 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9494
+[2025-06-15 20:19:10,390][INFO] iter 12000: loss 1.4025, beta 2.00
+[2025-06-15 20:19:58,805][INFO] Iteration 14000: Teacher Forcing Accuracy = 0.4750 (±0.0249), Autoregressive (Lenient) Accuracy = 0.9574
+[2025-06-15 20:19:58,828][INFO] iter 14000: loss 1.4043, beta 2.00
+[2025-06-15 20:20:47,266][INFO] Iteration 16000: Teacher Forcing Accuracy = 0.1834 (±0.0067), Autoregressive (Lenient) Accuracy = 0.9551
+[2025-06-15 20:20:47,289][INFO] iter 16000: loss 1.3646, beta 2.00
+[2025-06-15 20:21:35,713][INFO] Iteration 18000: Teacher Forcing Accuracy = 0.1530 (±0.0053), Autoregressive (Lenient) Accuracy = 0.9585
+[2025-06-15 20:21:35,736][INFO] iter 18000: loss 1.3619, beta 2.00
+[2025-06-15 20:22:28,038][INFO] step 20000: train loss 0.6889, val loss 1.4968
+[2025-06-15 20:22:28,046][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/20000_ckpt_20.pt
+[2025-06-15 20:22:28,612][INFO] Iteration 20000: Teacher Forcing Accuracy = 0.1518 (±0.0034), Autoregressive (Lenient) Accuracy = 0.9585
+[2025-06-15 20:22:28,635][INFO] iter 20000: loss 1.3534, beta 2.00
+[2025-06-15 20:23:17,216][INFO] Iteration 22000: Teacher Forcing Accuracy = 0.1537 (±0.0022), Autoregressive (Lenient) Accuracy = 0.9621
+[2025-06-15 20:23:17,239][INFO] iter 22000: loss 1.3824, beta 2.00
+[2025-06-15 20:24:05,750][INFO] Iteration 24000: Teacher Forcing Accuracy = 0.1560 (±0.0065), Autoregressive (Lenient) Accuracy = 0.9652
+[2025-06-15 20:24:05,773][INFO] iter 24000: loss 1.3764, beta 2.00
+[2025-06-15 20:24:54,328][INFO] Iteration 26000: Teacher Forcing Accuracy = 0.1555 (±0.0029), Autoregressive (Lenient) Accuracy = 0.9711
+[2025-06-15 20:24:54,351][INFO] iter 26000: loss 1.3890, beta 2.00
+[2025-06-15 20:25:42,895][INFO] Iteration 28000: Teacher Forcing Accuracy = 0.1513 (±0.0052), Autoregressive (Lenient) Accuracy = 0.9662
+[2025-06-15 20:25:42,918][INFO] iter 28000: loss 1.3760, beta 2.00
+[2025-06-15 20:26:31,464][INFO] Iteration 30000: Teacher Forcing Accuracy = 0.1550 (±0.0040), Autoregressive (Lenient) Accuracy = 0.9666
+[2025-06-15 20:26:31,487][INFO] iter 30000: loss 1.3789, beta 2.00
+[2025-06-15 20:27:20,001][INFO] Iteration 32000: Teacher Forcing Accuracy = 0.1530 (±0.0037), Autoregressive (Lenient) Accuracy = 0.9668
+[2025-06-15 20:27:20,024][INFO] iter 32000: loss 1.3925, beta 2.00
+[2025-06-15 20:28:08,574][INFO] Iteration 34000: Teacher Forcing Accuracy = 0.1562 (±0.0056), Autoregressive (Lenient) Accuracy = 0.9718
+[2025-06-15 20:28:08,597][INFO] iter 34000: loss 1.3985, beta 2.00
+[2025-06-15 20:28:57,116][INFO] Iteration 36000: Teacher Forcing Accuracy = 0.1525 (±0.0061), Autoregressive (Lenient) Accuracy = 0.9685
+[2025-06-15 20:28:57,139][INFO] iter 36000: loss 1.3885, beta 2.00
+[2025-06-15 20:29:45,659][INFO] Iteration 38000: Teacher Forcing Accuracy = 0.1533 (±0.0046), Autoregressive (Lenient) Accuracy = 0.9666
+[2025-06-15 20:29:45,682][INFO] iter 38000: loss 1.3671, beta 2.00
+[2025-06-15 20:30:37,822][INFO] step 40000: train loss 0.6814, val loss 1.5369
+[2025-06-15 20:30:37,831][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/40000_ckpt_20.pt
+[2025-06-15 20:30:38,414][INFO] Iteration 40000: Teacher Forcing Accuracy = 0.1543 (±0.0053), Autoregressive (Lenient) Accuracy = 0.9697
+[2025-06-15 20:30:38,437][INFO] iter 40000: loss 1.3764, beta 2.00
+[2025-06-15 20:31:26,959][INFO] Iteration 42000: Teacher Forcing Accuracy = 0.1621 (±0.0070), Autoregressive (Lenient) Accuracy = 0.9701
+[2025-06-15 20:31:26,982][INFO] iter 42000: loss 1.3665, beta 2.00
+[2025-06-15 20:32:15,467][INFO] Iteration 44000: Teacher Forcing Accuracy = 0.2083 (±0.0137), Autoregressive (Lenient) Accuracy = 0.9656
+[2025-06-15 20:32:15,490][INFO] iter 44000: loss 1.3674, beta 2.00
+[2025-06-15 20:33:03,995][INFO] Iteration 46000: Teacher Forcing Accuracy = 0.1567 (±0.0057), Autoregressive (Lenient) Accuracy = 0.9629
+[2025-06-15 20:33:04,018][INFO] iter 46000: loss 1.3738, beta 2.00
+[2025-06-15 20:33:52,510][INFO] Iteration 48000: Teacher Forcing Accuracy = 0.1767 (±0.0077), Autoregressive (Lenient) Accuracy = 0.9669
+[2025-06-15 20:33:52,532][INFO] iter 48000: loss 1.3853, beta 2.00
+[2025-06-15 20:34:41,014][INFO] Iteration 50000: Teacher Forcing Accuracy = 0.1790 (±0.0062), Autoregressive (Lenient) Accuracy = 0.9714
+[2025-06-15 20:34:41,037][INFO] iter 50000: loss 1.3728, beta 2.00
+[2025-06-15 20:35:29,534][INFO] Iteration 52000: Teacher Forcing Accuracy = 0.1782 (±0.0058), Autoregressive (Lenient) Accuracy = 0.9689
+[2025-06-15 20:35:29,557][INFO] iter 52000: loss 1.3875, beta 2.00
+[2025-06-15 20:36:18,042][INFO] Iteration 54000: Teacher Forcing Accuracy = 0.2494 (±0.0208), Autoregressive (Lenient) Accuracy = 0.9709
+[2025-06-15 20:36:18,065][INFO] iter 54000: loss 1.3818, beta 2.00
+[2025-06-15 20:37:06,539][INFO] Iteration 56000: Teacher Forcing Accuracy = 0.2157 (±0.0147), Autoregressive (Lenient) Accuracy = 0.9670
+[2025-06-15 20:37:06,562][INFO] iter 56000: loss 1.3597, beta 2.00
+[2025-06-15 20:37:55,059][INFO] Iteration 58000: Teacher Forcing Accuracy = 0.1796 (±0.0052), Autoregressive (Lenient) Accuracy = 0.9674
+[2025-06-15 20:37:55,083][INFO] iter 58000: loss 1.3778, beta 2.00
+[2025-06-15 20:38:47,210][INFO] step 60000: train loss 0.6796, val loss 1.5547
+[2025-06-15 20:38:47,219][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/60000_ckpt_20.pt
+[2025-06-15 20:38:47,803][INFO] Iteration 60000: Teacher Forcing Accuracy = 0.1820 (±0.0067), Autoregressive (Lenient) Accuracy = 0.9705
+[2025-06-15 20:38:47,826][INFO] iter 60000: loss 1.3692, beta 2.00
+[2025-06-15 20:39:36,289][INFO] Iteration 62000: Teacher Forcing Accuracy = 0.4692 (±0.0172), Autoregressive (Lenient) Accuracy = 0.9711
+[2025-06-15 20:39:36,312][INFO] iter 62000: loss 1.3951, beta 2.00
+[2025-06-15 20:40:24,816][INFO] Iteration 64000: Teacher Forcing Accuracy = 0.1727 (±0.0082), Autoregressive (Lenient) Accuracy = 0.9693
+[2025-06-15 20:40:24,839][INFO] iter 64000: loss 1.3684, beta 2.00
+[2025-06-15 20:41:13,425][INFO] Iteration 66000: Teacher Forcing Accuracy = 0.1708 (±0.0085), Autoregressive (Lenient) Accuracy = 0.9646
+[2025-06-15 20:41:13,448][INFO] iter 66000: loss 1.3601, beta 2.00
+[2025-06-15 20:42:02,104][INFO] Iteration 68000: Teacher Forcing Accuracy = 0.1611 (±0.0065), Autoregressive (Lenient) Accuracy = 0.9699
+[2025-06-15 20:42:02,128][INFO] iter 68000: loss 1.3493, beta 2.00
+[2025-06-15 20:42:50,770][INFO] Iteration 70000: Teacher Forcing Accuracy = 0.1732 (±0.0110), Autoregressive (Lenient) Accuracy = 0.9713
+[2025-06-15 20:42:50,794][INFO] iter 70000: loss 1.3712, beta 2.00
+[2025-06-15 20:43:39,401][INFO] Iteration 72000: Teacher Forcing Accuracy = 0.1549 (±0.0038), Autoregressive (Lenient) Accuracy = 0.9691
+[2025-06-15 20:43:39,424][INFO] iter 72000: loss 1.3587, beta 2.00
+[2025-06-15 20:44:27,968][INFO] Iteration 74000: Teacher Forcing Accuracy = 0.1614 (±0.0047), Autoregressive (Lenient) Accuracy = 0.9678
+[2025-06-15 20:44:27,991][INFO] iter 74000: loss 1.3569, beta 2.00
+[2025-06-15 20:45:16,522][INFO] Iteration 76000: Teacher Forcing Accuracy = 0.1545 (±0.0046), Autoregressive (Lenient) Accuracy = 0.9675
+[2025-06-15 20:45:16,545][INFO] iter 76000: loss 1.3676, beta 2.00
+[2025-06-15 20:46:05,056][INFO] Iteration 78000: Teacher Forcing Accuracy = 0.1547 (±0.0041), Autoregressive (Lenient) Accuracy = 0.9686
+[2025-06-15 20:46:05,079][INFO] iter 78000: loss 1.3476, beta 2.00
+[2025-06-15 20:46:57,333][INFO] step 80000: train loss 0.6786, val loss 1.5812
+[2025-06-15 20:46:57,342][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/80000_ckpt_20.pt
+[2025-06-15 20:46:57,929][INFO] Iteration 80000: Teacher Forcing Accuracy = 0.1577 (±0.0066), Autoregressive (Lenient) Accuracy = 0.9691
+[2025-06-15 20:46:57,952][INFO] iter 80000: loss 1.3601, beta 2.00
+[2025-06-15 20:47:46,570][INFO] Iteration 82000: Teacher Forcing Accuracy = 0.1542 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9698
+[2025-06-15 20:47:46,593][INFO] iter 82000: loss 1.3727, beta 2.00
+[2025-06-15 20:48:35,184][INFO] Iteration 84000: Teacher Forcing Accuracy = 0.1544 (±0.0049), Autoregressive (Lenient) Accuracy = 0.9679
+[2025-06-15 20:48:35,207][INFO] iter 84000: loss 1.3474, beta 2.00
+[2025-06-15 20:49:23,708][INFO] Iteration 86000: Teacher Forcing Accuracy = 0.1539 (±0.0058), Autoregressive (Lenient) Accuracy = 0.9684
+[2025-06-15 20:49:23,731][INFO] iter 86000: loss 1.3526, beta 2.00
+[2025-06-15 20:50:12,214][INFO] Iteration 88000: Teacher Forcing Accuracy = 0.1527 (±0.0050), Autoregressive (Lenient) Accuracy = 0.9692
+[2025-06-15 20:50:12,237][INFO] iter 88000: loss 1.3554, beta 2.00
+[2025-06-15 20:51:00,702][INFO] Iteration 90000: Teacher Forcing Accuracy = 0.1540 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9701
+[2025-06-15 20:51:00,725][INFO] iter 90000: loss 1.3756, beta 2.00
+[2025-06-15 20:51:49,137][INFO] Iteration 92000: Teacher Forcing Accuracy = 0.1539 (±0.0054), Autoregressive (Lenient) Accuracy = 0.9678
+[2025-06-15 20:51:49,160][INFO] iter 92000: loss 1.3854, beta 2.00
+[2025-06-15 20:52:37,579][INFO] Iteration 94000: Teacher Forcing Accuracy = 0.1529 (±0.0048), Autoregressive (Lenient) Accuracy = 0.9719
+[2025-06-15 20:52:37,602][INFO] iter 94000: loss 1.3626, beta 2.00
+[2025-06-15 20:53:26,121][INFO] Iteration 96000: Teacher Forcing Accuracy = 0.1531 (±0.0040), Autoregressive (Lenient) Accuracy = 0.9677
+[2025-06-15 20:53:26,144][INFO] iter 96000: loss 1.3551, beta 2.00
+[2025-06-15 20:54:14,681][INFO] Iteration 98000: Teacher Forcing Accuracy = 0.1520 (±0.0045), Autoregressive (Lenient) Accuracy = 0.9660
+[2025-06-15 20:54:14,704][INFO] iter 98000: loss 1.3742, beta 2.00
+[2025-06-15 20:55:06,872][INFO] step 100000: train loss 0.6768, val loss 1.6118
+[2025-06-15 20:55:06,881][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/100000_ckpt_20.pt
+[2025-06-15 20:55:07,464][INFO] Iteration 100000: Teacher Forcing Accuracy = 0.1575 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9644
+[2025-06-15 20:55:07,487][INFO] iter 100000: loss 1.3586, beta 2.00
+[2025-06-15 20:55:55,990][INFO] Iteration 102000: Teacher Forcing Accuracy = 0.1518 (±0.0049), Autoregressive (Lenient) Accuracy = 0.9677
+[2025-06-15 20:55:56,013][INFO] iter 102000: loss 1.9165, beta 2.80
+[2025-06-15 20:56:44,497][INFO] Iteration 104000: Teacher Forcing Accuracy = 0.1538 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9687
+[2025-06-15 20:56:44,520][INFO] iter 104000: loss 2.4432, beta 3.60
+[2025-06-15 20:57:32,921][INFO] Iteration 106000: Teacher Forcing Accuracy = 0.1521 (±0.0031), Autoregressive (Lenient) Accuracy = 0.9691
+[2025-06-15 20:57:32,944][INFO] iter 106000: loss 2.9414, beta 4.40
+[2025-06-15 20:58:21,322][INFO] Iteration 108000: Teacher Forcing Accuracy = 0.1546 (±0.0041), Autoregressive (Lenient) Accuracy = 0.9686
+[2025-06-15 20:58:21,345][INFO] iter 108000: loss 3.5323, beta 5.20
+[2025-06-15 20:59:09,736][INFO] Iteration 110000: Teacher Forcing Accuracy = 0.1515 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9625
+[2025-06-15 20:59:09,759][INFO] iter 110000: loss 4.1072, beta 6.00
+[2025-06-15 20:59:58,162][INFO] Iteration 112000: Teacher Forcing Accuracy = 0.1560 (±0.0057), Autoregressive (Lenient) Accuracy = 0.9676
+[2025-06-15 20:59:58,185][INFO] iter 112000: loss 4.6129, beta 6.80
+[2025-06-15 21:00:46,598][INFO] Iteration 114000: Teacher Forcing Accuracy = 0.1531 (±0.0061), Autoregressive (Lenient) Accuracy = 0.9674
+[2025-06-15 21:00:46,621][INFO] iter 114000: loss 5.1401, beta 7.60
+[2025-06-15 21:01:35,242][INFO] Iteration 116000: Teacher Forcing Accuracy = 0.1524 (±0.0050), Autoregressive (Lenient) Accuracy = 0.9615
+[2025-06-15 21:01:35,266][INFO] iter 116000: loss 5.6834, beta 8.40
+[2025-06-15 21:02:23,961][INFO] Iteration 118000: Teacher Forcing Accuracy = 0.1556 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9674
+[2025-06-15 21:02:23,984][INFO] iter 118000: loss 6.2026, beta 9.20
+[2025-06-15 21:03:16,340][INFO] step 120000: train loss 0.6753, val loss 1.6293
+[2025-06-15 21:03:16,349][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/120000_ckpt_20.pt
+[2025-06-15 21:03:16,931][INFO] Iteration 120000: Teacher Forcing Accuracy = 0.1552 (±0.0073), Autoregressive (Lenient) Accuracy = 0.9683
+[2025-06-15 21:03:16,954][INFO] iter 120000: loss 6.8035, beta 10.00
+[2025-06-15 21:04:05,755][INFO] Iteration 122000: Teacher Forcing Accuracy = 0.1543 (±0.0041), Autoregressive (Lenient) Accuracy = 0.9660
+[2025-06-15 21:04:05,778][INFO] iter 122000: loss 6.7792, beta 10.00
+[2025-06-15 21:04:54,566][INFO] Iteration 124000: Teacher Forcing Accuracy = 0.1559 (±0.0053), Autoregressive (Lenient) Accuracy = 0.9681
+[2025-06-15 21:04:54,589][INFO] iter 124000: loss 6.7860, beta 10.00
+[2025-06-15 21:05:43,413][INFO] Iteration 126000: Teacher Forcing Accuracy = 0.1519 (±0.0069), Autoregressive (Lenient) Accuracy = 0.9663
+[2025-06-15 21:05:43,436][INFO] iter 126000: loss 6.8349, beta 10.00
+[2025-06-15 21:06:32,268][INFO] Iteration 128000: Teacher Forcing Accuracy = 0.1550 (±0.0056), Autoregressive (Lenient) Accuracy = 0.9686
+[2025-06-15 21:06:32,291][INFO] iter 128000: loss 6.8275, beta 10.00
+[2025-06-15 21:07:21,108][INFO] Iteration 130000: Teacher Forcing Accuracy = 0.1541 (±0.0062), Autoregressive (Lenient) Accuracy = 0.9685
+[2025-06-15 21:07:21,131][INFO] iter 130000: loss 6.7750, beta 10.00
+[2025-06-15 21:08:09,908][INFO] Iteration 132000: Teacher Forcing Accuracy = 0.1529 (±0.0044), Autoregressive (Lenient) Accuracy = 0.9682
+[2025-06-15 21:08:09,931][INFO] iter 132000: loss 6.7937, beta 10.00
+[2025-06-15 21:08:58,551][INFO] Iteration 134000: Teacher Forcing Accuracy = 0.1567 (±0.0056), Autoregressive (Lenient) Accuracy = 0.9651
+[2025-06-15 21:08:58,574][INFO] iter 134000: loss 6.8622, beta 10.00
+[2025-06-15 21:09:47,209][INFO] Iteration 136000: Teacher Forcing Accuracy = 0.1553 (±0.0037), Autoregressive (Lenient) Accuracy = 0.9703
+[2025-06-15 21:09:47,232][INFO] iter 136000: loss 6.8706, beta 10.00
+[2025-06-15 21:10:35,934][INFO] Iteration 138000: Teacher Forcing Accuracy = 0.1527 (±0.0054), Autoregressive (Lenient) Accuracy = 0.9673
+[2025-06-15 21:10:35,957][INFO] iter 138000: loss 6.7904, beta 10.00
+[2025-06-15 21:11:28,244][INFO] step 140000: train loss 0.6739, val loss 1.6797
+[2025-06-15 21:11:28,253][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta10.0/140000_ckpt_20.pt
+[2025-06-15 21:11:28,834][INFO] Iteration 140000: Teacher Forcing Accuracy = 0.1556 (±0.0057), Autoregressive (Lenient) Accuracy = 0.9679
+[2025-06-15 21:11:28,857][INFO] iter 140000: loss 6.7936, beta 10.00
+[2025-06-15 21:12:17,358][INFO] Iteration 142000: Teacher Forcing Accuracy = 0.1548 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9640
+[2025-06-15 21:12:17,381][INFO] iter 142000: loss 6.8397, beta 10.00
+[2025-06-15 21:13:05,895][INFO] Iteration 144000: Teacher Forcing Accuracy = 0.1527 (±0.0033), Autoregressive (Lenient) Accuracy = 0.9671
+[2025-06-15 21:13:05,918][INFO] iter 144000: loss 6.7393, beta 10.00
+[2025-06-15 21:13:54,518][INFO] Iteration 146000: Teacher Forcing Accuracy = 0.1530 (±0.0047), Autoregressive (Lenient) Accuracy = 0.9690
+[2025-06-15 21:13:54,541][INFO] iter 146000: loss 6.8525, beta 10.00
+[2025-06-15 21:14:43,217][INFO] Iteration 148000: Teacher Forcing Accuracy = 0.1563 (±0.0058), Autoregressive (Lenient) Accuracy = 0.9711
+[2025-06-15 21:14:43,240][INFO] iter 148000: loss 6.8137, beta 10.00
+[2025-06-15 21:15:31,942][INFO] Iteration 150000: Teacher Forcing Accuracy = 0.1548 (±0.0041), Autoregressive (Lenient) Accuracy = 0.9697
+[2025-06-15 21:15:31,965][INFO] iter 150000: loss 6.7505, beta 10.00
+[2025-06-15 21:16:20,658][INFO] Iteration 152000: Teacher Forcing Accuracy = 0.1514 (±0.0041), Autoregressive (Lenient) Accuracy = 0.9703
+[2025-06-15 21:16:20,681][INFO] iter 152000: loss 6.6920, beta 10.00
+[2025-06-15 21:17:09,359][INFO] Iteration 154000: Teacher Forcing Accuracy = 0.1528 (±0.0049), Autoregressive (Lenient) Accuracy = 0.9627
+[2025-06-15 21:17:09,382][INFO] iter 154000: loss 6.7884, beta 10.00
+[2025-06-15 21:17:57,997][INFO] Iteration 156000: Teacher Forcing Accuracy = 0.1529 (±0.0048), Autoregressive (Lenient) Accuracy = 0.9687
+[2025-06-15 21:17:58,020][INFO] iter 156000: loss 6.8641, beta 10.00
