@@ -1,0 +1,452 @@
+[2025-06-17 02:42:50,107][INFO] step 0: train loss 4.6627, val loss 4.6663
+[2025-06-17 02:42:50,131][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/0_ckpt_20.pt
+[2025-06-17 02:42:50,861][INFO] Iteration 0: Teacher Forcing Accuracy = 0.7514 (±0.0042), Autoregressive (Lenient) Accuracy = 0.0000
+[2025-06-17 02:42:50,861][INFO]     Error counts - wrong syntax: 180, incorrect start/end: 9820, non-existence path: 0
+[2025-06-17 02:42:50,889][INFO] iter 0: loss 9.3125
+[2025-06-17 02:43:44,966][INFO] Iteration 2000: Teacher Forcing Accuracy = 0.1541 (±0.0049), Autoregressive (Lenient) Accuracy = 0.5227
+[2025-06-17 02:43:44,966][INFO]     Error counts - wrong syntax: 179, incorrect start/end: 2424, non-existence path: 2170
+[2025-06-17 02:43:44,991][INFO] iter 2000: loss 1.6618
+[2025-06-17 02:44:37,708][INFO] Iteration 4000: Teacher Forcing Accuracy = 0.5456 (±0.0107), Autoregressive (Lenient) Accuracy = 0.9139
+[2025-06-17 02:44:37,708][INFO]     Error counts - wrong syntax: 17, incorrect start/end: 358, non-existence path: 486
+[2025-06-17 02:44:37,731][INFO] iter 4000: loss 1.4145
+[2025-06-17 02:45:27,502][INFO] Iteration 6000: Teacher Forcing Accuracy = 0.9114 (±0.0042), Autoregressive (Lenient) Accuracy = 0.9453
+[2025-06-17 02:45:27,502][INFO]     Error counts - wrong syntax: 19, incorrect start/end: 282, non-existence path: 246
+[2025-06-17 02:45:27,528][INFO] iter 6000: loss 1.4259
+[2025-06-17 02:46:21,322][INFO] Iteration 8000: Teacher Forcing Accuracy = 0.9134 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9515
+[2025-06-17 02:46:21,322][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 252, non-existence path: 226
+[2025-06-17 02:46:21,322][INFO]     *** Critical checkpoint - monitoring for TF accuracy drop ***
+[2025-06-17 02:46:21,349][INFO] iter 8000: loss 1.3934
+[2025-06-17 02:47:13,569][INFO] Iteration 10000: Teacher Forcing Accuracy = 0.9129 (±0.0036), Autoregressive (Lenient) Accuracy = 0.9567
+[2025-06-17 02:47:13,569][INFO]     Error counts - wrong syntax: 9, incorrect start/end: 220, non-existence path: 204
+[2025-06-17 02:47:13,569][INFO]     *** Critical checkpoint - monitoring for TF accuracy drop ***
+[2025-06-17 02:47:13,594][INFO] iter 10000: loss 1.3887
+[2025-06-17 02:48:02,911][INFO] Iteration 12000: Teacher Forcing Accuracy = 0.9096 (±0.0033), Autoregressive (Lenient) Accuracy = 0.9490
+[2025-06-17 02:48:02,911][INFO]     Error counts - wrong syntax: 19, incorrect start/end: 298, non-existence path: 193
+[2025-06-17 02:48:02,940][INFO] iter 12000: loss 1.4145
+[2025-06-17 02:48:56,580][INFO] Iteration 14000: Teacher Forcing Accuracy = 0.9121 (±0.0024), Autoregressive (Lenient) Accuracy = 0.9581
+[2025-06-17 02:48:56,581][INFO]     Error counts - wrong syntax: 14, incorrect start/end: 240, non-existence path: 165
+[2025-06-17 02:48:56,606][INFO] iter 14000: loss 1.3990
+[2025-06-17 02:49:48,991][INFO] Iteration 16000: Teacher Forcing Accuracy = 0.9116 (±0.0050), Autoregressive (Lenient) Accuracy = 0.9559
+[2025-06-17 02:49:48,991][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 258, non-existence path: 182
+[2025-06-17 02:49:49,016][INFO] iter 16000: loss 1.4038
+[2025-06-17 02:50:37,597][INFO] Iteration 18000: Teacher Forcing Accuracy = 0.9103 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9551
+[2025-06-17 02:50:37,597][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 264, non-existence path: 178
+[2025-06-17 02:50:37,622][INFO] iter 18000: loss 1.3676
+[2025-06-17 02:51:37,001][INFO] step 20000: train loss 0.6895, val loss 1.4858
+[2025-06-17 02:51:37,010][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/20000_ckpt_20.pt
+[2025-06-17 02:51:37,615][INFO] Iteration 20000: Teacher Forcing Accuracy = 0.9112 (±0.0027), Autoregressive (Lenient) Accuracy = 0.9582
+[2025-06-17 02:51:37,615][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 256, non-existence path: 161
+[2025-06-17 02:51:37,640][INFO] iter 20000: loss 1.3799
+[2025-06-17 02:52:30,555][INFO] Iteration 22000: Teacher Forcing Accuracy = 0.9106 (±0.0032), Autoregressive (Lenient) Accuracy = 0.9634
+[2025-06-17 02:52:30,555][INFO]     Error counts - wrong syntax: 2, incorrect start/end: 234, non-existence path: 130
+[2025-06-17 02:52:30,580][INFO] iter 22000: loss 1.3807
+[2025-06-17 02:53:20,189][INFO] Iteration 24000: Teacher Forcing Accuracy = 0.9103 (±0.0037), Autoregressive (Lenient) Accuracy = 0.9626
+[2025-06-17 02:53:20,189][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 212, non-existence path: 159
+[2025-06-17 02:53:20,220][INFO] iter 24000: loss 1.3742
+[2025-06-17 02:54:14,057][INFO] Iteration 26000: Teacher Forcing Accuracy = 0.9110 (±0.0028), Autoregressive (Lenient) Accuracy = 0.9649
+[2025-06-17 02:54:14,057][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 195, non-existence path: 155
+[2025-06-17 02:54:14,083][INFO] iter 26000: loss 1.3945
+[2025-06-17 02:55:07,029][INFO] Iteration 28000: Teacher Forcing Accuracy = 0.9128 (±0.0021), Autoregressive (Lenient) Accuracy = 0.9593
+[2025-06-17 02:55:07,029][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 225, non-existence path: 181
+[2025-06-17 02:55:07,053][INFO] iter 28000: loss 1.3626
+[2025-06-17 02:55:56,337][INFO] Iteration 30000: Teacher Forcing Accuracy = 0.9114 (±0.0032), Autoregressive (Lenient) Accuracy = 0.9625
+[2025-06-17 02:55:56,337][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 213, non-existence path: 162
+[2025-06-17 02:55:56,369][INFO] iter 30000: loss 1.3705
+[2025-06-17 02:56:50,405][INFO] Iteration 32000: Teacher Forcing Accuracy = 0.9123 (±0.0022), Autoregressive (Lenient) Accuracy = 0.9654
+[2025-06-17 02:56:50,405][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 201, non-existence path: 144
+[2025-06-17 02:56:50,429][INFO] iter 32000: loss 1.3765
+[2025-06-17 02:57:43,339][INFO] Iteration 34000: Teacher Forcing Accuracy = 0.9125 (±0.0033), Autoregressive (Lenient) Accuracy = 0.9673
+[2025-06-17 02:57:43,340][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 178, non-existence path: 149
+[2025-06-17 02:57:43,363][INFO] iter 34000: loss 1.3812
+[2025-06-17 02:58:31,813][INFO] Iteration 36000: Teacher Forcing Accuracy = 0.9125 (±0.0025), Autoregressive (Lenient) Accuracy = 0.9675
+[2025-06-17 02:58:31,814][INFO]     Error counts - wrong syntax: 2, incorrect start/end: 189, non-existence path: 134
+[2025-06-17 02:58:31,839][INFO] iter 36000: loss 1.4003
+[2025-06-17 02:59:25,988][INFO] Iteration 38000: Teacher Forcing Accuracy = 0.9108 (±0.0028), Autoregressive (Lenient) Accuracy = 0.9642
+[2025-06-17 02:59:25,989][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 217, non-existence path: 140
+[2025-06-17 02:59:26,015][INFO] iter 38000: loss 1.3718
+[2025-06-17 03:00:22,601][INFO] step 40000: train loss 0.6813, val loss 1.5422
+[2025-06-17 03:00:22,610][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/40000_ckpt_20.pt
+[2025-06-17 03:00:23,208][INFO] Iteration 40000: Teacher Forcing Accuracy = 0.9140 (±0.0011), Autoregressive (Lenient) Accuracy = 0.9722
+[2025-06-17 03:00:23,208][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 149, non-existence path: 128
+[2025-06-17 03:00:23,232][INFO] iter 40000: loss 1.3755
+[2025-06-17 03:01:12,253][INFO] Iteration 42000: Teacher Forcing Accuracy = 0.9120 (±0.0031), Autoregressive (Lenient) Accuracy = 0.9620
+[2025-06-17 03:01:12,253][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 215, non-existence path: 164
+[2025-06-17 03:01:12,282][INFO] iter 42000: loss 1.3697
+[2025-06-17 03:02:06,768][INFO] Iteration 44000: Teacher Forcing Accuracy = 0.9120 (±0.0044), Autoregressive (Lenient) Accuracy = 0.9698
+[2025-06-17 03:02:06,768][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 151, non-existence path: 151
+[2025-06-17 03:02:06,794][INFO] iter 44000: loss 1.3660
+[2025-06-17 03:02:59,967][INFO] Iteration 46000: Teacher Forcing Accuracy = 0.9125 (±0.0018), Autoregressive (Lenient) Accuracy = 0.9648
+[2025-06-17 03:02:59,968][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 192, non-existence path: 157
+[2025-06-17 03:02:59,994][INFO] iter 46000: loss 1.3849
+[2025-06-17 03:03:48,990][INFO] Iteration 48000: Teacher Forcing Accuracy = 0.9120 (±0.0039), Autoregressive (Lenient) Accuracy = 0.9663
+[2025-06-17 03:03:48,991][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 184, non-existence path: 152
+[2025-06-17 03:03:49,013][INFO] iter 48000: loss 1.3688
+[2025-06-17 03:04:37,061][INFO] Iteration 50000: Teacher Forcing Accuracy = 0.9119 (±0.0037), Autoregressive (Lenient) Accuracy = 0.9700
+[2025-06-17 03:04:37,062][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 165, non-existence path: 135
+[2025-06-17 03:04:37,085][INFO] iter 50000: loss 1.3664
+[2025-06-17 03:05:25,805][INFO] Iteration 52000: Teacher Forcing Accuracy = 0.9117 (±0.0037), Autoregressive (Lenient) Accuracy = 0.9676
+[2025-06-17 03:05:25,806][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 174, non-existence path: 149
+[2025-06-17 03:05:25,829][INFO] iter 52000: loss 1.3634
+[2025-06-17 03:06:15,051][INFO] Iteration 54000: Teacher Forcing Accuracy = 0.9117 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9696
+[2025-06-17 03:06:15,052][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 159, non-existence path: 141
+[2025-06-17 03:06:15,076][INFO] iter 54000: loss 1.3700
+[2025-06-17 03:07:04,247][INFO] Iteration 56000: Teacher Forcing Accuracy = 0.9106 (±0.0026), Autoregressive (Lenient) Accuracy = 0.9690
+[2025-06-17 03:07:04,248][INFO]     Error counts - wrong syntax: 2, incorrect start/end: 152, non-existence path: 156
+[2025-06-17 03:07:04,270][INFO] iter 56000: loss 1.3744
+[2025-06-17 03:07:52,738][INFO] Iteration 58000: Teacher Forcing Accuracy = 0.9139 (±0.0039), Autoregressive (Lenient) Accuracy = 0.9693
+[2025-06-17 03:07:52,738][INFO]     Error counts - wrong syntax: 20, incorrect start/end: 153, non-existence path: 134
+[2025-06-17 03:07:52,761][INFO] iter 58000: loss 1.3668
+[2025-06-17 03:08:44,609][INFO] step 60000: train loss 0.6801, val loss 1.5593
+[2025-06-17 03:08:44,618][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/60000_ckpt_20.pt
+[2025-06-17 03:08:45,187][INFO] Iteration 60000: Teacher Forcing Accuracy = 0.9121 (±0.0032), Autoregressive (Lenient) Accuracy = 0.9662
+[2025-06-17 03:08:45,187][INFO]     Error counts - wrong syntax: 12, incorrect start/end: 175, non-existence path: 151
+[2025-06-17 03:08:45,210][INFO] iter 60000: loss 1.3858
+[2025-06-17 03:09:33,480][INFO] Iteration 62000: Teacher Forcing Accuracy = 0.9123 (±0.0020), Autoregressive (Lenient) Accuracy = 0.9640
+[2025-06-17 03:09:33,481][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 199, non-existence path: 154
+[2025-06-17 03:09:33,505][INFO] iter 62000: loss 1.3635
+[2025-06-17 03:10:21,687][INFO] Iteration 64000: Teacher Forcing Accuracy = 0.9126 (±0.0028), Autoregressive (Lenient) Accuracy = 0.9650
+[2025-06-17 03:10:21,687][INFO]     Error counts - wrong syntax: 6, incorrect start/end: 198, non-existence path: 146
+[2025-06-17 03:10:21,754][INFO] iter 64000: loss 1.3582
+[2025-06-17 03:11:12,066][INFO] Iteration 66000: Teacher Forcing Accuracy = 0.9130 (±0.0039), Autoregressive (Lenient) Accuracy = 0.9696
+[2025-06-17 03:11:12,067][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 179, non-existence path: 124
+[2025-06-17 03:11:12,145][INFO] iter 66000: loss 1.3689
+[2025-06-17 03:12:04,283][INFO] Iteration 68000: Teacher Forcing Accuracy = 0.9113 (±0.0045), Autoregressive (Lenient) Accuracy = 0.9662
+[2025-06-17 03:12:04,283][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 170, non-existence path: 160
+[2025-06-17 03:12:04,308][INFO] iter 68000: loss 1.3574
+[2025-06-17 03:12:53,504][INFO] Iteration 70000: Teacher Forcing Accuracy = 0.9089 (±0.0034), Autoregressive (Lenient) Accuracy = 0.9693
+[2025-06-17 03:12:53,504][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 170, non-existence path: 129
+[2025-06-17 03:12:53,573][INFO] iter 70000: loss 1.3573
+[2025-06-17 03:13:43,333][INFO] Iteration 72000: Teacher Forcing Accuracy = 0.9124 (±0.0034), Autoregressive (Lenient) Accuracy = 0.9672
+[2025-06-17 03:13:43,333][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 189, non-existence path: 129
+[2025-06-17 03:13:43,406][INFO] iter 72000: loss 1.3796
+[2025-06-17 03:14:34,229][INFO] Iteration 74000: Teacher Forcing Accuracy = 0.9115 (±0.0045), Autoregressive (Lenient) Accuracy = 0.9689
+[2025-06-17 03:14:34,229][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 176, non-existence path: 127
+[2025-06-17 03:14:34,319][INFO] iter 74000: loss 1.3672
+[2025-06-17 03:15:27,468][INFO] Iteration 76000: Teacher Forcing Accuracy = 0.9129 (±0.0038), Autoregressive (Lenient) Accuracy = 0.9716
+[2025-06-17 03:15:27,468][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 156, non-existence path: 118
+[2025-06-17 03:15:27,550][INFO] iter 76000: loss 1.3605
+[2025-06-17 03:16:21,009][INFO] Iteration 78000: Teacher Forcing Accuracy = 0.9103 (±0.0030), Autoregressive (Lenient) Accuracy = 0.9711
+[2025-06-17 03:16:21,009][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 144, non-existence path: 142
+[2025-06-17 03:16:21,034][INFO] iter 78000: loss 1.3550
+[2025-06-17 03:17:16,983][INFO] step 80000: train loss 0.6784, val loss 1.5774
+[2025-06-17 03:17:16,992][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/80000_ckpt_20.pt
+[2025-06-17 03:17:17,642][INFO] Iteration 80000: Teacher Forcing Accuracy = 0.9123 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9732
+[2025-06-17 03:17:17,642][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 154, non-existence path: 107
+[2025-06-17 03:17:17,666][INFO] iter 80000: loss 1.3661
+[2025-06-17 03:18:06,604][INFO] Iteration 82000: Teacher Forcing Accuracy = 0.9127 (±0.0033), Autoregressive (Lenient) Accuracy = 0.9732
+[2025-06-17 03:18:06,604][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 146, non-existence path: 112
+[2025-06-17 03:18:06,628][INFO] iter 82000: loss 1.3761
+[2025-06-17 03:18:56,801][INFO] Iteration 84000: Teacher Forcing Accuracy = 0.9108 (±0.0038), Autoregressive (Lenient) Accuracy = 0.9724
+[2025-06-17 03:18:56,801][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 151, non-existence path: 115
+[2025-06-17 03:18:56,826][INFO] iter 84000: loss 1.3853
+[2025-06-17 03:19:48,190][INFO] Iteration 86000: Teacher Forcing Accuracy = 0.9116 (±0.0034), Autoregressive (Lenient) Accuracy = 0.9679
+[2025-06-17 03:19:48,190][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 182, non-existence path: 131
+[2025-06-17 03:19:48,215][INFO] iter 86000: loss 1.3627
+[2025-06-17 03:20:41,310][INFO] Iteration 88000: Teacher Forcing Accuracy = 0.9124 (±0.0031), Autoregressive (Lenient) Accuracy = 0.9684
+[2025-06-17 03:20:41,310][INFO]     Error counts - wrong syntax: 6, incorrect start/end: 182, non-existence path: 128
+[2025-06-17 03:20:41,336][INFO] iter 88000: loss 1.3712
+[2025-06-17 03:21:35,394][INFO] Iteration 90000: Teacher Forcing Accuracy = 0.9128 (±0.0036), Autoregressive (Lenient) Accuracy = 0.9702
+[2025-06-17 03:21:35,394][INFO]     Error counts - wrong syntax: 12, incorrect start/end: 152, non-existence path: 134
+[2025-06-17 03:21:35,419][INFO] iter 90000: loss 1.3661
+[2025-06-17 03:22:27,925][INFO] Iteration 92000: Teacher Forcing Accuracy = 0.9115 (±0.0036), Autoregressive (Lenient) Accuracy = 0.9661
+[2025-06-17 03:22:27,926][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 201, non-existence path: 138
+[2025-06-17 03:22:27,948][INFO] iter 92000: loss 1.3648
+[2025-06-17 03:23:16,146][INFO] Iteration 94000: Teacher Forcing Accuracy = 0.9104 (±0.0031), Autoregressive (Lenient) Accuracy = 0.9664
+[2025-06-17 03:23:16,146][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 187, non-existence path: 142
+[2025-06-17 03:23:16,170][INFO] iter 94000: loss 1.3649
+[2025-06-17 03:24:04,416][INFO] Iteration 96000: Teacher Forcing Accuracy = 0.9126 (±0.0045), Autoregressive (Lenient) Accuracy = 0.9703
+[2025-06-17 03:24:04,416][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 173, non-existence path: 120
+[2025-06-17 03:24:04,439][INFO] iter 96000: loss 1.3565
+[2025-06-17 03:24:55,410][INFO] Iteration 98000: Teacher Forcing Accuracy = 0.9131 (±0.0029), Autoregressive (Lenient) Accuracy = 0.9714
+[2025-06-17 03:24:55,410][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 163, non-existence path: 119
+[2025-06-17 03:24:55,434][INFO] iter 98000: loss 1.3704
+[2025-06-17 03:25:48,194][INFO] step 100000: train loss 0.6776, val loss 1.5943
+[2025-06-17 03:25:48,203][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/100000_ckpt_20.pt
+[2025-06-17 03:25:48,779][INFO] Iteration 100000: Teacher Forcing Accuracy = 0.9119 (±0.0029), Autoregressive (Lenient) Accuracy = 0.9725
+[2025-06-17 03:25:48,779][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 138, non-existence path: 133
+[2025-06-17 03:25:48,802][INFO] iter 100000: loss 1.3819
+[2025-06-17 03:26:36,958][INFO] Iteration 102000: Teacher Forcing Accuracy = 0.9089 (±0.0025), Autoregressive (Lenient) Accuracy = 0.9724
+[2025-06-17 03:26:36,958][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 160, non-existence path: 115
+[2025-06-17 03:26:36,981][INFO] iter 102000: loss 1.3458
+[2025-06-17 03:27:25,090][INFO] Iteration 104000: Teacher Forcing Accuracy = 0.9112 (±0.0030), Autoregressive (Lenient) Accuracy = 0.9687
+[2025-06-17 03:27:25,091][INFO]     Error counts - wrong syntax: 5, incorrect start/end: 176, non-existence path: 132
+[2025-06-17 03:27:25,113][INFO] iter 104000: loss 1.3420
+[2025-06-17 03:28:13,188][INFO] Iteration 106000: Teacher Forcing Accuracy = 0.9079 (±0.0048), Autoregressive (Lenient) Accuracy = 0.9712
+[2025-06-17 03:28:13,188][INFO]     Error counts - wrong syntax: 9, incorrect start/end: 151, non-existence path: 128
+[2025-06-17 03:28:13,211][INFO] iter 106000: loss 1.3636
+[2025-06-17 03:29:01,251][INFO] Iteration 108000: Teacher Forcing Accuracy = 0.9109 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9714
+[2025-06-17 03:29:01,251][INFO]     Error counts - wrong syntax: 6, incorrect start/end: 162, non-existence path: 118
+[2025-06-17 03:29:01,273][INFO] iter 108000: loss 1.3743
+[2025-06-17 03:29:49,245][INFO] Iteration 110000: Teacher Forcing Accuracy = 0.9107 (±0.0026), Autoregressive (Lenient) Accuracy = 0.9759
+[2025-06-17 03:29:49,245][INFO]     Error counts - wrong syntax: 2, incorrect start/end: 126, non-existence path: 113
+[2025-06-17 03:29:49,268][INFO] iter 110000: loss 1.3587
+[2025-06-17 03:30:37,263][INFO] Iteration 112000: Teacher Forcing Accuracy = 0.9126 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9755
+[2025-06-17 03:30:37,263][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 139, non-existence path: 103
+[2025-06-17 03:30:37,286][INFO] iter 112000: loss 1.3801
+[2025-06-17 03:31:25,249][INFO] Iteration 114000: Teacher Forcing Accuracy = 0.9086 (±0.0039), Autoregressive (Lenient) Accuracy = 0.9695
+[2025-06-17 03:31:25,249][INFO]     Error counts - wrong syntax: 5, incorrect start/end: 185, non-existence path: 115
+[2025-06-17 03:31:25,271][INFO] iter 114000: loss 1.3354
+[2025-06-17 03:32:14,401][INFO] Iteration 116000: Teacher Forcing Accuracy = 0.9114 (±0.0029), Autoregressive (Lenient) Accuracy = 0.9675
+[2025-06-17 03:32:14,401][INFO]     Error counts - wrong syntax: 5, incorrect start/end: 206, non-existence path: 114
+[2025-06-17 03:32:14,426][INFO] iter 116000: loss 1.3744
+[2025-06-17 03:33:05,204][INFO] Iteration 118000: Teacher Forcing Accuracy = 0.9123 (±0.0028), Autoregressive (Lenient) Accuracy = 0.9732
+[2025-06-17 03:33:05,205][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 151, non-existence path: 117
+[2025-06-17 03:33:05,229][INFO] iter 118000: loss 1.3495
+[2025-06-17 03:33:56,944][INFO] step 120000: train loss 0.6765, val loss 1.6427
+[2025-06-17 03:33:56,952][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/120000_ckpt_20.pt
+[2025-06-17 03:33:57,518][INFO] Iteration 120000: Teacher Forcing Accuracy = 0.9106 (±0.0040), Autoregressive (Lenient) Accuracy = 0.9769
+[2025-06-17 03:33:57,518][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 122, non-existence path: 108
+[2025-06-17 03:33:57,542][INFO] iter 120000: loss 1.3570
+[2025-06-17 03:34:46,209][INFO] Iteration 122000: Teacher Forcing Accuracy = 0.9115 (±0.0028), Autoregressive (Lenient) Accuracy = 0.9707
+[2025-06-17 03:34:46,209][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 183, non-existence path: 107
+[2025-06-17 03:34:46,233][INFO] iter 122000: loss 1.3640
+[2025-06-17 03:35:36,204][INFO] Iteration 124000: Teacher Forcing Accuracy = 0.9115 (±0.0034), Autoregressive (Lenient) Accuracy = 0.9698
+[2025-06-17 03:35:36,204][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 184, non-existence path: 117
+[2025-06-17 03:35:36,228][INFO] iter 124000: loss 1.3643
+[2025-06-17 03:36:27,338][INFO] Iteration 126000: Teacher Forcing Accuracy = 0.9125 (±0.0038), Autoregressive (Lenient) Accuracy = 0.9705
+[2025-06-17 03:36:27,338][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 184, non-existence path: 107
+[2025-06-17 03:36:27,361][INFO] iter 126000: loss 1.3511
+[2025-06-17 03:37:18,102][INFO] Iteration 128000: Teacher Forcing Accuracy = 0.9109 (±0.0045), Autoregressive (Lenient) Accuracy = 0.9715
+[2025-06-17 03:37:18,102][INFO]     Error counts - wrong syntax: 0, incorrect start/end: 176, non-existence path: 109
+[2025-06-17 03:37:18,126][INFO] iter 128000: loss 1.3769
+[2025-06-17 03:38:13,615][INFO] Iteration 130000: Teacher Forcing Accuracy = 0.9108 (±0.0033), Autoregressive (Lenient) Accuracy = 0.9683
+[2025-06-17 03:38:13,615][INFO]     Error counts - wrong syntax: 2, incorrect start/end: 218, non-existence path: 97
+[2025-06-17 03:38:13,640][INFO] iter 130000: loss 1.3488
+[2025-06-17 03:39:06,731][INFO] Iteration 132000: Teacher Forcing Accuracy = 0.9092 (±0.0023), Autoregressive (Lenient) Accuracy = 0.9700
+[2025-06-17 03:39:06,731][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 200, non-existence path: 92
+[2025-06-17 03:39:06,755][INFO] iter 132000: loss 1.3557
+[2025-06-17 03:39:58,166][INFO] Iteration 134000: Teacher Forcing Accuracy = 0.9090 (±0.0029), Autoregressive (Lenient) Accuracy = 0.9761
+[2025-06-17 03:39:58,166][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 124, non-existence path: 112
+[2025-06-17 03:39:58,191][INFO] iter 134000: loss 1.3560
+[2025-06-17 03:40:46,808][INFO] Iteration 136000: Teacher Forcing Accuracy = 0.8594 (±0.0139), Autoregressive (Lenient) Accuracy = 0.9686
+[2025-06-17 03:40:46,808][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 203, non-existence path: 107
+[2025-06-17 03:40:46,831][INFO] iter 136000: loss 1.3618
+[2025-06-17 03:41:36,476][INFO] Iteration 138000: Teacher Forcing Accuracy = 0.7029 (±0.0332), Autoregressive (Lenient) Accuracy = 0.9747
+[2025-06-17 03:41:36,476][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 152, non-existence path: 97
+[2025-06-17 03:41:36,500][INFO] iter 138000: loss 1.3618
+[2025-06-17 03:42:31,366][INFO] step 140000: train loss 0.6735, val loss 1.6908
+[2025-06-17 03:42:31,375][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/140000_ckpt_20.pt
+[2025-06-17 03:42:31,963][INFO] Iteration 140000: Teacher Forcing Accuracy = 0.7093 (±0.0329), Autoregressive (Lenient) Accuracy = 0.9740
+[2025-06-17 03:42:31,963][INFO]     Error counts - wrong syntax: 3, incorrect start/end: 164, non-existence path: 93
+[2025-06-17 03:42:31,988][INFO] iter 140000: loss 1.3573
+[2025-06-17 03:43:20,703][INFO] Iteration 142000: Teacher Forcing Accuracy = 0.4395 (±0.0224), Autoregressive (Lenient) Accuracy = 0.9803
+[2025-06-17 03:43:20,703][INFO]     Error counts - wrong syntax: 2, incorrect start/end: 111, non-existence path: 84
+[2025-06-17 03:43:20,726][INFO] iter 142000: loss 1.3617
+[2025-06-17 03:44:09,189][INFO] Iteration 144000: Teacher Forcing Accuracy = 0.3636 (±0.0315), Autoregressive (Lenient) Accuracy = 0.9727
+[2025-06-17 03:44:09,189][INFO]     Error counts - wrong syntax: 1, incorrect start/end: 171, non-existence path: 101
+[2025-06-17 03:44:09,212][INFO] iter 144000: loss 1.3506
+[2025-06-17 03:44:57,715][INFO] Iteration 146000: Teacher Forcing Accuracy = 0.2819 (±0.0183), Autoregressive (Lenient) Accuracy = 0.9712
+[2025-06-17 03:44:57,716][INFO]     Error counts - wrong syntax: 6, incorrect start/end: 192, non-existence path: 90
+[2025-06-17 03:44:57,738][INFO] iter 146000: loss 1.3596
+[2025-06-17 03:45:46,249][INFO] Iteration 148000: Teacher Forcing Accuracy = 0.1776 (±0.0176), Autoregressive (Lenient) Accuracy = 0.9703
+[2025-06-17 03:45:46,249][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 212, non-existence path: 81
+[2025-06-17 03:45:46,272][INFO] iter 148000: loss 1.3558
+[2025-06-17 03:46:34,776][INFO] Iteration 150000: Teacher Forcing Accuracy = 0.1604 (±0.0103), Autoregressive (Lenient) Accuracy = 0.9755
+[2025-06-17 03:46:34,776][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 154, non-existence path: 83
+[2025-06-17 03:46:34,798][INFO] iter 150000: loss 1.3519
+[2025-06-17 03:47:23,441][INFO] Iteration 152000: Teacher Forcing Accuracy = 0.1560 (±0.0043), Autoregressive (Lenient) Accuracy = 0.9717
+[2025-06-17 03:47:23,441][INFO]     Error counts - wrong syntax: 11, incorrect start/end: 180, non-existence path: 92
+[2025-06-17 03:47:23,464][INFO] iter 152000: loss 1.3662
+[2025-06-17 03:48:12,837][INFO] Iteration 154000: Teacher Forcing Accuracy = 0.1555 (±0.0048), Autoregressive (Lenient) Accuracy = 0.9679
+[2025-06-17 03:48:12,837][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 195, non-existence path: 116
+[2025-06-17 03:48:12,915][INFO] iter 154000: loss 1.3511
+[2025-06-17 03:49:03,298][INFO] Iteration 156000: Teacher Forcing Accuracy = 0.1527 (±0.0055), Autoregressive (Lenient) Accuracy = 0.9709
+[2025-06-17 03:49:03,299][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 200, non-existence path: 84
+[2025-06-17 03:49:03,393][INFO] iter 156000: loss 1.3549
+[2025-06-17 03:49:54,256][INFO] Iteration 158000: Teacher Forcing Accuracy = 0.1528 (±0.0071), Autoregressive (Lenient) Accuracy = 0.9737
+[2025-06-17 03:49:54,256][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 159, non-existence path: 94
+[2025-06-17 03:49:54,280][INFO] iter 158000: loss 1.3495
+[2025-06-17 03:50:49,203][INFO] step 160000: train loss 0.6722, val loss 1.7242
+[2025-06-17 03:50:49,212][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/160000_ckpt_20.pt
+[2025-06-17 03:50:49,819][INFO] Iteration 160000: Teacher Forcing Accuracy = 0.1519 (±0.0031), Autoregressive (Lenient) Accuracy = 0.9716
+[2025-06-17 03:50:49,819][INFO]     Error counts - wrong syntax: 4, incorrect start/end: 191, non-existence path: 89
+[2025-06-17 03:50:49,842][INFO] iter 160000: loss 1.3401
+[2025-06-17 03:51:40,711][INFO] Iteration 162000: Teacher Forcing Accuracy = 0.1521 (±0.0058), Autoregressive (Lenient) Accuracy = 0.9744
+[2025-06-17 03:51:40,711][INFO]     Error counts - wrong syntax: 5, incorrect start/end: 158, non-existence path: 93
+[2025-06-17 03:51:40,734][INFO] iter 162000: loss 1.3671
+[2025-06-17 03:52:31,616][INFO] Iteration 164000: Teacher Forcing Accuracy = 0.1516 (±0.0044), Autoregressive (Lenient) Accuracy = 0.9746
+[2025-06-17 03:52:31,617][INFO]     Error counts - wrong syntax: 9, incorrect start/end: 176, non-existence path: 69
+[2025-06-17 03:52:31,642][INFO] iter 164000: loss 1.3554
+[2025-06-17 03:53:22,531][INFO] Iteration 166000: Teacher Forcing Accuracy = 0.1487 (±0.0053), Autoregressive (Lenient) Accuracy = 0.9732
+[2025-06-17 03:53:22,531][INFO]     Error counts - wrong syntax: 13, incorrect start/end: 167, non-existence path: 88
+[2025-06-17 03:53:22,555][INFO] iter 166000: loss 1.3608
+[2025-06-17 03:54:13,359][INFO] Iteration 168000: Teacher Forcing Accuracy = 0.1547 (±0.0030), Autoregressive (Lenient) Accuracy = 0.9725
+[2025-06-17 03:54:13,359][INFO]     Error counts - wrong syntax: 13, incorrect start/end: 176, non-existence path: 86
+[2025-06-17 03:54:13,386][INFO] iter 168000: loss 1.3536
+[2025-06-17 03:55:04,457][INFO] Iteration 170000: Teacher Forcing Accuracy = 0.1546 (±0.0038), Autoregressive (Lenient) Accuracy = 0.9710
+[2025-06-17 03:55:04,457][INFO]     Error counts - wrong syntax: 12, incorrect start/end: 189, non-existence path: 89
+[2025-06-17 03:55:04,480][INFO] iter 170000: loss 1.3719
+[2025-06-17 03:55:55,435][INFO] Iteration 172000: Teacher Forcing Accuracy = 0.1522 (±0.0034), Autoregressive (Lenient) Accuracy = 0.9774
+[2025-06-17 03:55:55,435][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 146, non-existence path: 70
+[2025-06-17 03:55:55,458][INFO] iter 172000: loss 1.3636
+[2025-06-17 03:56:46,491][INFO] Iteration 174000: Teacher Forcing Accuracy = 0.1507 (±0.0045), Autoregressive (Lenient) Accuracy = 0.9719
+[2025-06-17 03:56:46,491][INFO]     Error counts - wrong syntax: 11, incorrect start/end: 178, non-existence path: 92
+[2025-06-17 03:56:46,514][INFO] iter 174000: loss 1.3600
+[2025-06-17 03:57:37,321][INFO] Iteration 176000: Teacher Forcing Accuracy = 0.1524 (±0.0055), Autoregressive (Lenient) Accuracy = 0.9708
+[2025-06-17 03:57:37,321][INFO]     Error counts - wrong syntax: 8, incorrect start/end: 200, non-existence path: 84
+[2025-06-17 03:57:37,348][INFO] iter 176000: loss 1.3706
+[2025-06-17 03:58:28,159][INFO] Iteration 178000: Teacher Forcing Accuracy = 0.1527 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9706
+[2025-06-17 03:58:28,159][INFO]     Error counts - wrong syntax: 9, incorrect start/end: 205, non-existence path: 80
+[2025-06-17 03:58:28,182][INFO] iter 178000: loss 1.3647
+[2025-06-17 03:59:22,914][INFO] step 180000: train loss 0.6717, val loss 1.7650
+[2025-06-17 03:59:22,923][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/180000_ckpt_20.pt
+[2025-06-17 03:59:23,512][INFO] Iteration 180000: Teacher Forcing Accuracy = 0.1521 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9701
+[2025-06-17 03:59:23,512][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 203, non-existence path: 86
+[2025-06-17 03:59:23,535][INFO] iter 180000: loss 1.3558
+[2025-06-17 04:00:14,351][INFO] Iteration 182000: Teacher Forcing Accuracy = 0.1540 (±0.0040), Autoregressive (Lenient) Accuracy = 0.9728
+[2025-06-17 04:00:14,351][INFO]     Error counts - wrong syntax: 17, incorrect start/end: 180, non-existence path: 75
+[2025-06-17 04:00:14,375][INFO] iter 182000: loss 1.3816
+[2025-06-17 04:01:05,151][INFO] Iteration 184000: Teacher Forcing Accuracy = 0.1529 (±0.0035), Autoregressive (Lenient) Accuracy = 0.9715
+[2025-06-17 04:01:05,151][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 193, non-existence path: 85
+[2025-06-17 04:01:05,174][INFO] iter 184000: loss 1.3512
+[2025-06-17 04:01:56,101][INFO] Iteration 186000: Teacher Forcing Accuracy = 0.1515 (±0.0048), Autoregressive (Lenient) Accuracy = 0.9687
+[2025-06-17 04:01:56,101][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 220, non-existence path: 86
+[2025-06-17 04:01:56,129][INFO] iter 186000: loss 1.3344
+[2025-06-17 04:02:46,826][INFO] Iteration 188000: Teacher Forcing Accuracy = 0.1542 (±0.0024), Autoregressive (Lenient) Accuracy = 0.9710
+[2025-06-17 04:02:46,827][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 191, non-existence path: 92
+[2025-06-17 04:02:46,851][INFO] iter 188000: loss 1.3368
+[2025-06-17 04:03:37,693][INFO] Iteration 190000: Teacher Forcing Accuracy = 0.1549 (±0.0022), Autoregressive (Lenient) Accuracy = 0.9740
+[2025-06-17 04:03:37,693][INFO]     Error counts - wrong syntax: 11, incorrect start/end: 173, non-existence path: 76
+[2025-06-17 04:03:37,716][INFO] iter 190000: loss 1.3642
+[2025-06-17 04:04:28,588][INFO] Iteration 192000: Teacher Forcing Accuracy = 0.1559 (±0.0030), Autoregressive (Lenient) Accuracy = 0.9711
+[2025-06-17 04:04:28,588][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 184, non-existence path: 95
+[2025-06-17 04:04:28,612][INFO] iter 192000: loss 1.3478
+[2025-06-17 04:05:19,435][INFO] Iteration 194000: Teacher Forcing Accuracy = 0.1525 (±0.0028), Autoregressive (Lenient) Accuracy = 0.9726
+[2025-06-17 04:05:19,435][INFO]     Error counts - wrong syntax: 11, incorrect start/end: 189, non-existence path: 74
+[2025-06-17 04:05:19,459][INFO] iter 194000: loss 1.3360
+[2025-06-17 04:06:10,431][INFO] Iteration 196000: Teacher Forcing Accuracy = 0.1537 (±0.0040), Autoregressive (Lenient) Accuracy = 0.9733
+[2025-06-17 04:06:10,431][INFO]     Error counts - wrong syntax: 10, incorrect start/end: 167, non-existence path: 90
+[2025-06-17 04:06:10,458][INFO] iter 196000: loss 1.3573
+[2025-06-17 04:07:01,481][INFO] Iteration 198000: Teacher Forcing Accuracy = 0.1550 (±0.0060), Autoregressive (Lenient) Accuracy = 0.9758
+[2025-06-17 04:07:01,481][INFO]     Error counts - wrong syntax: 6, incorrect start/end: 171, non-existence path: 65
+[2025-06-17 04:07:01,504][INFO] iter 198000: loss 1.3642
+[2025-06-17 04:07:56,367][INFO] step 200000: train loss 0.6704, val loss 1.7929
+[2025-06-17 04:07:56,376][INFO] Checkpoint saved to out/simple_graph_1_1_120_100_simpo_beta2.0_seed42/200000_ckpt_20.pt
+[2025-06-17 04:07:56,943][INFO] Iteration 200000: Teacher Forcing Accuracy = 0.1530 (±0.0056), Autoregressive (Lenient) Accuracy = 0.9747
+[2025-06-17 04:07:56,943][INFO]     Error counts - wrong syntax: 7, incorrect start/end: 180, non-existence path: 66
+[2025-06-17 04:07:56,969][INFO] iter 200000: loss 1.3564
+[2025-06-17 04:07:56,973][DEBUG] Loaded backend agg version v2.2.
+[2025-06-17 04:07:56,975][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,976][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 0.5349999999999999
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf', name='DejaVu Math TeX Gyre', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='condensed', size='scalable')) = 1.25
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 0.25
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='condensed', size='scalable')) = 1.535
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 0.24
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-17 04:07:56,977][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+[2025-06-17 04:07:57,087][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-17 04:07:57,088][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 0.5349999999999999
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf', name='DejaVu Math TeX Gyre', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='condensed', size='scalable')) = 1.25
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 0.25
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='condensed', size='scalable')) = 1.535
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 0.24
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-17 04:07:57,089][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
