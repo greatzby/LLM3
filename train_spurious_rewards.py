@@ -1,6 +1,6 @@
 """
-Spurious Rewards 实验脚本
-测试不同奖励信号对相变现象的影响
+Spurious Rewards 实验脚本 - 优化版
+减少打印频率，提高训练效率
 """
 import os
 import time
@@ -41,7 +41,7 @@ def parse_args():
     parser.add_argument('--max_iters', type=int, default=200000, help='Total iterations')
     parser.add_argument('--num_nodes', type=int, default=100, help='Number of nodes')
     parser.add_argument('--num_of_paths', type=int, default=20, help='Number of paths per pair')
-    parser.add_argument('--test_interval', type=int, default=1000, help='Test interval')
+    parser.add_argument('--test_interval', type=int, default=2000, help='Test and print interval')
     parser.add_argument('--device', type=str, default='cuda:0', help='Device')
     parser.add_argument('--temperature', type=float, default=1.0, help='Generation temperature')
     parser.add_argument('--num_eval_batches', type=int, default=10, help='Eval batches')
@@ -60,6 +60,7 @@ def parse_args():
     # 其他
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     parser.add_argument('--learning_rate', type=float, default=5e-4, help='Learning rate')
+    parser.add_argument('--checkpoint_interval', type=int, default=50000, help='Checkpoint save interval')
     
     return parser.parse_args()
 
@@ -68,8 +69,6 @@ def parse_args():
 def compute_any_valid_reward_loss(model, X, Y, graph, stoi, itos, device):
     """
     奖励任何有效路径，而不只是训练路径
-    
-    关键思想：对于每个时间步，如果预测的是任何有效的下一步节点，就给低损失
     """
     logits, _ = model(X, Y)
     batch_size, seq_len, vocab_size = logits.shape
@@ -82,7 +81,6 @@ def compute_any_valid_reward_loss(model, X, Y, graph, stoi, itos, device):
         valid_steps = 0
         
         # 解析起点和终点
-        # 格式：source target path_nodes...
         source_token = X[b, 0].item()
         target_token = X[b, 1].item()
         
@@ -131,105 +129,70 @@ def compute_any_valid_reward_loss(model, X, Y, graph, stoi, itos, device):
     return loss.mean()
 
 def compute_mixed_reward_loss(model, X, Y, graph, stoi, itos, device, alpha=0.5):
-    """
-    混合标准损失和any_valid损失
-    alpha=1: 完全标准损失
-    alpha=0: 完全any_valid损失
-    """
-    # 标准损失
+    """混合标准损失和any_valid损失"""
     logits, _ = model(X, Y)
     standard_loss = F.cross_entropy(logits.view(-1, logits.size(-1)), 
                                    Y.view(-1), ignore_index=0)
-    
-    # Any valid损失
     any_valid_loss = compute_any_valid_reward_loss(model, X, Y, graph, stoi, itos, device)
-    
-    # 混合
     return alpha * standard_loss + (1 - alpha) * any_valid_loss
 
 def compute_diversity_reward_loss(model, X, Y, graph, stoi, itos, device, diversity_weight=0.1):
-    """
-    Any valid + 熵正则化鼓励多样性
-    """
-    # 基础any valid损失
+    """Any valid + 熵正则化鼓励多样性"""
     base_loss = compute_any_valid_reward_loss(model, X, Y, graph, stoi, itos, device)
     
-    # 计算输出分布的熵
     logits, _ = model(X, Y)
     probs = F.softmax(logits, dim=-1)
     entropy = -torch.sum(probs * torch.log(probs + 1e-8), dim=-1)
     
-    # Mask掉padding
     mask = (Y != 0).float()
     masked_entropy = entropy * mask
     avg_entropy = masked_entropy.sum() / mask.sum()
     
-    # 负熵作为损失（因为我们想最大化熵）
     diversity_loss = -diversity_weight * avg_entropy
     
     return base_loss + diversity_loss
 
 def compute_phase_aware_loss(model, X, Y, graph, stoi, itos, device, iteration, transition_iter=120000):
-    """
-    根据训练阶段自动切换损失函数
-    """
+    """根据训练阶段自动切换损失函数"""
     if iteration < transition_iter:
-        # 早期：使用标准损失建立基础
         logits, _ = model(X, Y)
         return F.cross_entropy(logits.view(-1, logits.size(-1)), 
                              Y.view(-1), ignore_index=0)
     else:
-        # 后期：切换到any_valid避免过拟合
         return compute_any_valid_reward_loss(model, X, Y, graph, stoi, itos, device)
 
-# ================== Phase Detection ==================
+# ================== 评估函数 ==================
 
-class PhaseDetector:
-    def __init__(self, window_size=5000):
-        self.window_size = window_size
-        self.tf_history = []
-        self.loss_history = []
-        
-    def update(self, tf_acc, loss):
-        self.tf_history.append(tf_acc)
-        self.loss_history.append(loss)
-        
-        # 只保留最近的历史
-        if len(self.tf_history) > self.window_size:
-            self.tf_history.pop(0)
-            self.loss_history.pop(0)
-    
-    def detect_phase(self):
-        if len(self.tf_history) < 100:
-            return "early", {}
-        
-        # 计算最近的TF下降速度
-        recent_window = min(1000, len(self.tf_history) // 10)
-        recent_tf = self.tf_history[-recent_window:]
-        tf_slope = (recent_tf[-1] - recent_tf[0]) / len(recent_tf)
-        
-        # 当前TF准确率
-        current_tf = self.tf_history[-1]
-        
-        # Phase判断
-        if current_tf > 0.85:
-            phase = "memorization"
-        elif current_tf > 0.5 and tf_slope < -0.0001:
-            phase = "transition_imminent"
-        elif current_tf < 0.5 and current_tf > 0.2:
-            phase = "transitioning"
-        elif current_tf < 0.2:
-            phase = "post_transition"
-        else:
-            phase = "stable"
-        
-        metrics = {
-            "current_tf": current_tf,
-            "tf_slope": tf_slope,
-            "phase": phase
-        }
-        
-        return phase, metrics
+def encode(s, stoi):
+    ss = s.split(" ")
+    return [stoi[token] for token in ss if token in stoi]
+
+def decode(l, itos):
+    dec = ""
+    for i in l:
+        dec = dec + itos[i] + " "
+    return dec[:-1]
+
+def find_third_number_position(number_string):  
+    numbers = number_string.split()  
+    third_number_index = 2 
+    position = sum(len(num) for num in numbers[:third_number_index]) + third_number_index - 1 
+    return position 
+
+def check_path(G, gen_str):
+    """检查生成的路径是否有效"""
+    path = re.findall(r'\d+', gen_str)
+    if len(path) < 4:
+        return 'wrong syntax'
+    for node in path:
+        if int(node) >= 100 or int(node) < 0:  # 假设100个节点
+            return 'wrong syntax'
+    if path[2] != path[0] or path[-1] != path[1]:
+        return 'incorrect start/end'
+    for i in range(2, len(path) - 1):
+        if not G.has_edge(path[i], path[i + 1]):
+            return f'non-existence path {(path[i], path[i + 1])}'
+    return ''
 
 # ================== Main Training Loop ==================
 
@@ -249,6 +212,13 @@ def main():
     logger = get_logger(os.path.join(out_dir, "train.log"))
     
     # 打印配置
+    print("="*60)
+    print(f"Spurious Rewards Experiment: {args.reward_type}")
+    print(f"Configuration:")
+    for key, value in vars(args).items():
+        print(f"  {key}: {value}")
+    print("="*60)
+    
     logger.info("="*60)
     logger.info(f"Spurious Rewards Experiment: {args.reward_type}")
     logger.info(f"Configuration: {vars(args)}")
@@ -263,6 +233,7 @@ def main():
     stoi, itos = meta['stoi'], meta['itos']
     block_size = meta['block_size']
     vocab_size = len(itos)
+    simple_format = meta.get('simple_format', False)
     
     # 加载图
     graph_path = os.path.join(data_dir, "path_graph.graphml")
@@ -287,6 +258,7 @@ def main():
         dropout=0.0
     )
     
+    print(f"Initializing a new model from scratch")
     gptconf = GPTConfig(**model_args)
     model = GPT(gptconf)
     model.to(args.device)
@@ -306,9 +278,6 @@ def main():
     ptdtype = torch.bfloat16 if device_type == 'cuda' else torch.float32
     ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
     
-    # Phase检测器
-    phase_detector = PhaseDetector()
-    
     # 数据获取函数
     def get_batch(split):
         data = train_data if split == 'train' else val_data
@@ -323,48 +292,257 @@ def main():
         x, y = x.to(args.device), y.to(args.device)
         return x, y
     
-    # 评估函数（与原始train.py相同）
+    # Teacher Forcing评估
     @torch.no_grad()
     def test_model():
         total_correct = 0
         total_count = 0
+        batch_accuracies = []
         
-        for _ in range(args.num_eval_batches):
+        for batch_idx in range(args.num_eval_batches):
             X, Y = get_batch('val')
             with ctx:
                 logits, _ = model(X, Y)
             preds = torch.argmax(logits, dim=-1)
             
-            total_correct += (preds == Y).float().sum().item()
-            total_count += Y.numel()
+            batch_correct = (preds == Y).float().sum().item()
+            batch_total = Y.numel()
+            batch_accuracy = batch_correct / batch_total
+            batch_accuracies.append(batch_accuracy)
+            
+            total_correct += batch_correct
+            total_count += batch_total
         
-        return total_correct / total_count
+        overall_accuracy = total_correct / total_count
+        accuracy_std = np.std(batch_accuracies)
+        
+        return overall_accuracy, accuracy_std
+    
+    # Autoregressive评估
+    @torch.no_grad()
+    def evaluate_autoregressive_lenient():
+        test_file = os.path.join(data_dir, 'test.txt')
+        try:
+            with open(test_file, encoding='gbk') as f:
+                lines = f.readlines()
+        except:
+            try:
+                with open(test_file, encoding='utf-8') as f:
+                    lines = f.readlines()
+            except:
+                print(f"Failed to read test file {test_file}")
+                return 0.0, {"wrong syntax": 0, "incorrect start/end": 0, "non-existence path": 0}
+        
+        # 处理测试数据
+        encode_texts = []
+        ground_truth = []
+        for line in lines:
+            line = line.strip()
+            if line == "":
+                continue
+            if not simple_format:
+                prompt = line.split(':')[0] + ':'
+            else:
+                pos = find_third_number_position(line)
+                prompt = line[:pos]
+            encode_texts.append(encode(prompt, stoi))
+            ground_truth.append(line)
+        
+        if len(encode_texts) == 0:
+            return 0.0, {"wrong syntax": 0, "incorrect start/end": 0, "non-existence path": 0}
+        
+        # 转换为Tensor
+        encode_texts = torch.tensor(encode_texts, dtype=torch.long, device=args.device)
+        batch_size_eval = min(1000, len(encode_texts))
+        num_samples = encode_texts.shape[0]
+        num_iters = 10
+        total_correct = 0
+        total_count = 0
+        error_wrong_syntax = 0
+        error_incorrect_start_end = 0
+        error_nonexistence = 0
+        
+        for _ in range(num_iters):
+            # 随机采样
+            ix = torch.randint(num_samples, (batch_size_eval,))
+            x = encode_texts[ix]
+            with torch.no_grad():
+                y = model.generate(x, max_new_tokens=block_size, 
+                                 temperature=args.temperature, top_k=vocab_size)
+            
+            y_pred = [decode(y[t].tolist(), itos).split('\n')[0] for t in range(batch_size_eval)]
+            for pred in y_pred:
+                symbol = check_path(G, pred)
+                total_count += 1
+                if symbol == "":
+                    total_correct += 1
+                else:
+                    if symbol == "wrong syntax":
+                        error_wrong_syntax += 1
+                    elif symbol == "incorrect start/end":
+                        error_incorrect_start_end += 1
+                    elif symbol.startswith("non-existence path"):
+                        error_nonexistence += 1
+        
+        accuracy = total_correct / total_count if total_count > 0 else 0.0
+        error_counts = {
+            "wrong syntax": error_wrong_syntax,
+            "incorrect start/end": error_incorrect_start_end,
+            "non-existence path": error_nonexistence
+        }
+        return accuracy, error_counts
     
     # 训练历史记录
-    metrics_history = {
-        'iteration': [],
-        'train_loss': [],
-        'val_loss': [],
-        'tf_accuracy': [],
-        'ar_accuracy': [],
-        'phase': [],
-        'tf_slope': []
-    }
+    train_loss_history = []
+    train_iter_history = []
+    tf_accuracy_history = []
+    tf_accuracy_std_history = []
+    ar_accuracy_history = []
+    test_iter_history = []
+    phase_history = []
+    
+    # Phase检测器
+    class PhaseDetector:
+        def __init__(self):
+            self.tf_history = []
+            
+        def update(self, tf_acc):
+            self.tf_history.append(tf_acc)
+            if len(self.tf_history) > 100:  # 只保留最近100个点
+                self.tf_history.pop(0)
+        
+        def detect_phase(self):
+            if len(self.tf_history) < 5:
+                return "early"
+            
+            current_tf = self.tf_history[-1]
+            
+            # 计算最近的斜率
+            if len(self.tf_history) >= 5:
+                recent_tf = self.tf_history[-5:]
+                tf_slope = (recent_tf[-1] - recent_tf[0]) / 4
+            else:
+                tf_slope = 0
+            
+            # 判断phase
+            if current_tf > 0.85:
+                return "memorization"
+            elif current_tf > 0.5 and tf_slope < -0.02:
+                return "transition_imminent"
+            elif 0.2 < current_tf < 0.5:
+                return "transitioning"
+            elif current_tf < 0.2:
+                return "post_transition"
+            else:
+                return "stable"
+    
+    phase_detector = PhaseDetector()
+    
+    # 学习率调度
+    def get_lr(it):
+        # warmup
+        warmup_iters = args.max_iters // 20
+        if it < warmup_iters:
+            return args.learning_rate * it / warmup_iters
+        # cosine decay
+        if it > args.max_iters:
+            return args.learning_rate / 10
+        decay_ratio = (it - warmup_iters) / (args.max_iters - warmup_iters)
+        coeff = 0.5 * (1.0 + math.cos(math.pi * decay_ratio))
+        return args.learning_rate / 10 + coeff * (args.learning_rate - args.learning_rate / 10)
     
     # 训练循环
-    logger.info("Starting training...")
+    print("\nStarting training...")
     model.train()
+    t0 = time.time()
+    running_loss = 0
+    loss_count = 0
     
     for iter_num in range(args.max_iters + 1):
-        # 学习率调度
-        lr = args.learning_rate
+        # 设置学习率
+        lr = get_lr(iter_num)
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
         
-        # 获取批次
+        # 每2000次迭代评估并打印
+        if iter_num % args.test_interval == 0 and iter_num > 0:
+            model.eval()
+            
+            # 计算平均训练损失
+            avg_train_loss = running_loss / loss_count if loss_count > 0 else 0
+            
+            # 计算验证损失
+            val_losses = []
+            for _ in range(10):  # 10个批次的平均
+                X_val, Y_val = get_batch('val')
+                with torch.no_grad():
+                    _, val_loss = model(X_val, Y_val)
+                val_losses.append(val_loss.item())
+            val_loss = np.mean(val_losses)
+            
+            # Teacher Forcing准确率
+            tf_acc, tf_std = test_model()
+            tf_accuracy_history.append(tf_acc)
+            tf_accuracy_std_history.append(tf_std)
+            
+            # 更新phase检测器
+            phase_detector.update(tf_acc)
+            current_phase = phase_detector.detect_phase()
+            phase_history.append(current_phase)
+            
+            # Autoregressive准确率
+            ar_acc, error_counts = evaluate_autoregressive_lenient()
+            ar_accuracy_history.append(ar_acc)
+            
+            test_iter_history.append(iter_num)
+            
+            # 打印信息
+            print(f"\n{'='*60}")
+            print(f"Iteration {iter_num}:")
+            print(f"  Loss: train={avg_train_loss:.4f}, val={val_loss:.4f}")
+            print(f"  Teacher Forcing: {tf_acc:.4f} (±{tf_std:.4f})")
+            print(f"  Autoregressive: {ar_acc:.4f}")
+            print(f"  Phase: {current_phase}")
+            print(f"  Errors: syntax={error_counts['wrong syntax']}, "
+                  f"start/end={error_counts['incorrect start/end']}, "
+                  f"path={error_counts['non-existence path']}")
+            
+            # 记录到日志
+            logger.info(f"Iter {iter_num}: train_loss={avg_train_loss:.4f}, val_loss={val_loss:.4f}, "
+                       f"TF={tf_acc:.4f}±{tf_std:.4f}, AR={ar_acc:.4f}, phase={current_phase}")
+            
+            # 特殊时期提醒
+            if 110000 <= iter_num <= 150000 and iter_num % 10000 == 0:
+                print(f"  *** Critical transition period - monitoring phase changes ***")
+            
+            # 重置损失累计
+            running_loss = 0
+            loss_count = 0
+            
+            model.train()
+        
+        # 保存checkpoint
+        if iter_num % args.checkpoint_interval == 0 and iter_num > 0:
+            checkpoint = {
+                'model': model.state_dict(),
+                'optimizer': optimizer.state_dict(),
+                'model_args': model_args,
+                'iter_num': iter_num,
+                'reward_type': args.reward_type,
+                'tf_history': tf_accuracy_history,
+                'ar_history': ar_accuracy_history,
+            }
+            ckpt_path = os.path.join(out_dir, f'ckpt_{iter_num}.pt')
+            torch.save(checkpoint, ckpt_path)
+            print(f"  Checkpoint saved to {ckpt_path}")
+        
+        if iter_num == 0:
+            continue
+        
+        # 训练步骤
         X, Y = get_batch('train')
         
-        # 计算损失（根据reward_type选择）
+        # 计算损失
         with ctx:
             if args.reward_type == 'standard':
                 logits, loss = model(X, Y)
@@ -383,130 +561,136 @@ def main():
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
         
-        # 定期评估
-        if iter_num % args.test_interval == 0:
-            model.eval()
-            
-            # 计算验证损失
-            val_losses = []
-            for _ in range(10):
-                X_val, Y_val = get_batch('val')
-                with torch.no_grad():
-                    _, val_loss = model(X_val, Y_val)
-                val_losses.append(val_loss.item())
-            val_loss = np.mean(val_losses)
-            
-            # 计算TF准确率
-            tf_acc = test_model()
-            
-            # 更新phase检测器
-            phase_detector.update(tf_acc, loss.item())
-            phase, phase_metrics = phase_detector.detect_phase()
-            
-            # 记录
-            metrics_history['iteration'].append(iter_num)
-            metrics_history['train_loss'].append(loss.item())
-            metrics_history['val_loss'].append(val_loss)
-            metrics_history['tf_accuracy'].append(tf_acc)
-            metrics_history['phase'].append(phase)
-            metrics_history['tf_slope'].append(phase_metrics.get('tf_slope', 0))
-            
-            # 打印
-            logger.info(f"Iter {iter_num}: loss={loss.item():.4f}, val_loss={val_loss:.4f}, "
-                       f"TF={tf_acc:.4f}, phase={phase}, slope={phase_metrics.get('tf_slope', 0):.6f}")
-            
-            # 保存checkpoint
-            if iter_num % 10000 == 0:
-                checkpoint = {
-                    'model': model.state_dict(),
-                    'optimizer': optimizer.state_dict(),
-                    'iter_num': iter_num,
-                    'metrics_history': metrics_history,
-                    'args': vars(args)
-                }
-                torch.save(checkpoint, os.path.join(out_dir, f'checkpoint_{iter_num}.pt'))
-            
-            model.train()
+        # 累计损失
+        running_loss += loss.item()
+        loss_count += 1
+        
+        # 记录完整历史（用于绘图）
+        train_loss_history.append(loss.item())
+        train_iter_history.append(iter_num)
     
     # 保存最终结果
-    with open(os.path.join(out_dir, 'final_metrics.pkl'), 'wb') as f:
-        pickle.dump(metrics_history, f)
+    final_results = {
+        'iterations': test_iter_history,
+        'tf_accuracy': tf_accuracy_history,
+        'tf_accuracy_std': tf_accuracy_std_history,
+        'ar_accuracy': ar_accuracy_history,
+        'phase_history': phase_history,
+        'train_loss': train_loss_history,
+        'train_iter': train_iter_history,
+        'config': vars(args)
+    }
     
-    # 绘制结果
-    plt.figure(figsize=(15, 10))
+    with open(os.path.join(out_dir, 'final_results.pkl'), 'wb') as f:
+        pickle.dump(final_results, f)
     
-    # 1. 损失曲线
+    # 绘制训练曲线
+    plt.figure(figsize=(16, 10))
+    
+    # 1. 训练损失
     plt.subplot(2, 3, 1)
-    plt.plot(metrics_history['iteration'], metrics_history['train_loss'], label='Train Loss')
-    plt.plot(metrics_history['iteration'], metrics_history['val_loss'], label='Val Loss')
+    plt.plot(train_iter_history, train_loss_history, 'b-', linewidth=0.5, alpha=0.7)
     plt.xlabel('Iteration')
-    plt.ylabel('Loss')
-    plt.title(f'Loss Curves - {args.reward_type}')
-    plt.legend()
-    plt.grid(True)
+    plt.ylabel('Training Loss')
+    plt.title(f'Training Loss - {args.reward_type}')
+    plt.grid(True, alpha=0.3)
     
     # 2. TF准确率
     plt.subplot(2, 3, 2)
-    plt.plot(metrics_history['iteration'], metrics_history['tf_accuracy'])
-    plt.axhline(y=0.9, color='r', linestyle='--', alpha=0.5)
-    plt.axhline(y=0.15, color='r', linestyle='--', alpha=0.5)
+    plt.errorbar(test_iter_history, tf_accuracy_history, yerr=tf_accuracy_std_history,
+                marker='o', capsize=5, markersize=4)
+    plt.axhline(y=0.9, color='r', linestyle='--', alpha=0.5, label='90%')
+    plt.axhline(y=0.15, color='r', linestyle='--', alpha=0.5, label='15%')
     plt.xlabel('Iteration')
     plt.ylabel('TF Accuracy')
     plt.title('Teacher Forcing Accuracy')
-    plt.grid(True)
+    plt.legend()
+    plt.grid(True, alpha=0.3)
     
-    # 3. Phase变化
+    # 3. AR准确率
     plt.subplot(2, 3, 3)
+    plt.plot(test_iter_history, ar_accuracy_history, 'g-', marker='s', markersize=4)
+    plt.xlabel('Iteration')
+    plt.ylabel('AR Accuracy')
+    plt.title('Autoregressive Accuracy')
+    plt.grid(True, alpha=0.3)
+    
+    # 4. TF vs AR对比
+    plt.subplot(2, 3, 4)
+    plt.plot(test_iter_history, tf_accuracy_history, 'b-', marker='o', label='TF', markersize=4)
+    plt.plot(test_iter_history, ar_accuracy_history, 'g-', marker='s', label='AR', markersize=4)
+    plt.xlabel('Iteration')
+    plt.ylabel('Accuracy')
+    plt.title('TF vs AR Comparison')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    # 5. Phase变化
+    plt.subplot(2, 3, 5)
     phase_colors = {
-        'early': 'blue',
+        'early': 'gray',
         'memorization': 'green',
         'transition_imminent': 'orange',
         'transitioning': 'red',
         'post_transition': 'purple',
-        'stable': 'gray'
+        'stable': 'blue'
     }
     
-    for i in range(len(metrics_history['iteration'])-1):
-        plt.axvspan(metrics_history['iteration'][i], 
-                   metrics_history['iteration'][i+1],
-                   color=phase_colors.get(metrics_history['phase'][i], 'gray'),
-                   alpha=0.3)
-    plt.plot(metrics_history['iteration'], metrics_history['tf_accuracy'], 'k-', linewidth=2)
+    # 绘制phase背景
+    for i in range(len(test_iter_history)-1):
+        if i < len(phase_history):
+            plt.axvspan(test_iter_history[i], test_iter_history[i+1],
+                       color=phase_colors.get(phase_history[i], 'gray'),
+                       alpha=0.3)
+    
+    plt.plot(test_iter_history, tf_accuracy_history, 'k-', linewidth=2)
     plt.xlabel('Iteration')
     plt.ylabel('TF Accuracy')
-    plt.title('Phase Transitions')
-    plt.grid(True)
+    plt.title('Learning Phases')
     
-    # 4. TF斜率
-    plt.subplot(2, 3, 4)
-    plt.plot(metrics_history['iteration'], metrics_history['tf_slope'])
-    plt.axhline(y=0, color='k', linestyle='-', alpha=0.3)
-    plt.xlabel('Iteration')
-    plt.ylabel('TF Slope')
-    plt.title('TF Accuracy Slope')
-    plt.grid(True)
+    # 添加phase图例
+    from matplotlib.patches import Patch
+    legend_elements = [Patch(facecolor=color, alpha=0.3, label=phase)
+                      for phase, color in phase_colors.items()]
+    plt.legend(handles=legend_elements, loc='best')
+    plt.grid(True, alpha=0.3)
     
-    # 5. 对比标准训练（如果有baseline数据）
-    plt.subplot(2, 3, 5)
-    plt.plot(metrics_history['iteration'], metrics_history['tf_accuracy'], 
-             label=f'{args.reward_type}', linewidth=2)
-    plt.xlabel('Iteration')
-    plt.ylabel('TF Accuracy')
-    plt.title('Comparison with Baseline')
-    plt.legend()
-    plt.grid(True)
+    # 6. 关键区间放大
+    plt.subplot(2, 3, 6)
+    critical_iters = [(i, tf, ar) for i, tf, ar in 
+                      zip(test_iter_history, tf_accuracy_history, ar_accuracy_history)
+                      if 100000 <= i <= 160000]
+    if critical_iters:
+        iters, tfs, ars = zip(*critical_iters)
+        plt.plot(iters, tfs, 'b-', marker='o', label='TF', markersize=4)
+        plt.plot(iters, ars, 'g-', marker='s', label='AR', markersize=4)
+        plt.xlabel('Iteration')
+        plt.ylabel('Accuracy')
+        plt.title('Critical Period (100k-160k)')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
     
     plt.tight_layout()
-    plt.savefig(os.path.join(out_dir, 'training_results.png'), dpi=150)
+    plt.savefig(os.path.join(out_dir, 'training_curves.png'), dpi=150)
     plt.close()
     
     # 打印总结
-    logger.info("="*60)
-    logger.info("Training Complete!")
-    logger.info(f"Final TF Accuracy: {metrics_history['tf_accuracy'][-1]:.4f}")
-    logger.info(f"Minimum TF Accuracy: {min(metrics_history['tf_accuracy']):.4f}")
-    logger.info(f"Results saved to: {out_dir}")
-    logger.info("="*60)
+    print("\n" + "="*60)
+    print("Training Complete!")
+    print(f"Experiment: {args.reward_type}")
+    print(f"Final TF Accuracy: {tf_accuracy_history[-1]:.4f} (±{tf_accuracy_std_history[-1]:.4f})")
+    print(f"Final AR Accuracy: {ar_accuracy_history[-1]:.4f}")
+    print(f"Minimum TF Accuracy: {min(tf_accuracy_history):.4f}")
+    print(f"Maximum TF drop: {max(tf_accuracy_history) - min(tf_accuracy_history):.4f}")
+    
+    # 找到相变点
+    for i in range(1, len(tf_accuracy_history)):
+        if tf_accuracy_history[i-1] > 0.5 and tf_accuracy_history[i] < 0.5:
+            print(f"Phase transition detected at iteration: {test_iter_history[i]}")
+            break
+    
+    print(f"Results saved to: {out_dir}")
+    print("="*60)
 
 if __name__ == "__main__":
     main()
