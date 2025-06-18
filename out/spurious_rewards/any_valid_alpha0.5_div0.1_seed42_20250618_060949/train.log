@@ -1,0 +1,36 @@
+[2025-06-18 06:09:49,444][INFO] ============================================================
+[2025-06-18 06:09:49,444][INFO] Spurious Rewards Experiment: any_valid
+[2025-06-18 06:09:49,444][INFO] Configuration: {'dataset': 'simple_graph', 'n_layer': 1, 'n_head': 1, 'n_embd': 120, 'max_iters': 200000, 'num_nodes': 100, 'num_of_paths': 20, 'test_interval': 1000, 'device': 'cuda:0', 'temperature': 1.0, 'num_eval_batches': 10, 'reward_type': 'any_valid', 'mixed_alpha': 0.5, 'diversity_weight': 0.1, 'phase_aware_transition': 120000, 'seed': 42, 'learning_rate': 0.0005, 'checkpoint_interval': 50000}
+[2025-06-18 06:09:49,444][INFO] ============================================================
+[2025-06-18 06:28:48,388][INFO] Iter 1000: train_loss=1.8863, val_loss=5.1368, TF=0.0494±0.0043, AR=0.0000, phase=early
+[2025-06-18 06:47:55,947][INFO] Iter 2000: train_loss=0.0597, val_loss=11.6298, TF=0.0486±0.0030, AR=0.0000, phase=early
+[2025-06-18 07:07:08,921][INFO] Iter 3000: train_loss=0.0000, val_loss=17.0042, TF=0.0174±0.0028, AR=0.0000, phase=early
+[2025-06-18 07:26:27,340][INFO] Iter 4000: train_loss=0.0000, val_loss=17.5102, TF=0.0183±0.0022, AR=0.0000, phase=early
+[2025-06-18 07:45:35,080][INFO] Iter 5000: train_loss=0.0000, val_loss=18.1776, TF=0.0166±0.0026, AR=0.0000, phase=post_transition
+[2025-06-18 08:04:45,433][INFO] Iter 6000: train_loss=0.0000, val_loss=19.1135, TF=0.0160±0.0032, AR=0.0000, phase=post_transition
+[2025-06-18 08:23:47,692][INFO] Iter 7000: train_loss=0.0000, val_loss=20.1324, TF=0.0169±0.0024, AR=0.0000, phase=post_transition
+[2025-06-18 08:42:55,927][INFO] Iter 8000: train_loss=0.0000, val_loss=21.1227, TF=0.0171±0.0037, AR=0.0000, phase=post_transition
+[2025-06-18 09:02:00,004][INFO] Iter 9000: train_loss=0.0000, val_loss=22.2510, TF=0.0172±0.0032, AR=0.0000, phase=post_transition
+[2025-06-18 09:21:03,493][INFO] Iter 10000: train_loss=0.0000, val_loss=23.7293, TF=0.0186±0.0029, AR=0.0000, phase=post_transition
+[2025-06-18 09:40:06,134][INFO] Iter 11000: train_loss=0.0000, val_loss=24.5633, TF=0.0168±0.0039, AR=0.0000, phase=post_transition
+[2025-06-18 09:59:14,148][INFO] Iter 12000: train_loss=0.0000, val_loss=24.9517, TF=0.0177±0.0018, AR=0.0000, phase=post_transition
+[2025-06-18 10:18:10,492][INFO] Iter 13000: train_loss=0.0000, val_loss=25.3875, TF=0.0190±0.0021, AR=0.0000, phase=post_transition
+[2025-06-18 10:37:14,797][INFO] Iter 14000: train_loss=0.0000, val_loss=25.4449, TF=0.0175±0.0027, AR=0.0000, phase=post_transition
+[2025-06-18 10:56:15,148][INFO] Iter 15000: train_loss=0.0000, val_loss=26.9970, TF=0.0167±0.0029, AR=0.0000, phase=post_transition
+[2025-06-18 11:15:20,751][INFO] Iter 16000: train_loss=0.0000, val_loss=27.3058, TF=0.0167±0.0021, AR=0.0000, phase=post_transition
+[2025-06-18 11:34:22,400][INFO] Iter 17000: train_loss=0.0004, val_loss=39.0130, TF=0.0177±0.0043, AR=0.0000, phase=post_transition
+[2025-06-18 11:53:26,786][INFO] Iter 18000: train_loss=0.0000, val_loss=29.3232, TF=0.0170±0.0029, AR=0.0000, phase=post_transition
+[2025-06-18 12:12:24,538][INFO] Iter 19000: train_loss=0.0000, val_loss=30.3129, TF=0.0171±0.0031, AR=0.0000, phase=post_transition
+[2025-06-18 12:31:22,384][INFO] Iter 20000: train_loss=0.0000, val_loss=36.3460, TF=0.0192±0.0017, AR=0.0000, phase=post_transition
+[2025-06-18 12:50:21,270][INFO] Iter 21000: train_loss=0.0000, val_loss=32.5277, TF=0.0166±0.0030, AR=0.0000, phase=post_transition
+[2025-06-18 13:09:18,505][INFO] Iter 22000: train_loss=0.0000, val_loss=42.2788, TF=0.0176±0.0035, AR=0.0000, phase=post_transition
+[2025-06-18 13:28:16,379][INFO] Iter 23000: train_loss=0.0000, val_loss=37.4190, TF=0.0180±0.0041, AR=0.0000, phase=post_transition
+[2025-06-18 13:47:08,939][INFO] Iter 24000: train_loss=0.0000, val_loss=79.5137, TF=0.0173±0.0023, AR=0.0000, phase=post_transition
+[2025-06-18 14:05:54,943][INFO] Iter 25000: train_loss=0.0000, val_loss=64.4238, TF=0.0157±0.0027, AR=0.0000, phase=post_transition
+[2025-06-18 14:24:42,157][INFO] Iter 26000: train_loss=0.0005, val_loss=87.1511, TF=0.0160±0.0036, AR=0.0000, phase=post_transition
+[2025-06-18 14:43:25,273][INFO] Iter 27000: train_loss=0.0009, val_loss=83.7515, TF=0.0169±0.0040, AR=0.0000, phase=post_transition
+[2025-06-18 15:02:16,675][INFO] Iter 28000: train_loss=0.0000, val_loss=69.9335, TF=0.0165±0.0025, AR=0.0000, phase=post_transition
+[2025-06-18 15:21:08,000][INFO] Iter 29000: train_loss=0.0000, val_loss=71.2011, TF=0.0178±0.0031, AR=0.0000, phase=post_transition
+[2025-06-18 15:39:59,305][INFO] Iter 30000: train_loss=0.0020, val_loss=73.5477, TF=0.0172±0.0035, AR=0.0000, phase=post_transition
+[2025-06-18 15:58:52,560][INFO] Iter 31000: train_loss=0.0000, val_loss=34.9868, TF=0.0184±0.0033, AR=0.0000, phase=post_transition
+[2025-06-18 16:17:42,823][INFO] Iter 32000: train_loss=0.0023, val_loss=66.4934, TF=0.0157±0.0027, AR=0.0000, phase=post_transition

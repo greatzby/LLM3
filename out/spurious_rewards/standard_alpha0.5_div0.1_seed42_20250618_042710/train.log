@@ -1,0 +1,30 @@
+[2025-06-18 04:27:10,706][INFO] ============================================================
+[2025-06-18 04:27:10,706][INFO] Spurious Rewards Experiment: standard
+[2025-06-18 04:27:10,706][INFO] Configuration: {'dataset': 'simple_graph', 'n_layer': 1, 'n_head': 1, 'n_embd': 120, 'max_iters': 200000, 'num_nodes': 100, 'num_of_paths': 20, 'test_interval': 1000, 'device': 'cuda:0', 'temperature': 1.0, 'num_eval_batches': 10, 'reward_type': 'standard', 'mixed_alpha': 0.5, 'diversity_weight': 0.1, 'phase_aware_transition': 120000, 'seed': 42, 'learning_rate': 0.0005}
+[2025-06-18 04:27:10,706][INFO] ============================================================
+[2025-06-18 04:27:11,505][INFO] Starting training...
+[2025-06-18 04:27:12,114][INFO] Iter 0: loss=4.6668, val_loss=4.4894, TF=0.7390, phase=early, slope=0.000000
+[2025-06-18 04:27:35,157][INFO] Iter 1000: loss=0.7297, val_loss=1.1881, TF=0.1547, phase=early, slope=0.000000
+[2025-06-18 04:27:58,090][INFO] Iter 2000: loss=0.7078, val_loss=1.2943, TF=0.1536, phase=early, slope=0.000000
+[2025-06-18 04:28:21,050][INFO] Iter 3000: loss=0.7019, val_loss=1.3115, TF=0.1544, phase=early, slope=0.000000
+[2025-06-18 04:28:43,990][INFO] Iter 4000: loss=0.7052, val_loss=1.3477, TF=0.4967, phase=early, slope=0.000000
+[2025-06-18 04:29:06,954][INFO] Iter 5000: loss=0.6943, val_loss=1.3827, TF=0.6990, phase=early, slope=0.000000
+[2025-06-18 04:29:29,859][INFO] Iter 6000: loss=0.7062, val_loss=1.4288, TF=0.1589, phase=early, slope=0.000000
+[2025-06-18 04:29:52,785][INFO] Iter 7000: loss=0.6974, val_loss=1.3976, TF=0.1536, phase=early, slope=0.000000
+[2025-06-18 04:30:15,714][INFO] Iter 8000: loss=0.6759, val_loss=1.4633, TF=0.1568, phase=early, slope=0.000000
+[2025-06-18 04:30:38,638][INFO] Iter 9000: loss=0.6801, val_loss=1.4377, TF=0.1562, phase=early, slope=0.000000
+[2025-06-18 04:31:01,576][INFO] Iter 10000: loss=0.6954, val_loss=1.4833, TF=0.1545, phase=early, slope=0.000000
+[2025-06-18 04:31:24,512][INFO] Iter 11000: loss=0.6805, val_loss=1.4483, TF=0.1542, phase=early, slope=0.000000
+[2025-06-18 04:31:47,422][INFO] Iter 12000: loss=0.6751, val_loss=1.5027, TF=0.1525, phase=early, slope=0.000000
+[2025-06-18 04:32:10,371][INFO] Iter 13000: loss=0.6836, val_loss=1.4983, TF=0.1532, phase=early, slope=0.000000
+[2025-06-18 04:32:33,286][INFO] Iter 14000: loss=0.6889, val_loss=1.4815, TF=0.1531, phase=early, slope=0.000000
+[2025-06-18 04:32:56,241][INFO] Iter 15000: loss=0.6829, val_loss=1.4736, TF=0.1535, phase=early, slope=0.000000
+[2025-06-18 04:33:19,261][INFO] Iter 16000: loss=0.6815, val_loss=1.5155, TF=0.1565, phase=early, slope=0.000000
+[2025-06-18 04:33:42,218][INFO] Iter 17000: loss=0.6821, val_loss=1.5070, TF=0.1552, phase=early, slope=0.000000
+[2025-06-18 04:34:05,142][INFO] Iter 18000: loss=0.6804, val_loss=1.4963, TF=0.1516, phase=early, slope=0.000000
+[2025-06-18 04:34:28,031][INFO] Iter 19000: loss=0.6733, val_loss=1.4757, TF=0.1548, phase=early, slope=0.000000
+[2025-06-18 04:34:50,903][INFO] Iter 20000: loss=0.6879, val_loss=1.4931, TF=0.1548, phase=early, slope=0.000000
+[2025-06-18 04:35:13,744][INFO] Iter 21000: loss=0.6906, val_loss=1.5156, TF=0.1510, phase=early, slope=0.000000
+[2025-06-18 04:35:36,663][INFO] Iter 22000: loss=0.6802, val_loss=1.5029, TF=0.1545, phase=early, slope=0.000000
+[2025-06-18 04:35:59,579][INFO] Iter 23000: loss=0.6702, val_loss=1.5227, TF=0.1564, phase=early, slope=0.000000
+[2025-06-18 04:36:22,469][INFO] Iter 24000: loss=0.6775, val_loss=1.5434, TF=0.1554, phase=early, slope=0.000000

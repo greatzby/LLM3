@@ -1,0 +1,329 @@
+[2025-06-18 04:45:33,812][INFO] ============================================================
+[2025-06-18 04:45:33,812][INFO] Spurious Rewards Experiment: standard
+[2025-06-18 04:45:33,812][INFO] Configuration: {'dataset': 'simple_graph', 'n_layer': 1, 'n_head': 1, 'n_embd': 120, 'max_iters': 200000, 'num_nodes': 100, 'num_of_paths': 20, 'test_interval': 1000, 'device': 'cuda:0', 'temperature': 1.0, 'num_eval_batches': 10, 'reward_type': 'standard', 'mixed_alpha': 0.5, 'diversity_weight': 0.1, 'phase_aware_transition': 120000, 'seed': 42, 'learning_rate': 0.0005, 'checkpoint_interval': 50000}
+[2025-06-18 04:45:33,812][INFO] ============================================================
+[2025-06-18 04:45:59,982][INFO] Iter 1000: train_loss=3.4535, val_loss=2.0479, TF=0.1511±0.0042, AR=0.0011, phase=early
+[2025-06-18 04:46:24,898][INFO] Iter 2000: train_loss=1.2208, val_loss=1.0235, TF=0.1567±0.0075, AR=0.5458, phase=early
+[2025-06-18 04:46:49,926][INFO] Iter 3000: train_loss=0.7726, val_loss=1.1075, TF=0.4969±0.0179, AR=0.8533, phase=early
+[2025-06-18 04:47:14,881][INFO] Iter 4000: train_loss=0.7260, val_loss=1.1859, TF=0.4246±0.0277, AR=0.9240, phase=early
+[2025-06-18 04:47:39,840][INFO] Iter 5000: train_loss=0.7145, val_loss=1.2555, TF=0.8754±0.0095, AR=0.9392, phase=memorization
+[2025-06-18 04:48:04,985][INFO] Iter 6000: train_loss=0.7096, val_loss=1.2958, TF=0.9112±0.0036, AR=0.9523, phase=memorization
+[2025-06-18 04:48:30,104][INFO] Iter 7000: train_loss=0.7064, val_loss=1.3092, TF=0.9123±0.0030, AR=0.9590, phase=memorization
+[2025-06-18 04:48:55,293][INFO] Iter 8000: train_loss=0.7042, val_loss=1.3379, TF=0.9142±0.0028, AR=0.9582, phase=memorization
+[2025-06-18 04:49:20,400][INFO] Iter 9000: train_loss=0.7021, val_loss=1.3744, TF=0.9096±0.0044, AR=0.9546, phase=memorization
+[2025-06-18 04:49:45,544][INFO] Iter 10000: train_loss=0.6999, val_loss=1.3757, TF=0.9125±0.0029, AR=0.9588, phase=memorization
+[2025-06-18 04:50:10,659][INFO] Iter 11000: train_loss=0.6975, val_loss=1.3927, TF=0.9128±0.0030, AR=0.9562, phase=memorization
+[2025-06-18 04:50:35,749][INFO] Iter 12000: train_loss=0.6941, val_loss=1.3919, TF=0.9100±0.0048, AR=0.9561, phase=memorization
+[2025-06-18 04:51:00,895][INFO] Iter 13000: train_loss=0.6915, val_loss=1.4105, TF=0.9118±0.0032, AR=0.9572, phase=memorization
+[2025-06-18 04:51:25,846][INFO] Iter 14000: train_loss=0.6896, val_loss=1.4475, TF=0.9128±0.0022, AR=0.9593, phase=memorization
+[2025-06-18 04:51:50,865][INFO] Iter 15000: train_loss=0.6878, val_loss=1.4606, TF=0.9118±0.0026, AR=0.9588, phase=memorization
+[2025-06-18 04:52:15,839][INFO] Iter 16000: train_loss=0.6864, val_loss=1.4352, TF=0.9126±0.0045, AR=0.9568, phase=memorization
+[2025-06-18 04:52:40,793][INFO] Iter 17000: train_loss=0.6849, val_loss=1.4562, TF=0.9119±0.0033, AR=0.9587, phase=memorization
+[2025-06-18 04:53:05,858][INFO] Iter 18000: train_loss=0.6836, val_loss=1.4972, TF=0.9110±0.0031, AR=0.9590, phase=memorization
+[2025-06-18 04:53:30,876][INFO] Iter 19000: train_loss=0.6830, val_loss=1.4816, TF=0.9110±0.0026, AR=0.9601, phase=memorization
+[2025-06-18 04:53:55,948][INFO] Iter 20000: train_loss=0.6822, val_loss=1.4851, TF=0.9101±0.0029, AR=0.9600, phase=memorization
+[2025-06-18 04:54:20,985][INFO] Iter 21000: train_loss=0.6814, val_loss=1.4946, TF=0.9124±0.0037, AR=0.9653, phase=memorization
+[2025-06-18 04:54:45,984][INFO] Iter 22000: train_loss=0.6808, val_loss=1.5222, TF=0.9123±0.0043, AR=0.9622, phase=memorization
+[2025-06-18 04:55:11,069][INFO] Iter 23000: train_loss=0.6802, val_loss=1.5210, TF=0.9129±0.0021, AR=0.9644, phase=memorization
+[2025-06-18 04:55:36,078][INFO] Iter 24000: train_loss=0.6801, val_loss=1.5067, TF=0.9114±0.0025, AR=0.9635, phase=memorization
+[2025-06-18 04:56:01,138][INFO] Iter 25000: train_loss=0.6799, val_loss=1.4879, TF=0.9115±0.0033, AR=0.9656, phase=memorization
+[2025-06-18 04:56:26,102][INFO] Iter 26000: train_loss=0.6795, val_loss=1.5314, TF=0.9128±0.0020, AR=0.9665, phase=memorization
+[2025-06-18 04:56:51,055][INFO] Iter 27000: train_loss=0.6788, val_loss=1.5260, TF=0.9111±0.0017, AR=0.9653, phase=memorization
+[2025-06-18 04:57:16,064][INFO] Iter 28000: train_loss=0.6785, val_loss=1.5145, TF=0.9121±0.0037, AR=0.9660, phase=memorization
+[2025-06-18 04:57:41,045][INFO] Iter 29000: train_loss=0.6782, val_loss=1.5172, TF=0.9113±0.0034, AR=0.9636, phase=memorization
+[2025-06-18 04:58:06,090][INFO] Iter 30000: train_loss=0.6780, val_loss=1.5237, TF=0.9117±0.0043, AR=0.9695, phase=memorization
+[2025-06-18 04:58:31,151][INFO] Iter 31000: train_loss=0.6781, val_loss=1.5273, TF=0.9109±0.0044, AR=0.9640, phase=memorization
+[2025-06-18 04:58:56,289][INFO] Iter 32000: train_loss=0.6779, val_loss=1.5155, TF=0.9105±0.0039, AR=0.9692, phase=memorization
+[2025-06-18 04:59:21,437][INFO] Iter 33000: train_loss=0.6775, val_loss=1.5538, TF=0.9104±0.0034, AR=0.9679, phase=memorization
+[2025-06-18 04:59:46,615][INFO] Iter 34000: train_loss=0.6771, val_loss=1.5127, TF=0.9132±0.0035, AR=0.9684, phase=memorization
+[2025-06-18 05:00:11,817][INFO] Iter 35000: train_loss=0.6766, val_loss=1.5258, TF=0.9099±0.0030, AR=0.9682, phase=memorization
+[2025-06-18 05:00:36,926][INFO] Iter 36000: train_loss=0.6766, val_loss=1.5250, TF=0.9109±0.0029, AR=0.9733, phase=memorization
+[2025-06-18 05:01:02,077][INFO] Iter 37000: train_loss=0.6769, val_loss=1.5316, TF=0.9125±0.0042, AR=0.9694, phase=memorization
+[2025-06-18 05:01:27,134][INFO] Iter 38000: train_loss=0.6766, val_loss=1.5138, TF=0.9112±0.0029, AR=0.9686, phase=memorization
+[2025-06-18 05:01:52,217][INFO] Iter 39000: train_loss=0.6765, val_loss=1.5273, TF=0.9112±0.0034, AR=0.9721, phase=memorization
+[2025-06-18 05:02:17,337][INFO] Iter 40000: train_loss=0.6761, val_loss=1.5380, TF=0.9116±0.0046, AR=0.9726, phase=memorization
+[2025-06-18 05:02:42,423][INFO] Iter 41000: train_loss=0.6758, val_loss=1.5330, TF=0.9115±0.0023, AR=0.9706, phase=memorization
+[2025-06-18 05:03:07,571][INFO] Iter 42000: train_loss=0.6761, val_loss=1.5479, TF=0.9125±0.0033, AR=0.9680, phase=memorization
+[2025-06-18 05:03:32,670][INFO] Iter 43000: train_loss=0.6758, val_loss=1.5449, TF=0.9108±0.0036, AR=0.9720, phase=memorization
+[2025-06-18 05:03:57,882][INFO] Iter 44000: train_loss=0.6753, val_loss=1.5454, TF=0.9113±0.0027, AR=0.9689, phase=memorization
+[2025-06-18 05:04:23,196][INFO] Iter 45000: train_loss=0.6757, val_loss=1.5647, TF=0.9126±0.0027, AR=0.9738, phase=memorization
+[2025-06-18 05:04:48,441][INFO] Iter 46000: train_loss=0.6753, val_loss=1.5414, TF=0.9137±0.0040, AR=0.9718, phase=memorization
+[2025-06-18 05:05:13,756][INFO] Iter 47000: train_loss=0.6753, val_loss=1.5427, TF=0.9118±0.0035, AR=0.9707, phase=memorization
+[2025-06-18 05:05:39,004][INFO] Iter 48000: train_loss=0.6751, val_loss=1.5343, TF=0.9093±0.0026, AR=0.9724, phase=memorization
+[2025-06-18 05:06:04,307][INFO] Iter 49000: train_loss=0.6750, val_loss=1.5633, TF=0.9126±0.0040, AR=0.9732, phase=memorization
+[2025-06-18 05:06:29,605][INFO] Iter 50000: train_loss=0.6748, val_loss=1.5428, TF=0.9112±0.0052, AR=0.9711, phase=memorization
+[2025-06-18 05:06:54,752][INFO] Iter 51000: train_loss=0.6749, val_loss=1.5564, TF=0.9132±0.0047, AR=0.9748, phase=memorization
+[2025-06-18 05:07:19,910][INFO] Iter 52000: train_loss=0.6749, val_loss=1.5321, TF=0.9104±0.0015, AR=0.9713, phase=memorization
+[2025-06-18 05:07:45,019][INFO] Iter 53000: train_loss=0.6749, val_loss=1.5513, TF=0.9131±0.0032, AR=0.9684, phase=memorization
+[2025-06-18 05:08:10,146][INFO] Iter 54000: train_loss=0.6747, val_loss=1.5481, TF=0.9105±0.0018, AR=0.9714, phase=memorization
+[2025-06-18 05:08:35,202][INFO] Iter 55000: train_loss=0.6743, val_loss=1.5612, TF=0.9116±0.0024, AR=0.9716, phase=memorization
+[2025-06-18 05:09:00,209][INFO] Iter 56000: train_loss=0.6746, val_loss=1.5741, TF=0.9125±0.0024, AR=0.9679, phase=memorization
+[2025-06-18 05:09:25,215][INFO] Iter 57000: train_loss=0.6745, val_loss=1.5302, TF=0.9118±0.0029, AR=0.9689, phase=memorization
+[2025-06-18 05:09:50,233][INFO] Iter 58000: train_loss=0.6746, val_loss=1.5658, TF=0.9097±0.0041, AR=0.9709, phase=memorization
+[2025-06-18 05:10:15,278][INFO] Iter 59000: train_loss=0.6746, val_loss=1.5368, TF=0.9130±0.0024, AR=0.9696, phase=memorization
+[2025-06-18 05:10:40,254][INFO] Iter 60000: train_loss=0.6740, val_loss=1.5453, TF=0.9124±0.0041, AR=0.9685, phase=memorization
+[2025-06-18 05:11:05,256][INFO] Iter 61000: train_loss=0.6739, val_loss=1.5402, TF=0.9124±0.0037, AR=0.9718, phase=memorization
+[2025-06-18 05:11:30,272][INFO] Iter 62000: train_loss=0.6740, val_loss=1.5511, TF=0.9111±0.0031, AR=0.9712, phase=memorization
+[2025-06-18 05:11:55,275][INFO] Iter 63000: train_loss=0.6740, val_loss=1.5778, TF=0.9133±0.0029, AR=0.9736, phase=memorization
+[2025-06-18 05:12:20,314][INFO] Iter 64000: train_loss=0.6738, val_loss=1.5524, TF=0.9134±0.0041, AR=0.9705, phase=memorization
+[2025-06-18 05:12:45,309][INFO] Iter 65000: train_loss=0.6737, val_loss=1.5593, TF=0.9128±0.0039, AR=0.9687, phase=memorization
+[2025-06-18 05:13:10,365][INFO] Iter 66000: train_loss=0.6739, val_loss=1.5821, TF=0.9119±0.0032, AR=0.9693, phase=memorization
+[2025-06-18 05:13:35,413][INFO] Iter 67000: train_loss=0.6741, val_loss=1.5407, TF=0.9110±0.0025, AR=0.9727, phase=memorization
+[2025-06-18 05:14:00,431][INFO] Iter 68000: train_loss=0.6735, val_loss=1.5857, TF=0.9136±0.0025, AR=0.9691, phase=memorization
+[2025-06-18 05:14:25,508][INFO] Iter 69000: train_loss=0.6731, val_loss=1.5726, TF=0.9124±0.0019, AR=0.9704, phase=memorization
+[2025-06-18 05:14:50,523][INFO] Iter 70000: train_loss=0.6736, val_loss=1.5447, TF=0.9121±0.0020, AR=0.9666, phase=memorization
+[2025-06-18 05:15:15,570][INFO] Iter 71000: train_loss=0.6733, val_loss=1.5918, TF=0.9113±0.0029, AR=0.9718, phase=memorization
+[2025-06-18 05:15:40,649][INFO] Iter 72000: train_loss=0.6735, val_loss=1.5773, TF=0.9122±0.0026, AR=0.9749, phase=memorization
+[2025-06-18 05:16:05,687][INFO] Iter 73000: train_loss=0.6731, val_loss=1.5545, TF=0.9118±0.0020, AR=0.9713, phase=memorization
+[2025-06-18 05:16:30,786][INFO] Iter 74000: train_loss=0.6729, val_loss=1.5720, TF=0.9131±0.0021, AR=0.9702, phase=memorization
+[2025-06-18 05:16:55,833][INFO] Iter 75000: train_loss=0.6728, val_loss=1.5915, TF=0.9096±0.0043, AR=0.9748, phase=memorization
+[2025-06-18 05:17:20,873][INFO] Iter 76000: train_loss=0.6732, val_loss=1.5735, TF=0.9118±0.0026, AR=0.9652, phase=memorization
+[2025-06-18 05:17:45,984][INFO] Iter 77000: train_loss=0.6725, val_loss=1.5678, TF=0.9116±0.0041, AR=0.9733, phase=memorization
+[2025-06-18 05:18:11,029][INFO] Iter 78000: train_loss=0.6728, val_loss=1.5958, TF=0.9110±0.0028, AR=0.9678, phase=memorization
+[2025-06-18 05:18:36,143][INFO] Iter 79000: train_loss=0.6725, val_loss=1.6019, TF=0.9118±0.0038, AR=0.9667, phase=memorization
+[2025-06-18 05:19:01,210][INFO] Iter 80000: train_loss=0.6725, val_loss=1.5581, TF=0.9120±0.0027, AR=0.9753, phase=memorization
+[2025-06-18 05:19:26,426][INFO] Iter 81000: train_loss=0.6725, val_loss=1.5793, TF=0.9111±0.0023, AR=0.9693, phase=memorization
+[2025-06-18 05:19:51,618][INFO] Iter 82000: train_loss=0.6724, val_loss=1.5853, TF=0.9108±0.0052, AR=0.9689, phase=memorization
+[2025-06-18 05:20:16,794][INFO] Iter 83000: train_loss=0.6726, val_loss=1.5701, TF=0.9092±0.0032, AR=0.9698, phase=memorization
+[2025-06-18 05:20:42,028][INFO] Iter 84000: train_loss=0.6721, val_loss=1.5765, TF=0.9109±0.0027, AR=0.9675, phase=memorization
+[2025-06-18 05:21:07,209][INFO] Iter 85000: train_loss=0.6719, val_loss=1.5574, TF=0.9134±0.0018, AR=0.9666, phase=memorization
+[2025-06-18 05:21:32,389][INFO] Iter 86000: train_loss=0.6723, val_loss=1.6159, TF=0.9121±0.0032, AR=0.9675, phase=memorization
+[2025-06-18 05:21:57,440][INFO] Iter 87000: train_loss=0.6721, val_loss=1.5849, TF=0.9116±0.0030, AR=0.9677, phase=memorization
+[2025-06-18 05:22:22,509][INFO] Iter 88000: train_loss=0.6721, val_loss=1.5640, TF=0.9118±0.0033, AR=0.9667, phase=memorization
+[2025-06-18 05:22:47,729][INFO] Iter 89000: train_loss=0.6720, val_loss=1.5965, TF=0.9108±0.0020, AR=0.9731, phase=memorization
+[2025-06-18 05:23:12,921][INFO] Iter 90000: train_loss=0.6719, val_loss=1.5949, TF=0.9129±0.0038, AR=0.9629, phase=memorization
+[2025-06-18 05:23:38,155][INFO] Iter 91000: train_loss=0.6718, val_loss=1.5986, TF=0.9114±0.0054, AR=0.9666, phase=memorization
+[2025-06-18 05:24:03,359][INFO] Iter 92000: train_loss=0.6716, val_loss=1.6273, TF=0.9124±0.0032, AR=0.9679, phase=memorization
+[2025-06-18 05:24:28,597][INFO] Iter 93000: train_loss=0.6715, val_loss=1.5953, TF=0.9127±0.0018, AR=0.9716, phase=memorization
+[2025-06-18 05:24:53,776][INFO] Iter 94000: train_loss=0.6718, val_loss=1.6305, TF=0.9138±0.0038, AR=0.9700, phase=memorization
+[2025-06-18 05:25:18,973][INFO] Iter 95000: train_loss=0.6713, val_loss=1.5822, TF=0.9092±0.0041, AR=0.9722, phase=memorization
+[2025-06-18 05:25:44,199][INFO] Iter 96000: train_loss=0.6713, val_loss=1.5953, TF=0.9111±0.0026, AR=0.9710, phase=memorization
+[2025-06-18 05:26:09,400][INFO] Iter 97000: train_loss=0.6712, val_loss=1.5863, TF=0.9103±0.0039, AR=0.9724, phase=memorization
+[2025-06-18 05:26:34,653][INFO] Iter 98000: train_loss=0.6714, val_loss=1.6412, TF=0.9135±0.0026, AR=0.9726, phase=memorization
+[2025-06-18 05:26:59,840][INFO] Iter 99000: train_loss=0.6713, val_loss=1.6002, TF=0.9122±0.0028, AR=0.9673, phase=memorization
+[2025-06-18 05:27:25,035][INFO] Iter 100000: train_loss=0.6710, val_loss=1.6007, TF=0.9128±0.0040, AR=0.9696, phase=memorization
+[2025-06-18 05:27:50,309][INFO] Iter 101000: train_loss=0.6712, val_loss=1.5780, TF=0.9135±0.0039, AR=0.9733, phase=memorization
+[2025-06-18 05:28:15,504][INFO] Iter 102000: train_loss=0.6711, val_loss=1.6124, TF=0.9107±0.0049, AR=0.9692, phase=memorization
+[2025-06-18 05:28:40,789][INFO] Iter 103000: train_loss=0.6709, val_loss=1.6057, TF=0.9123±0.0038, AR=0.9719, phase=memorization
+[2025-06-18 05:29:05,984][INFO] Iter 104000: train_loss=0.6707, val_loss=1.6153, TF=0.9121±0.0040, AR=0.9696, phase=memorization
+[2025-06-18 05:29:31,235][INFO] Iter 105000: train_loss=0.6710, val_loss=1.6172, TF=0.9095±0.0039, AR=0.9676, phase=memorization
+[2025-06-18 05:29:56,461][INFO] Iter 106000: train_loss=0.6708, val_loss=1.6065, TF=0.9112±0.0038, AR=0.9705, phase=memorization
+[2025-06-18 05:30:21,662][INFO] Iter 107000: train_loss=0.6707, val_loss=1.6468, TF=0.9120±0.0032, AR=0.9706, phase=memorization
+[2025-06-18 05:30:46,928][INFO] Iter 108000: train_loss=0.6706, val_loss=1.6133, TF=0.9125±0.0026, AR=0.9710, phase=memorization
+[2025-06-18 05:31:12,132][INFO] Iter 109000: train_loss=0.6704, val_loss=1.6229, TF=0.9120±0.0028, AR=0.9673, phase=memorization
+[2025-06-18 05:31:37,405][INFO] Iter 110000: train_loss=0.6702, val_loss=1.6353, TF=0.9122±0.0044, AR=0.9681, phase=memorization
+[2025-06-18 05:32:02,647][INFO] Iter 111000: train_loss=0.6705, val_loss=1.6247, TF=0.9110±0.0016, AR=0.9657, phase=memorization
+[2025-06-18 05:32:27,871][INFO] Iter 112000: train_loss=0.6701, val_loss=1.5893, TF=0.9118±0.0046, AR=0.9679, phase=memorization
+[2025-06-18 05:32:53,167][INFO] Iter 113000: train_loss=0.6700, val_loss=1.5956, TF=0.9131±0.0018, AR=0.9690, phase=memorization
+[2025-06-18 05:33:18,348][INFO] Iter 114000: train_loss=0.6705, val_loss=1.6393, TF=0.9126±0.0035, AR=0.9717, phase=memorization
+[2025-06-18 05:33:43,588][INFO] Iter 115000: train_loss=0.6702, val_loss=1.6143, TF=0.9105±0.0024, AR=0.9723, phase=memorization
+[2025-06-18 05:34:08,797][INFO] Iter 116000: train_loss=0.6703, val_loss=1.6248, TF=0.9110±0.0031, AR=0.9741, phase=memorization
+[2025-06-18 05:34:33,968][INFO] Iter 117000: train_loss=0.6699, val_loss=1.6296, TF=0.9121±0.0046, AR=0.9681, phase=memorization
+[2025-06-18 05:34:59,200][INFO] Iter 118000: train_loss=0.6698, val_loss=1.6634, TF=0.9118±0.0033, AR=0.9655, phase=memorization
+[2025-06-18 05:35:24,411][INFO] Iter 119000: train_loss=0.6696, val_loss=1.6322, TF=0.9130±0.0034, AR=0.9698, phase=memorization
+[2025-06-18 05:35:49,662][INFO] Iter 120000: train_loss=0.6699, val_loss=1.6349, TF=0.9116±0.0031, AR=0.9697, phase=memorization
+[2025-06-18 05:36:14,860][INFO] Iter 121000: train_loss=0.6699, val_loss=1.6434, TF=0.9096±0.0038, AR=0.9686, phase=memorization
+[2025-06-18 05:36:40,088][INFO] Iter 122000: train_loss=0.6697, val_loss=1.6238, TF=0.9113±0.0027, AR=0.9662, phase=memorization
+[2025-06-18 05:37:05,309][INFO] Iter 123000: train_loss=0.6696, val_loss=1.6411, TF=0.9118±0.0036, AR=0.9675, phase=memorization
+[2025-06-18 05:37:30,584][INFO] Iter 124000: train_loss=0.6695, val_loss=1.6284, TF=0.9114±0.0039, AR=0.9725, phase=memorization
+[2025-06-18 05:37:55,872][INFO] Iter 125000: train_loss=0.6695, val_loss=1.6377, TF=0.9101±0.0036, AR=0.9735, phase=memorization
+[2025-06-18 05:38:21,107][INFO] Iter 126000: train_loss=0.6692, val_loss=1.6476, TF=0.9117±0.0016, AR=0.9716, phase=memorization
+[2025-06-18 05:38:46,455][INFO] Iter 127000: train_loss=0.6694, val_loss=1.6423, TF=0.9113±0.0033, AR=0.9705, phase=memorization
+[2025-06-18 05:39:11,715][INFO] Iter 128000: train_loss=0.6693, val_loss=1.6585, TF=0.9117±0.0021, AR=0.9692, phase=memorization
+[2025-06-18 05:39:36,994][INFO] Iter 129000: train_loss=0.6692, val_loss=1.6420, TF=0.9107±0.0029, AR=0.9717, phase=memorization
+[2025-06-18 05:40:02,333][INFO] Iter 130000: train_loss=0.6691, val_loss=1.6407, TF=0.9102±0.0038, AR=0.9727, phase=memorization
+[2025-06-18 05:40:27,609][INFO] Iter 131000: train_loss=0.6691, val_loss=1.6514, TF=0.9121±0.0032, AR=0.9695, phase=memorization
+[2025-06-18 05:40:52,967][INFO] Iter 132000: train_loss=0.6688, val_loss=1.6550, TF=0.9121±0.0029, AR=0.9698, phase=memorization
+[2025-06-18 05:41:18,271][INFO] Iter 133000: train_loss=0.6692, val_loss=1.6801, TF=0.9116±0.0033, AR=0.9780, phase=memorization
+[2025-06-18 05:41:43,566][INFO] Iter 134000: train_loss=0.6687, val_loss=1.6487, TF=0.9120±0.0034, AR=0.9709, phase=memorization
+[2025-06-18 05:42:08,820][INFO] Iter 135000: train_loss=0.6686, val_loss=1.6664, TF=0.9116±0.0020, AR=0.9679, phase=memorization
+[2025-06-18 05:42:33,987][INFO] Iter 136000: train_loss=0.6687, val_loss=1.6738, TF=0.9090±0.0050, AR=0.9695, phase=memorization
+[2025-06-18 05:42:59,250][INFO] Iter 137000: train_loss=0.6685, val_loss=1.6468, TF=0.9099±0.0043, AR=0.9683, phase=memorization
+[2025-06-18 05:43:24,436][INFO] Iter 138000: train_loss=0.6686, val_loss=1.6623, TF=0.8852±0.0114, AR=0.9708, phase=memorization
+[2025-06-18 05:43:49,679][INFO] Iter 139000: train_loss=0.6685, val_loss=1.6756, TF=0.9047±0.0060, AR=0.9702, phase=memorization
+[2025-06-18 05:44:14,884][INFO] Iter 140000: train_loss=0.6684, val_loss=1.6469, TF=0.8967±0.0100, AR=0.9733, phase=memorization
+[2025-06-18 05:44:40,106][INFO] Iter 141000: train_loss=0.6682, val_loss=1.6618, TF=0.9027±0.0070, AR=0.9713, phase=memorization
+[2025-06-18 05:45:06,406][INFO] Iter 142000: train_loss=0.6683, val_loss=1.6951, TF=0.8663±0.0160, AR=0.9686, phase=memorization
+[2025-06-18 05:45:33,751][INFO] Iter 143000: train_loss=0.6680, val_loss=1.6750, TF=0.8953±0.0087, AR=0.9714, phase=memorization
+[2025-06-18 05:46:00,673][INFO] Iter 144000: train_loss=0.6678, val_loss=1.7058, TF=0.8728±0.0129, AR=0.9710, phase=memorization
+[2025-06-18 05:46:26,202][INFO] Iter 145000: train_loss=0.6678, val_loss=1.6820, TF=0.8439±0.0159, AR=0.9745, phase=stable
+[2025-06-18 05:46:52,610][INFO] Iter 146000: train_loss=0.6678, val_loss=1.7074, TF=0.8241±0.0123, AR=0.9665, phase=stable
+[2025-06-18 05:47:17,943][INFO] Iter 147000: train_loss=0.6676, val_loss=1.7003, TF=0.7959±0.0286, AR=0.9670, phase=transition_imminent
+[2025-06-18 05:47:43,189][INFO] Iter 148000: train_loss=0.6677, val_loss=1.6846, TF=0.7441±0.0301, AR=0.9703, phase=transition_imminent
+[2025-06-18 05:48:08,555][INFO] Iter 149000: train_loss=0.6679, val_loss=1.7089, TF=0.6940±0.0380, AR=0.9654, phase=transition_imminent
+[2025-06-18 05:48:33,910][INFO] Iter 150000: train_loss=0.6679, val_loss=1.6938, TF=0.5828±0.0217, AR=0.9697, phase=transition_imminent
+[2025-06-18 05:48:59,270][INFO] Iter 151000: train_loss=0.6674, val_loss=1.7083, TF=0.6432±0.0365, AR=0.9727, phase=transition_imminent
+[2025-06-18 05:49:24,653][INFO] Iter 152000: train_loss=0.6671, val_loss=1.7014, TF=0.6487±0.0430, AR=0.9703, phase=transition_imminent
+[2025-06-18 05:49:50,206][INFO] Iter 153000: train_loss=0.6671, val_loss=1.7191, TF=0.4720±0.0289, AR=0.9698, phase=transitioning
+[2025-06-18 05:50:15,612][INFO] Iter 154000: train_loss=0.6674, val_loss=1.7019, TF=0.4542±0.0542, AR=0.9682, phase=transitioning
+[2025-06-18 05:50:40,878][INFO] Iter 155000: train_loss=0.6672, val_loss=1.7076, TF=0.5263±0.0386, AR=0.9702, phase=transition_imminent
+[2025-06-18 05:51:06,240][INFO] Iter 156000: train_loss=0.6671, val_loss=1.7232, TF=0.3677±0.0290, AR=0.9722, phase=transitioning
+[2025-06-18 05:51:31,603][INFO] Iter 157000: train_loss=0.6670, val_loss=1.7019, TF=0.4440±0.0403, AR=0.9713, phase=transitioning
+[2025-06-18 05:51:56,955][INFO] Iter 158000: train_loss=0.6672, val_loss=1.7141, TF=0.3359±0.0222, AR=0.9704, phase=transitioning
+[2025-06-18 05:52:22,340][INFO] Iter 159000: train_loss=0.6671, val_loss=1.7158, TF=0.3250±0.0323, AR=0.9672, phase=transitioning
+[2025-06-18 05:52:47,706][INFO] Iter 160000: train_loss=0.6667, val_loss=1.7055, TF=0.2834±0.0328, AR=0.9710, phase=transitioning
+[2025-06-18 05:53:13,092][INFO] Iter 161000: train_loss=0.6668, val_loss=1.7394, TF=0.2950±0.0308, AR=0.9728, phase=transitioning
+[2025-06-18 05:53:38,367][INFO] Iter 162000: train_loss=0.6668, val_loss=1.7406, TF=0.2535±0.0191, AR=0.9696, phase=transitioning
+[2025-06-18 05:54:03,585][INFO] Iter 163000: train_loss=0.6669, val_loss=1.7332, TF=0.2495±0.0246, AR=0.9686, phase=transitioning
+[2025-06-18 05:54:28,836][INFO] Iter 164000: train_loss=0.6667, val_loss=1.7402, TF=0.2250±0.0248, AR=0.9713, phase=transitioning
+[2025-06-18 05:54:54,054][INFO] Iter 165000: train_loss=0.6667, val_loss=1.7154, TF=0.2157±0.0268, AR=0.9711, phase=transitioning
+[2025-06-18 05:55:19,341][INFO] Iter 166000: train_loss=0.6664, val_loss=1.7465, TF=0.2228±0.0182, AR=0.9700, phase=transitioning
+[2025-06-18 05:55:44,533][INFO] Iter 167000: train_loss=0.6665, val_loss=1.7477, TF=0.1889±0.0199, AR=0.9718, phase=post_transition
+[2025-06-18 05:56:09,812][INFO] Iter 168000: train_loss=0.6668, val_loss=1.7248, TF=0.2076±0.0239, AR=0.9676, phase=transitioning
+[2025-06-18 05:56:35,047][INFO] Iter 169000: train_loss=0.6668, val_loss=1.7674, TF=0.1835±0.0162, AR=0.9682, phase=post_transition
+[2025-06-18 05:57:00,296][INFO] Iter 170000: train_loss=0.6663, val_loss=1.7100, TF=0.1758±0.0142, AR=0.9712, phase=post_transition
+[2025-06-18 05:57:25,649][INFO] Iter 171000: train_loss=0.6664, val_loss=1.7504, TF=0.1611±0.0105, AR=0.9719, phase=post_transition
+[2025-06-18 05:57:50,912][INFO] Iter 172000: train_loss=0.6661, val_loss=1.7550, TF=0.1614±0.0092, AR=0.9725, phase=post_transition
+[2025-06-18 05:58:16,296][INFO] Iter 173000: train_loss=0.6662, val_loss=1.7587, TF=0.1630±0.0068, AR=0.9700, phase=post_transition
+[2025-06-18 05:58:41,681][INFO] Iter 174000: train_loss=0.6667, val_loss=1.7624, TF=0.1558±0.0040, AR=0.9705, phase=post_transition
+[2025-06-18 05:59:07,038][INFO] Iter 175000: train_loss=0.6662, val_loss=1.7380, TF=0.1539±0.0055, AR=0.9707, phase=post_transition
+[2025-06-18 05:59:32,454][INFO] Iter 176000: train_loss=0.6664, val_loss=1.7602, TF=0.1534±0.0050, AR=0.9705, phase=post_transition
+[2025-06-18 05:59:57,817][INFO] Iter 177000: train_loss=0.6657, val_loss=1.7334, TF=0.1533±0.0056, AR=0.9712, phase=post_transition
+[2025-06-18 06:00:23,213][INFO] Iter 178000: train_loss=0.6659, val_loss=1.7640, TF=0.1539±0.0043, AR=0.9707, phase=post_transition
+[2025-06-18 06:00:48,610][INFO] Iter 179000: train_loss=0.6658, val_loss=1.7769, TF=0.1524±0.0057, AR=0.9695, phase=post_transition
+[2025-06-18 06:01:13,970][INFO] Iter 180000: train_loss=0.6662, val_loss=1.7514, TF=0.1522±0.0072, AR=0.9712, phase=post_transition
+[2025-06-18 06:01:39,209][INFO] Iter 181000: train_loss=0.6662, val_loss=1.7548, TF=0.1563±0.0051, AR=0.9689, phase=post_transition
+[2025-06-18 06:02:04,447][INFO] Iter 182000: train_loss=0.6657, val_loss=1.7674, TF=0.1528±0.0038, AR=0.9711, phase=post_transition
+[2025-06-18 06:02:29,725][INFO] Iter 183000: train_loss=0.6658, val_loss=1.7723, TF=0.1525±0.0032, AR=0.9667, phase=post_transition
+[2025-06-18 06:02:55,077][INFO] Iter 184000: train_loss=0.6658, val_loss=1.7978, TF=0.1533±0.0053, AR=0.9660, phase=post_transition
+[2025-06-18 06:03:22,556][INFO] Iter 185000: train_loss=0.6655, val_loss=1.7781, TF=0.1540±0.0057, AR=0.9715, phase=post_transition
+[2025-06-18 06:03:50,911][INFO] Iter 186000: train_loss=0.6658, val_loss=1.7326, TF=0.1539±0.0041, AR=0.9703, phase=post_transition
+[2025-06-18 06:04:16,543][INFO] Iter 187000: train_loss=0.6656, val_loss=1.7585, TF=0.1542±0.0070, AR=0.9695, phase=post_transition
+[2025-06-18 06:04:41,949][INFO] Iter 188000: train_loss=0.6655, val_loss=1.7705, TF=0.1552±0.0039, AR=0.9748, phase=post_transition
+[2025-06-18 06:05:07,413][INFO] Iter 189000: train_loss=0.6658, val_loss=1.7782, TF=0.1500±0.0029, AR=0.9715, phase=post_transition
+[2025-06-18 06:05:32,809][INFO] Iter 190000: train_loss=0.6656, val_loss=1.7604, TF=0.1502±0.0065, AR=0.9710, phase=post_transition
+[2025-06-18 06:05:58,122][INFO] Iter 191000: train_loss=0.6657, val_loss=1.7598, TF=0.1554±0.0062, AR=0.9665, phase=post_transition
+[2025-06-18 06:06:23,458][INFO] Iter 192000: train_loss=0.6653, val_loss=1.7959, TF=0.1528±0.0061, AR=0.9717, phase=post_transition
+[2025-06-18 06:06:48,819][INFO] Iter 193000: train_loss=0.6655, val_loss=1.7836, TF=0.1522±0.0035, AR=0.9688, phase=post_transition
+[2025-06-18 06:07:14,168][INFO] Iter 194000: train_loss=0.6652, val_loss=1.7534, TF=0.1539±0.0032, AR=0.9718, phase=post_transition
+[2025-06-18 06:07:39,459][INFO] Iter 195000: train_loss=0.6657, val_loss=1.7861, TF=0.1532±0.0046, AR=0.9712, phase=post_transition
+[2025-06-18 06:08:04,710][INFO] Iter 196000: train_loss=0.6660, val_loss=1.7779, TF=0.1540±0.0054, AR=0.9712, phase=post_transition
+[2025-06-18 06:08:30,056][INFO] Iter 197000: train_loss=0.6655, val_loss=1.7727, TF=0.1532±0.0040, AR=0.9678, phase=post_transition
+[2025-06-18 06:08:55,299][INFO] Iter 198000: train_loss=0.6655, val_loss=1.8124, TF=0.1542±0.0058, AR=0.9706, phase=post_transition
+[2025-06-18 06:09:20,544][INFO] Iter 199000: train_loss=0.6657, val_loss=1.8054, TF=0.1540±0.0043, AR=0.9720, phase=post_transition
+[2025-06-18 06:09:45,867][INFO] Iter 200000: train_loss=0.6659, val_loss=1.8120, TF=0.1528±0.0048, AR=0.9702, phase=post_transition
+[2025-06-18 06:09:45,914][DEBUG] Loaded backend agg version v2.2.
+[2025-06-18 06:09:45,916][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:45,917][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 0.5349999999999999
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf', name='DejaVu Math TeX Gyre', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='condensed', size='scalable')) = 1.25
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 0.25
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='condensed', size='scalable')) = 1.535
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 0.24
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-18 06:09:45,918][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+[2025-06-18 06:09:46,081][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:46,081][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 0.5349999999999999
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf', name='DejaVu Math TeX Gyre', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='condensed', size='scalable')) = 1.25
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 0.25
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='condensed', size='scalable')) = 1.535
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 0.24
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
+[2025-06-18 06:09:46,082][DEBUG] findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/userhome/cs3/u3612899/miniconda3/envs/gptenv4/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
