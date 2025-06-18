@@ -1,0 +1,7 @@
+[2025-06-18 16:33:41,483][INFO] ============================================================
+[2025-06-18 16:33:41,483][INFO] Spurious Rewards Experiment: any_valid
+[2025-06-18 16:33:41,483][INFO] Configuration: {'dataset': 'simple_graph', 'n_layer': 1, 'n_head': 1, 'n_embd': 120, 'max_iters': 200000, 'num_nodes': 100, 'num_of_paths': 20, 'test_interval': 2000, 'device': 'cuda:0', 'temperature': 1.0, 'num_eval_batches': 10, 'reward_type': 'any_valid', 'mixed_alpha': 0.5, 'diversity_weight': 0.1, 'phase_aware_transition': 120000, 'seed': 42, 'learning_rate': 0.0005, 'checkpoint_interval': 50000, 'use_fast_any_valid': True}
+[2025-06-18 16:33:41,483][INFO] ============================================================
+[2025-06-18 16:57:09,528][INFO] Iter 2000: train_loss=2.1749, val_loss=1.0516, TF=0.1550±0.0050, AR=0.5511, phase=early
+[2025-06-18 17:10:42,239][INFO] Iter 4000: train_loss=0.7267, val_loss=1.2152, TF=0.1528±0.0049, AR=0.9230, phase=early
+[2025-06-18 17:24:07,952][INFO] Iter 6000: train_loss=0.6912, val_loss=1.3293, TF=0.9119±0.0025, AR=0.9525, phase=early
