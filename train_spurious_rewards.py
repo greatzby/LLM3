@@ -1,6 +1,6 @@
 """
-Spurious Rewards 实验脚本 - 优化版
-包含向量化加速和修正的any-valid reward
+Spurious Rewards 实验脚本 - 真正的向量化版本
+完全消除Python循环，大幅提升速度
 """
 import os
 import time
@@ -61,7 +61,6 @@ def parse_args():
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     parser.add_argument('--learning_rate', type=float, default=5e-4, help='Learning rate')
     parser.add_argument('--checkpoint_interval', type=int, default=50000, help='Checkpoint save interval')
-    parser.add_argument('--use_fast_any_valid', type=bool, default=True, help='Use vectorized any-valid')
     
     return parser.parse_args()
 
@@ -94,85 +93,96 @@ def precompute_neighbor_masks(graph, num_nodes, vocab_size, device):
     NEIGHBOR_CACHE['num_nodes'] = num_nodes
     
     print("Neighbor masks computed and cached!")
-    return neighbor_masks
 
-def compute_any_valid_reward_loss_fast(model, X, Y, graph, stoi, itos, device):
+def compute_any_valid_reward_loss_vectorized(model, X, Y, graph, stoi, itos, device):
     """
-    优化版any-valid reward - 保持路径约束
-    关键改进：
-    1. 起点必须是source
-    2. 终点必须是target
-    3. 中间可以是任何有效路径
+    完全向量化的any-valid reward - 无Python循环
     """
     logits, _ = model(X, Y)
     batch_size, seq_len, vocab_size = logits.shape
     
     # 获取缓存的邻居信息
-    if 'neighbor_masks' not in NEIGHBOR_CACHE:
-        precompute_neighbor_masks(graph, 100, vocab_size, device)
-    
     neighbor_masks = NEIGHBOR_CACHE['neighbor_masks']
     
-    # 首先计算标准CE loss作为基础
-    ce_loss = F.cross_entropy(logits.view(-1, vocab_size), 
-                             Y.view(-1), ignore_index=0, reduction='none')
-    ce_loss = ce_loss.view(batch_size, seq_len)
+    # 计算标准CE loss作为基准
+    ce_loss = F.cross_entropy(
+        logits.reshape(-1, vocab_size), 
+        Y.reshape(-1), 
+        ignore_index=0, 
+        reduction='none'
+    ).reshape(batch_size, seq_len)
     
-    # 创建修改后的loss
-    modified_loss = ce_loss.clone()
+    # 创建位置mask
+    valid_mask = (Y != 0).float()
     
-    # 对每个样本处理
-    for b in range(batch_size):
-        # 找到序列的有效部分
-        valid_mask = (Y[b] != 0)
-        valid_indices = valid_mask.nonzero(as_tuple=True)[0]
-        
-        if len(valid_indices) < 4:  # 太短，使用原始loss
-            continue
-            
-        # 获取source和target
-        source_token = X[b, 0].item()
-        target_token = X[b, 1].item()
-        
-        if source_token < 2 or target_token < 2:
-            continue
-            
-        # 确保关键位置的约束
-        # 位置2必须是source（路径起点）
-        # 最后一个位置必须是target（路径终点）
-        last_valid_idx = valid_indices[-1].item()
-        
-        # 只对中间部分使用any-valid reward
-        for t in range(3, last_valid_idx):  # 从位置3开始到倒数第二个
-            if Y[b, t-1].item() >= 2:  # 当前节点有效
-                current_node = Y[b, t-1].item() - 2
-                
-                if 0 <= current_node < NEIGHBOR_CACHE['num_nodes']:
-                    # 获取有效邻居的mask
-                    valid_next_mask = neighbor_masks[current_node]
-                    
-                    if valid_next_mask.any():
-                        # 计算选择任何有效邻居的概率
-                        probs = F.softmax(logits[b, t], dim=-1)
-                        valid_prob = probs[valid_next_mask].sum()
-                        
-                        # 混合原始loss和any-valid loss
-                        # 如果原始loss很高（>2.0），更多使用any-valid
-                        # 如果原始loss已经很低，保持原样
-                        if ce_loss[b, t] > 2.0:
-                            any_valid_loss = -torch.log(valid_prob + 1e-8)
-                            # 加权混合，避免完全替换
-                            modified_loss[b, t] = 0.3 * ce_loss[b, t] + 0.7 * any_valid_loss
-                        elif ce_loss[b, t] > 1.0:
-                            any_valid_loss = -torch.log(valid_prob + 1e-8)
-                            modified_loss[b, t] = 0.7 * ce_loss[b, t] + 0.3 * any_valid_loss
+    # 找到每个序列的长度
+    seq_lengths = valid_mask.sum(dim=1)
     
-    # 应用mask并计算平均
-    mask = (Y != 0).float()
-    masked_loss = modified_loss * mask
+    # 创建位置索引
+    positions = torch.arange(seq_len, device=device).unsqueeze(0).expand(batch_size, -1)
     
-    # 返回平均loss
-    return masked_loss.sum() / mask.sum()
+    # 找到需要应用any-valid的位置（位置3到倒数第二个）
+    # 使用广播创建end_positions
+    end_positions = seq_lengths.unsqueeze(1) - 1
+    middle_mask = (positions >= 3) & (positions < end_positions) & valid_mask.bool()
+    
+    # 如果没有中间位置需要处理，直接返回CE loss
+    if not middle_mask.any():
+        return (ce_loss * valid_mask).sum() / valid_mask.sum()
+    
+    # 获取前一个位置的节点（当前节点）来查找邻居
+    # 向左shift Y来获取前一个token
+    prev_Y = torch.cat([torch.zeros_like(Y[:, :1]), Y[:, :-1]], dim=1)
+    current_nodes = (prev_Y - 2).clamp(0, NEIGHBOR_CACHE['num_nodes'] - 1)
+    
+    # 批量计算所有位置的any-valid loss
+    log_probs = F.log_softmax(logits, dim=-1)
+    
+    # 创建一个大的mask矩阵 (batch_size, seq_len, vocab_size)
+    # 表示每个位置的有效下一跳
+    batch_indices = torch.arange(batch_size, device=device).view(-1, 1, 1)
+    seq_indices = torch.arange(seq_len, device=device).view(1, -1, 1)
+    
+    # 使用高级索引获取每个位置的邻居mask
+    position_neighbor_masks = neighbor_masks[current_nodes]  # (batch_size, seq_len, vocab_size)
+    
+    # 只在middle_mask位置计算any-valid loss
+    # 创建一个very negative的值用于mask
+    masked_log_probs = log_probs.clone()
+    
+    # 在需要计算any-valid的位置，将非邻居的概率设为-inf
+    masked_log_probs[middle_mask] = torch.where(
+        position_neighbor_masks[middle_mask],
+        log_probs[middle_mask],
+        torch.tensor(float('-inf'), device=device)
+    )
+    
+    # 使用logsumexp计算any-valid loss
+    any_valid_log_probs = torch.logsumexp(masked_log_probs, dim=-1)
+    any_valid_loss = -any_valid_log_probs
+    
+    # 混合策略：根据原始CE loss决定混合权重
+    # 使用向量化的条件
+    mix_weights = torch.where(
+        ce_loss > 2.0,
+        torch.tensor(0.7, device=device),
+        torch.where(
+            ce_loss > 1.0,
+            torch.tensor(0.3, device=device),
+            torch.tensor(0.0, device=device)
+        )
+    )
+    
+    # 只在middle_mask位置应用混合
+    final_loss = ce_loss.clone()
+    final_loss[middle_mask] = (
+        (1 - mix_weights[middle_mask]) * ce_loss[middle_mask] + 
+        mix_weights[middle_mask] * any_valid_loss[middle_mask]
+    )
+    
+    # 应用有效mask并返回平均值
+    masked_loss = final_loss * valid_mask
+    return masked_loss.sum() / valid_mask.sum()
 
 def compute_mixed_reward_loss(model, X, Y, graph, stoi, itos, device, alpha=0.5):
     """混合标准损失和any_valid损失"""
@@ -182,8 +192,8 @@ def compute_mixed_reward_loss(model, X, Y, graph, stoi, itos, device, alpha=0.5)
     standard_loss = F.cross_entropy(logits.view(-1, logits.size(-1)), 
                                    Y.view(-1), ignore_index=0)
     
-    # Any valid loss
-    any_valid_loss = compute_any_valid_reward_loss_fast(model, X, Y, graph, stoi, itos, device)
+    # Any valid loss（使用向量化版本）
+    any_valid_loss = compute_any_valid_reward_loss_vectorized(model, X, Y, graph, stoi, itos, device)
     
     # 混合
     return alpha * standard_loss + (1 - alpha) * any_valid_loss
@@ -191,7 +201,7 @@ def compute_mixed_reward_loss(model, X, Y, graph, stoi, itos, device, alpha=0.5)
 def compute_diversity_reward_loss(model, X, Y, graph, stoi, itos, device, diversity_weight=0.1):
     """Any valid + 熵正则化鼓励多样性"""
     # 基础any valid损失
-    base_loss = compute_any_valid_reward_loss_fast(model, X, Y, graph, stoi, itos, device)
+    base_loss = compute_any_valid_reward_loss_vectorized(model, X, Y, graph, stoi, itos, device)
     
     # 计算熵
     logits, _ = model(X, Y)
@@ -217,7 +227,7 @@ def compute_phase_aware_loss(model, X, Y, graph, stoi, itos, device, iteration, 
                              Y.view(-1), ignore_index=0)
     else:
         # 后期：切换到any_valid避免过拟合
-        return compute_any_valid_reward_loss_fast(model, X, Y, graph, stoi, itos, device)
+        return compute_any_valid_reward_loss_vectorized(model, X, Y, graph, stoi, itos, device)
 
 # ================== 评估函数 ==================
 
@@ -324,6 +334,9 @@ def main():
     gptconf = GPTConfig(**model_args)
     model = GPT(gptconf)
     model.to(args.device)
+    
+    # 打印参数量
+    print(f"number of parameters: {sum(p.numel() for p in model.parameters())/1e6:.2f}M")
     
     # 优化器
     optimizer = model.configure_optimizers(
@@ -516,9 +529,12 @@ def main():
     # 训练循环
     print("\nStarting training...")
     model.train()
-    t0 = time.time()
     running_loss = 0
     loss_count = 0
+    
+    # 计时器（用于调试）
+    if args.reward_type == 'any_valid':
+        loss_times = []
     
     for iter_num in range(args.max_iters + 1):
         # 设置学习率
@@ -569,6 +585,11 @@ def main():
                   f"start/end={error_counts['incorrect start/end']}, "
                   f"path={error_counts['non-existence path']}")
             
+            # 如果是any_valid，打印平均计算时间
+            if args.reward_type == 'any_valid' and loss_times:
+                avg_time = np.mean(loss_times[-1000:])  # 最近1000次的平均
+                print(f"  Avg loss computation time: {avg_time*1000:.2f}ms")
+            
             # 记录到日志
             logger.info(f"Iter {iter_num}: train_loss={avg_train_loss:.4f}, val_loss={val_loss:.4f}, "
                        f"TF={tf_acc:.4f}±{tf_std:.4f}, AR={ar_acc:.4f}, phase={current_phase}")
@@ -604,18 +625,24 @@ def main():
         # 训练步骤
         X, Y = get_batch('train')
         
-        # 计算损失
+        # 计算损失（带计时）
+        if args.reward_type == 'any_valid':
+            t_start = time.time()
+        
         with ctx:
             if args.reward_type == 'standard':
                 logits, loss = model(X, Y)
             elif args.reward_type == 'any_valid':
-                loss = compute_any_valid_reward_loss_fast(model, X, Y, G, stoi, itos, args.device)
+                loss = compute_any_valid_reward_loss_vectorized(model, X, Y, G, stoi, itos, args.device)
             elif args.reward_type == 'mixed':
                 loss = compute_mixed_reward_loss(model, X, Y, G, stoi, itos, args.device, args.mixed_alpha)
             elif args.reward_type == 'diversity':
                 loss = compute_diversity_reward_loss(model, X, Y, G, stoi, itos, args.device, args.diversity_weight)
             elif args.reward_type == 'phase_aware':
                 loss = compute_phase_aware_loss(model, X, Y, G, stoi, itos, args.device, iter_num, args.phase_aware_transition)
+        
+        if args.reward_type == 'any_valid':
+            loss_times.append(time.time() - t_start)
         
         # 反向传播
         optimizer.zero_grad(set_to_none=True)
