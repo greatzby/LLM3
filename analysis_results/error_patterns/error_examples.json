@@ -1,0 +1,790 @@
+{
+  "0": {
+    "correct": [],
+    "syntax_error": [
+      {
+        "prediction": "24 88 24",
+        "ground_truth": "24 88 24 26 58 67 88"
+      },
+      {
+        "prediction": "9 71 9",
+        "ground_truth": "9 71 9 26 29 40 71"
+      },
+      {
+        "prediction": "20 95 20",
+        "ground_truth": "20 95 20 27 32 78 79 80 87 93 95"
+      },
+      {
+        "prediction": "2 62 2",
+        "ground_truth": "2 62 2 47 62"
+      },
+      {
+        "prediction": "21 67 21",
+        "ground_truth": "21 67 21 22 32 46 55 67"
+      }
+    ],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "23 67 23 0 4 67 6 21 73 88 8 3 0 84 21 0 91 78 87 79 5 29 42 7 41 76 76 79 68 90 84 64 33 57 9 49 51 98 79 42 68",
+        "ground_truth": "23 67 23 49 58 67"
+      },
+      {
+        "prediction": "5 17 5 98 82 47 13 86 36 3 9 85 56 11 4 40 17 82 43 7 73 60 38 59 21 39 67 47",
+        "ground_truth": "5 17 5 14 17"
+      },
+      {
+        "prediction": "22 47 22 41 8 62 55 7 65 41 86 84 21 86 69 97 31 76 96 81 34 13 92 43 61 59 29 77 78 19 19 5 38 96 70 46 29 75 22 80 97 74 18 19 35 71 [PAD] 52 2 20 40 29 73",
+        "ground_truth": "22 47 22 35 47"
+      },
+      {
+        "prediction": "74 86 74 98 99 74 33 0 20 57 55 24 44 12 66 74 77 8 83 81",
+        "ground_truth": "74 86 74 82 86"
+      },
+      {
+        "prediction": "25 81 25 25 66 21 93 6 84 31 6 53 38 0 65 33 9 2 34 35 25 92 54 19 30 30 23 89 87 2 27 45 31 21 68 17 83 43 73 66 40 84 14 51 17 29 89 32 47 73 32 54 83",
+        "ground_truth": "25 81 25 30 35 64 70 81"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "22 96 22 66 96 66 10 10 30 4 5 10 30 28 44 35 44 51 77 3 15 27 1 16 78 82 81 5 21 26 61 11 91 5 57 64 81 98 83 63 25 89 96",
+        "ground_truth": "22 96 22 32 78 79 80 93 96"
+      },
+      {
+        "prediction": "10 97 10 89 32 34 63 88 92 6 62 56 1 83 4 66 20 12 78 43 40 99 37 95 29 1 60 22 5 19 87 82 82 47 47 64 33 42 12 16 14 54 86 88 35 66 96 36 98 96 51 7 97",
+        "ground_truth": "10 97 10 62 97"
+      },
+      {
+        "prediction": "32 52 32 21 43 67 90 38 66 88 89 13 21 50 24 21 47 75 83 14 94 87 62 98 0 89 57 10 30 0 55 33 3 66 99 55 43 61 96 52 14 1 92 43 96 63 44 55 63 37 46 18 52",
+        "ground_truth": "32 52 32 48 52"
+      },
+      {
+        "prediction": "63 86 63 38 84 64 17 8 88 41 12 90 43 1 13 80 12 84 56 18 78 39 16 72 27 85 39 36 45 99 34 74 21 84 96 30 64 67 4 57 77 43 96 25 76 7 5 75 62 25 15 23 86",
+        "ground_truth": "63 86 63 75 86"
+      },
+      {
+        "prediction": "54 99 54 29 43 77 62 99",
+        "ground_truth": "54 99 54 60 73 77 99"
+      }
+    ],
+    "valid_but_wrong": []
+  },
+  "20000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "9 62 9 26 36 57",
+        "ground_truth": "9 62 9 26 36 62"
+      },
+      {
+        "prediction": "6 26 6 19",
+        "ground_truth": "6 26 6 14 24 26"
+      },
+      {
+        "prediction": "24 68 24 26 76",
+        "ground_truth": "24 68 24 27 63 65 68"
+      },
+      {
+        "prediction": "10 78 10 31 58 71 79",
+        "ground_truth": "10 78 10 27 63 75 78"
+      },
+      {
+        "prediction": "7 64 7 43 47",
+        "ground_truth": "7 64 7 13 61 64"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "28 65 28 37 65",
+        "ground_truth": "28 65 28 37 55 65"
+      },
+      {
+        "prediction": "50 90 50 85 81 90",
+        "ground_truth": "50 90 50 66 81 90"
+      },
+      {
+        "prediction": "3 27 3 9 27",
+        "ground_truth": "3 27 3 20 27"
+      },
+      {
+        "prediction": "7 68 7 66 81 68",
+        "ground_truth": "7 68 7 29 40 65 68"
+      },
+      {
+        "prediction": "20 95 20 93 95",
+        "ground_truth": "20 95 20 27 32 78 79 80 87 93 95"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "13 86 13 49 81 82 86",
+        "ground_truth": "13 86 13 44 70 81 82 86"
+      },
+      {
+        "prediction": "31 84 31 55 67 84",
+        "ground_truth": "31 84 31 58 67 84"
+      },
+      {
+        "prediction": "6 52 6 14 24 27 32 48 52",
+        "ground_truth": "6 52 6 19 40 48 52"
+      },
+      {
+        "prediction": "11 96 11 30 35 47 57 77 79 80 87 93 96",
+        "ground_truth": "11 96 11 28 31 79 80 93 96"
+      },
+      {
+        "prediction": "34 93 34 58 71 85 93",
+        "ground_truth": "34 93 34 58 71 79 80 93"
+      }
+    ]
+  },
+  "40000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "12 39 12 23 49 58 67",
+        "ground_truth": "12 39 12 20 31 39"
+      },
+      {
+        "prediction": "4 14 4 5 14 24",
+        "ground_truth": "4 14 4 5 14"
+      },
+      {
+        "prediction": "31 71 31 58 71 74",
+        "ground_truth": "31 71 31 58 71"
+      },
+      {
+        "prediction": "63 98 63 75 86",
+        "ground_truth": "63 98 63 75 86 98"
+      },
+      {
+        "prediction": "22 76 22 42 60 73 76 79",
+        "ground_truth": "22 76 22 63 75 76"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "4 68 4 29 60 68",
+        "ground_truth": "4 68 4 29 40 65 68"
+      },
+      {
+        "prediction": "4 36 4 36",
+        "ground_truth": "4 36 4 5 14 24 26 36"
+      },
+      {
+        "prediction": "16 91 16 53 75 78 91",
+        "ground_truth": "16 91 16 56 91"
+      },
+      {
+        "prediction": "42 92 42 80 87 92",
+        "ground_truth": "42 92 42 72 80 87 92"
+      },
+      {
+        "prediction": "6 95 6 19 32 78 79 80 72 80 93 95",
+        "ground_truth": "6 95 6 19 32 84 95"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "7 68 7 13 43 68",
+        "ground_truth": "7 68 7 29 40 65 68"
+      },
+      {
+        "prediction": "7 64 7 29 35 64",
+        "ground_truth": "7 64 7 13 61 64"
+      },
+      {
+        "prediction": "61 95 61 64 70 81 95",
+        "ground_truth": "61 95 61 84 95"
+      },
+      {
+        "prediction": "9 96 9 26 32 78 79 80 93 96",
+        "ground_truth": "9 96 9 37 87 93 96"
+      },
+      {
+        "prediction": "12 66 12 20 27 32 50 66",
+        "ground_truth": "12 66 12 26 29 50 66"
+      }
+    ]
+  },
+  "60000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "11 41 11 32",
+        "ground_truth": "11 41 11 30 41"
+      },
+      {
+        "prediction": "5 60 5 86",
+        "ground_truth": "5 60 5 14 17 51 54 60"
+      },
+      {
+        "prediction": "3 84 3 9 26 29 53",
+        "ground_truth": "3 84 3 20 31 58 67 84"
+      },
+      {
+        "prediction": "4 14 4 5 14 24",
+        "ground_truth": "4 14 4 5 14"
+      },
+      {
+        "prediction": "41 95 41 46 55 80 93",
+        "ground_truth": "41 95 41 81 95"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "13 65 13 49 58 42 63 65",
+        "ground_truth": "13 65 13 41 46 55 65"
+      },
+      {
+        "prediction": "1 95 1 49 81 95",
+        "ground_truth": "1 95 1 3 73 93 95"
+      },
+      {
+        "prediction": "10 88 10 60 82 88",
+        "ground_truth": "10 88 10 58 67 88"
+      },
+      {
+        "prediction": "7 49 7 29 49",
+        "ground_truth": "7 49 7 13 49"
+      },
+      {
+        "prediction": "21 93 21 56 85 93",
+        "ground_truth": "21 93 21 40 48 59 77 79 80 93"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "73 95 73 93 95",
+        "ground_truth": "73 95 73 76 79 80 87 93 95"
+      },
+      {
+        "prediction": "15 54 15 26 31 37 51 54",
+        "ground_truth": "15 54 15 18 31 37 51 54"
+      },
+      {
+        "prediction": "57 93 57 77 79 80 93",
+        "ground_truth": "57 93 57 85 93"
+      },
+      {
+        "prediction": "3 46 3 20 27 32 46",
+        "ground_truth": "3 46 3 9 26 32 46"
+      },
+      {
+        "prediction": "36 87 36 57 77 79 80 87",
+        "ground_truth": "36 87 36 77 79 80 87"
+      }
+    ]
+  },
+  "80000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "5 93 5 14 15 15 15 16 80",
+        "ground_truth": "5 93 5 14 17 51 54 80 87 93"
+      },
+      {
+        "prediction": "8 90 8 43 47 57 77",
+        "ground_truth": "8 90 8 48 52 53 84 90"
+      },
+      {
+        "prediction": "4 26 4 29",
+        "ground_truth": "4 26 4 5 14 15 26"
+      },
+      {
+        "prediction": "20 90 20 56 85 98",
+        "ground_truth": "20 90 20 27 67 84 90"
+      },
+      {
+        "prediction": "6 41 6 14 15 18",
+        "ground_truth": "6 41 6 14 15 18 25 30 41"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "11 78 11 63 75 78",
+        "ground_truth": "11 78 11 30 35 45 78"
+      },
+      {
+        "prediction": "11 92 11 48 52 53 93 9 37 87 92",
+        "ground_truth": "11 92 11 48 52 53 76 79 80 87 92"
+      },
+      {
+        "prediction": "12 32 12 30 32",
+        "ground_truth": "12 32 12 20 27 32"
+      },
+      {
+        "prediction": "6 95 6 14 74 95",
+        "ground_truth": "6 95 6 19 32 84 95"
+      },
+      {
+        "prediction": "12 65 12 23 49 33 63 65",
+        "ground_truth": "12 65 12 26 29 35 65"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "25 65 25 30 35 56 65",
+        "ground_truth": "25 65 25 30 65"
+      },
+      {
+        "prediction": "11 46 11 32 46",
+        "ground_truth": "11 46 11 30 41 46"
+      },
+      {
+        "prediction": "27 77 27 32 46 66 77",
+        "ground_truth": "27 77 27 32 50 66 77"
+      },
+      {
+        "prediction": "16 96 16 53 72 80 93 96",
+        "ground_truth": "16 96 16 77 79 80 87 93 96"
+      },
+      {
+        "prediction": "8 66 8 15 26 32 50 66",
+        "ground_truth": "8 66 8 15 26 32 46 66"
+      }
+    ]
+  },
+  "100000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "6 17 6 14 17 52",
+        "ground_truth": "6 17 6 14 17"
+      },
+      {
+        "prediction": "8 70 8 15 26 29 35 64",
+        "ground_truth": "8 70 8 15 18 25 30 35 64 70"
+      },
+      {
+        "prediction": "16 79 16 53 72 80",
+        "ground_truth": "16 79 16 53 75 78 79"
+      },
+      {
+        "prediction": "27 96 27 32 48 59",
+        "ground_truth": "27 96 27 32 50 66 77 79 80 93 96"
+      },
+      {
+        "prediction": "6 41 6 14 15 18",
+        "ground_truth": "6 41 6 14 15 18 25 30 41"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "8 95 8 31 58 58 71 79 80 87 93 95",
+        "ground_truth": "8 95 8 48 95"
+      },
+      {
+        "prediction": "4 80 4 53 72 80",
+        "ground_truth": "4 80 4 29 50 66 77 79 80"
+      },
+      {
+        "prediction": "20 89 20 31 55 67 84 61 64 70 81 83 89",
+        "ground_truth": "20 89 20 31 55 67 88 89"
+      },
+      {
+        "prediction": "1 32 1 5 14 15 10 27 32",
+        "ground_truth": "1 32 1 5 14 27 32"
+      },
+      {
+        "prediction": "41 97 41 59 97",
+        "ground_truth": "41 97 41 81 97"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "30 66 30 41 46 66",
+        "ground_truth": "30 66 30 41 50 66"
+      },
+      {
+        "prediction": "15 86 15 26 32 46 66 81 82 86",
+        "ground_truth": "15 86 15 16 53 72 82 86"
+      },
+      {
+        "prediction": "10 72 10 27 32 48 52 53 72",
+        "ground_truth": "10 72 10 27 53 72"
+      },
+      {
+        "prediction": "63 90 63 75 86 90",
+        "ground_truth": "63 90 63 72 82 86 90"
+      },
+      {
+        "prediction": "36 82 36 51 54 60 74 82",
+        "ground_truth": "36 82 36 81 82"
+      }
+    ]
+  },
+  "120000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "14 30 14 15 18",
+        "ground_truth": "14 30 14 15 18 25 30"
+      },
+      {
+        "prediction": "21 86 21 40 74 82 86 90",
+        "ground_truth": "21 86 21 22 42 86"
+      },
+      {
+        "prediction": "3 26 3 9",
+        "ground_truth": "3 26 3 9 26"
+      },
+      {
+        "prediction": "7 61 7 13",
+        "ground_truth": "7 61 7 13 61"
+      },
+      {
+        "prediction": "3 76 3 9 26 31 55 65 68",
+        "ground_truth": "3 76 3 9 26 31 39 76"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "33 77 33 66 77",
+        "ground_truth": "33 77 33 48 59 77"
+      },
+      {
+        "prediction": "32 76 32 27 32 48 52 53 75 76",
+        "ground_truth": "32 76 32 48 52 53 76"
+      },
+      {
+        "prediction": "22 67 22 35 56 67",
+        "ground_truth": "22 67 22 32 46 55 67"
+      },
+      {
+        "prediction": "1 98 1 5 14 82 86 55 67 84 90 98",
+        "ground_truth": "1 98 1 41 98"
+      },
+      {
+        "prediction": "30 98 30 35 70 81 90 98",
+        "ground_truth": "30 98 30 35 64 70 81 82 86 98"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "18 85 18 31 58 71 85",
+        "ground_truth": "18 85 18 43 47 57 85"
+      },
+      {
+        "prediction": "1 88 1 41 59 88",
+        "ground_truth": "1 88 1 28 31 58 67 88"
+      },
+      {
+        "prediction": "3 55 3 9 26 31 55",
+        "ground_truth": "3 55 3 20 27 32 46 55"
+      },
+      {
+        "prediction": "7 92 7 29 60 73 76 79 80 87 92",
+        "ground_truth": "7 92 7 37 51 54 77 79 80 87 92"
+      },
+      {
+        "prediction": "33 89 33 70 81 83 89",
+        "ground_truth": "33 89 33 55 88 89"
+      }
+    ]
+  },
+  "140000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "4 14 4 5 14 24",
+        "ground_truth": "4 14 4 5 14"
+      },
+      {
+        "prediction": "41 86 41 81 82 86 90",
+        "ground_truth": "41 86 41 81 82 86"
+      },
+      {
+        "prediction": "7 41 7 13",
+        "ground_truth": "7 41 7 13 41"
+      },
+      {
+        "prediction": "6 41 6 14 15 18",
+        "ground_truth": "6 41 6 14 15 18 25 30 41"
+      },
+      {
+        "prediction": "59 80 59 77 79 80 87 93",
+        "ground_truth": "59 80 59 77 79 80"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "12 96 12 26 29 35 12 71 79 80 87 93 96",
+        "ground_truth": "12 96 12 26 76 79 80 93 96"
+      },
+      {
+        "prediction": "31 73 31 31 37 51 54 60 73",
+        "ground_truth": "31 73 31 37 51 54 60 73"
+      },
+      {
+        "prediction": "1 90 1 3 20 31 66 81 90",
+        "ground_truth": "1 90 1 41 46 55 67 84 90"
+      },
+      {
+        "prediction": "3 27 3 9 27",
+        "ground_truth": "3 27 3 20 27"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "18 87 18 31 37 87",
+        "ground_truth": "18 87 18 31 39 59 77 79 80 87"
+      },
+      {
+        "prediction": "21 85 21 71 85",
+        "ground_truth": "21 85 21 40 71 85"
+      },
+      {
+        "prediction": "19 89 19 56 85 89",
+        "ground_truth": "19 89 19 40 71 83 89"
+      },
+      {
+        "prediction": "21 88 21 40 48 59 88",
+        "ground_truth": "21 88 21 22 35 47 88"
+      },
+      {
+        "prediction": "14 37 14 15 18 31 37",
+        "ground_truth": "14 37 14 24 26 31 37"
+      }
+    ]
+  },
+  "160000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "21 32 21 22 32 48",
+        "ground_truth": "21 32 21 22 32"
+      },
+      {
+        "prediction": "2 90 2 47 57 77 79 80 87",
+        "ground_truth": "2 90 2 27 69 75 86 90"
+      },
+      {
+        "prediction": "8 95 8 15 18 79 80",
+        "ground_truth": "8 95 8 48 95"
+      },
+      {
+        "prediction": "43 89 43 97",
+        "ground_truth": "43 89 43 57 85 89"
+      },
+      {
+        "prediction": "3 76 3 9 26 29 53",
+        "ground_truth": "3 76 3 9 26 31 39 76"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "42 97 42 63 72 97",
+        "ground_truth": "42 97 42 63 75 78 97"
+      },
+      {
+        "prediction": "47 93 47 57 79 80 87 93",
+        "ground_truth": "47 93 47 57 85 93"
+      },
+      {
+        "prediction": "1 90 1 3 20 31 3 20 27 64 70 81 90",
+        "ground_truth": "1 90 1 41 46 55 67 84 90"
+      },
+      {
+        "prediction": "8 70 8 15 18 70",
+        "ground_truth": "8 70 8 15 18 25 30 35 64 70"
+      },
+      {
+        "prediction": "6 32 6 14 15 18 32",
+        "ground_truth": "6 32 6 14 27 32"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "36 90 36 51 54 60 74 82 86 90",
+        "ground_truth": "36 90 36 81 90"
+      },
+      {
+        "prediction": "12 45 12 26 29 35 45",
+        "ground_truth": "12 45 12 30 35 45"
+      },
+      {
+        "prediction": "1 27 1 5 14 27",
+        "ground_truth": "1 27 1 3 20 27"
+      },
+      {
+        "prediction": "14 93 14 15 16 56 85 93",
+        "ground_truth": "14 93 14 15 26 36 57 77 79 80 87 93"
+      },
+      {
+        "prediction": "4 92 4 5 14 17 52 53 76 79 80 87 92",
+        "ground_truth": "4 92 4 5 59 77 79 80 87 92"
+      }
+    ]
+  },
+  "180000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "8 70 8 15 26 29 35 64",
+        "ground_truth": "8 70 8 15 18 25 30 35 64 70"
+      },
+      {
+        "prediction": "21 32 21 22 32 48 32 46",
+        "ground_truth": "21 32 21 22 32"
+      },
+      {
+        "prediction": "41 97 41 46 55 65 68",
+        "ground_truth": "41 97 41 81 97"
+      },
+      {
+        "prediction": "7 41 7 13",
+        "ground_truth": "7 41 7 13 41"
+      },
+      {
+        "prediction": "8 66 8 15 18 43 57",
+        "ground_truth": "8 66 8 15 26 32 46 66"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "1 89 1 5 14 83 89",
+        "ground_truth": "1 89 1 28 31 89"
+      },
+      {
+        "prediction": "33 77 33 63 75 77",
+        "ground_truth": "33 77 33 48 59 77"
+      },
+      {
+        "prediction": "27 99 27 32 46 70 81 82 86 90 99",
+        "ground_truth": "27 99 27 69 75 86 90 99"
+      },
+      {
+        "prediction": "12 78 12 20 27 32 46 66 53 75 78",
+        "ground_truth": "12 78 12 75 78"
+      },
+      {
+        "prediction": "42 97 42 63 72 97",
+        "ground_truth": "42 97 42 63 75 78 97"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "17 99 17 52 84 90 99",
+        "ground_truth": "17 99 17 51 99"
+      },
+      {
+        "prediction": "4 55 4 5 14 24 27 32 46 55",
+        "ground_truth": "4 55 4 5 14 27 32 46 55"
+      },
+      {
+        "prediction": "33 80 33 48 52 53 75 78 79 80",
+        "ground_truth": "33 80 33 48 59 77 79 80"
+      },
+      {
+        "prediction": "70 99 70 81 82 86 90 99",
+        "ground_truth": "70 99 70 81 90 99"
+      },
+      {
+        "prediction": "78 95 78 79 80 87 93 95",
+        "ground_truth": "78 95 78 79 80 93 95"
+      }
+    ]
+  },
+  "200000": {
+    "correct": [],
+    "syntax_error": [],
+    "wrong_source_target": [],
+    "start_mismatch": [],
+    "end_mismatch": [
+      {
+        "prediction": "23 98 23 60 86",
+        "ground_truth": "23 98 23 54 60 86 98"
+      },
+      {
+        "prediction": "59 80 59 77 79 80 87 93",
+        "ground_truth": "59 80 59 77 79 80"
+      },
+      {
+        "prediction": "7 41 7 13",
+        "ground_truth": "7 41 7 13 41"
+      },
+      {
+        "prediction": "7 61 7 13",
+        "ground_truth": "7 61 7 13 61"
+      },
+      {
+        "prediction": "4 14 4 5 14 15 18 14 15 14 15 14 24 26",
+        "ground_truth": "4 14 4 5 14"
+      }
+    ],
+    "invalid_edge": [
+      {
+        "prediction": "22 80 22 76 79 80",
+        "ground_truth": "22 80 22 63 72 80"
+      },
+      {
+        "prediction": "57 93 57 77 79 79 80 93",
+        "ground_truth": "57 93 57 85 93"
+      },
+      {
+        "prediction": "10 87 10 71 79 80 87",
+        "ground_truth": "10 87 10 27 69 75 76 79 80 87"
+      },
+      {
+        "prediction": "6 82 6 14 15 74 82",
+        "ground_truth": "6 82 6 63 72 82"
+      },
+      {
+        "prediction": "33 98 33 59 67 84 90 98",
+        "ground_truth": "33 98 33 55 67 84 90 98"
+      }
+    ],
+    "valid_but_wrong": [
+      {
+        "prediction": "48 80 48 52 53 72 80",
+        "ground_truth": "48 80 48 59 77 79 80"
+      },
+      {
+        "prediction": "21 86 21 40 48 52 53 72 82 86",
+        "ground_truth": "21 86 21 22 42 86"
+      },
+      {
+        "prediction": "2 84 2 63 75 84",
+        "ground_truth": "2 84 2 27 53 84"
+      },
+      {
+        "prediction": "69 99 69 75 86 90 99",
+        "ground_truth": "69 99 69 75 76 99"
+      },
+      {
+        "prediction": "15 86 15 26 82 86",
+        "ground_truth": "15 86 15 16 53 72 82 86"
+      }
+    ]
+  }
+}

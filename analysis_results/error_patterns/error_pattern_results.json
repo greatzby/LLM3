@@ -1,0 +1,101 @@
+{
+  "0": {
+    "correct": 0.0,
+    "syntax_error": 0.8999999999999999,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 97.89999999999999,
+    "invalid_edge": 1.2,
+    "valid_but_wrong": 0.0
+  },
+  "20000": {
+    "correct": 42.1,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 2.4,
+    "invalid_edge": 2.0,
+    "valid_but_wrong": 53.5
+  },
+  "40000": {
+    "correct": 43.6,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.3,
+    "invalid_edge": 1.3,
+    "valid_but_wrong": 53.800000000000004
+  },
+  "60000": {
+    "correct": 43.0,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.7999999999999998,
+    "invalid_edge": 1.2,
+    "valid_but_wrong": 54.0
+  },
+  "80000": {
+    "correct": 43.2,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.7000000000000002,
+    "invalid_edge": 1.0999999999999999,
+    "valid_but_wrong": 54.0
+  },
+  "100000": {
+    "correct": 43.1,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.7000000000000002,
+    "invalid_edge": 1.0,
+    "valid_but_wrong": 54.2
+  },
+  "120000": {
+    "correct": 43.0,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.4000000000000001,
+    "invalid_edge": 1.0,
+    "valid_but_wrong": 54.6
+  },
+  "140000": {
+    "correct": 42.5,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.0,
+    "invalid_edge": 0.4,
+    "valid_but_wrong": 56.10000000000001
+  },
+  "160000": {
+    "correct": 42.4,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 1.6,
+    "invalid_edge": 0.7000000000000001,
+    "valid_but_wrong": 55.300000000000004
+  },
+  "180000": {
+    "correct": 44.7,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 2.0,
+    "invalid_edge": 0.8999999999999999,
+    "valid_but_wrong": 52.400000000000006
+  },
+  "200000": {
+    "correct": 43.9,
+    "syntax_error": 0.0,
+    "wrong_source_target": 0.0,
+    "start_mismatch": 0.0,
+    "end_mismatch": 0.8,
+    "invalid_edge": 0.8,
+    "valid_but_wrong": 54.50000000000001
+  }
+}
