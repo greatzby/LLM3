@@ -1,0 +1,2441 @@
+{
+  "0": {
+    "checkpoint": 0,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 0,
+      "correct_target": 0,
+      "invalid_paths": 100,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            51,
+            44,
+            0,
+            40,
+            72,
+            1,
+            86,
+            98,
+            90,
+            87
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            64,
+            21,
+            92,
+            35,
+            55,
+            96,
+            61,
+            10,
+            20,
+            51,
+            43,
+            17,
+            66,
+            20,
+            99,
+            58,
+            55,
+            64,
+            80,
+            44
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            38,
+            64,
+            62,
+            32,
+            52,
+            68,
+            95,
+            97,
+            97,
+            13,
+            9,
+            89,
+            40,
+            94,
+            37,
+            3,
+            53,
+            53,
+            49,
+            9
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            44,
+            1,
+            57,
+            19,
+            12,
+            15,
+            80,
+            1,
+            46,
+            37,
+            75,
+            93,
+            80,
+            49,
+            1,
+            62,
+            25,
+            11,
+            11,
+            98
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            70,
+            1,
+            41,
+            33,
+            64,
+            86,
+            46,
+            53,
+            24,
+            87,
+            28,
+            93,
+            32,
+            36,
+            67,
+            46,
+            37,
+            21,
+            5,
+            78
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            31,
+            93,
+            31,
+            64,
+            2,
+            76,
+            66,
+            74,
+            56,
+            74,
+            36,
+            75,
+            93,
+            79,
+            1,
+            18,
+            19,
+            26,
+            34,
+            48
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            4,
+            6,
+            64,
+            33,
+            65,
+            86,
+            44,
+            91,
+            10,
+            34,
+            89,
+            23,
+            85,
+            76,
+            19,
+            43,
+            96,
+            87,
+            80,
+            77
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            10,
+            81,
+            99,
+            98,
+            2,
+            47,
+            23,
+            80,
+            49,
+            82,
+            87,
+            95,
+            14,
+            50,
+            84,
+            36,
+            98,
+            60,
+            82,
+            26
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            83,
+            17,
+            25,
+            78,
+            90,
+            59,
+            0,
+            98,
+            95,
+            80,
+            53,
+            59,
+            44,
+            88,
+            23,
+            95,
+            82,
+            27,
+            53,
+            96
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            95,
+            24,
+            4,
+            5,
+            77,
+            17,
+            29,
+            35,
+            50,
+            78,
+            38,
+            13,
+            12,
+            76,
+            17,
+            98,
+            25,
+            94,
+            44,
+            26
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.0,
+      "target_reach_rate": 0.0,
+      "invalid_rate": 0.09560229445506692
+    },
+    "attention_analysis": {
+      "mean_entropy": 4.588438034057617,
+      "std_entropy": 0.0062147448770701885,
+      "mean_max_attention": 0.02652795497328043,
+      "mean_attention_std": 0.0028371128160506486
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.0024095531553030014,
+      "max_similarity": 0.3336990475654602,
+      "min_similarity": -0.31318506598472595,
+      "similarity_std": 0.09255421161651611,
+      "mean_norm": 0.21905632317066193,
+      "norm_std": 0.01380250509828329
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.025860804468393325,
+      "mean_entropy": 4.589062690734863,
+      "mean_top5_cumsum": 0.08795224353671074,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "20000": {
+    "checkpoint": 20000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 92,
+      "correct_target": 91,
+      "invalid_paths": 8,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16,
+            53,
+            16,
+            53,
+            16,
+            53,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16,
+            53,
+            41,
+            16,
+            77
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": false
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17,
+            51
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.08795411089866156,
+      "target_reach_rate": 0.0869980879541109,
+      "invalid_rate": 0.0076481835564053535
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.26899832487106323,
+      "std_entropy": 0.30696141719818115,
+      "mean_max_attention": 0.888109626173973,
+      "mean_attention_std": 0.09049330614507198
+    },
+    "embedding_analysis": {
+      "mean_similarity": -0.0014746469678357244,
+      "max_similarity": 0.4002334773540497,
+      "min_similarity": -0.2601145803928375,
+      "similarity_std": 0.09079840779304504,
+      "mean_norm": 1.363964557647705,
+      "norm_std": 0.11329354345798492
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.8780084320902825,
+      "mean_entropy": 0.29672160744667053,
+      "mean_top5_cumsum": 0.9985938972234726,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "40000": {
+    "checkpoint": 40000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 97,
+      "correct_target": 96,
+      "invalid_paths": 3,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09273422562141491,
+      "target_reach_rate": 0.09177820267686425,
+      "invalid_rate": 0.0028680688336520078
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.2085273414850235,
+      "std_entropy": 0.2674248218536377,
+      "mean_max_attention": 0.9180254268646241,
+      "mean_attention_std": 0.09248843908309937
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.003994688391685486,
+      "max_similarity": 0.38654857873916626,
+      "min_similarity": -0.2588900029659271,
+      "similarity_std": 0.087852843105793,
+      "mean_norm": 1.557337760925293,
+      "norm_std": 0.20543885231018066
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.8920813727378846,
+      "mean_entropy": 0.2590273916721344,
+      "mean_top5_cumsum": 0.9989461433887482,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "60000": {
+    "checkpoint": 60000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 97,
+      "correct_target": 97,
+      "invalid_paths": 3,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            3,
+            9,
+            26,
+            16
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09273422562141491,
+      "target_reach_rate": 0.09273422562141491,
+      "invalid_rate": 0.0028680688336520078
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.20291782915592194,
+      "std_entropy": 0.2685764729976654,
+      "mean_max_attention": 0.9172810125350952,
+      "mean_attention_std": 0.09258413940668106
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.011638214811682701,
+      "max_similarity": 0.38474392890930176,
+      "min_similarity": -0.2756377160549164,
+      "similarity_std": 0.08888829499483109,
+      "mean_norm": 1.6675152778625488,
+      "norm_std": 0.2532244324684143
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.8946259269118308,
+      "mean_entropy": 0.2503798007965088,
+      "mean_top5_cumsum": 0.9990126919746399,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "80000": {
+    "checkpoint": 80000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 95,
+      "correct_target": 94,
+      "invalid_paths": 5,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            86,
+            16
+          ],
+          "exact_match": false,
+          "valid": false,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09082217973231357,
+      "target_reach_rate": 0.08986615678776291,
+      "invalid_rate": 0.004780114722753346
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.19678853452205658,
+      "std_entropy": 0.2692539691925049,
+      "mean_max_attention": 0.9198129576444626,
+      "mean_attention_std": 0.09275577202439308
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.019843358546495438,
+      "max_similarity": 0.4052315950393677,
+      "min_similarity": -0.2779163122177124,
+      "similarity_std": 0.09037616103887558,
+      "mean_norm": 1.7391951084136963,
+      "norm_std": 0.27989041805267334
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.893517991900444,
+      "mean_entropy": 0.2465532273054123,
+      "mean_top5_cumsum": 0.9992141044139862,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "100000": {
+    "checkpoint": 100000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 98,
+      "correct_target": 96,
+      "invalid_paths": 2,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09369024856596558,
+      "target_reach_rate": 0.09177820267686425,
+      "invalid_rate": 0.0019120458891013384
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.18842631578445435,
+      "std_entropy": 0.273516982793808,
+      "mean_max_attention": 0.9194618028402328,
+      "mean_attention_std": 0.09296593032777309
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.028072405606508255,
+      "max_similarity": 0.4142916202545166,
+      "min_similarity": -0.27975139021873474,
+      "similarity_std": 0.09169001877307892,
+      "mean_norm": 1.7805241346359253,
+      "norm_std": 0.2940749228000641
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.8969493469595909,
+      "mean_entropy": 0.2377360314130783,
+      "mean_top5_cumsum": 0.9993051451444626,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "120000": {
+    "checkpoint": 120000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 97,
+      "correct_target": 92,
+      "invalid_paths": 3,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09273422562141491,
+      "target_reach_rate": 0.08795411089866156,
+      "invalid_rate": 0.0028680688336520078
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.173101007938385,
+      "std_entropy": 0.2584735155105591,
+      "mean_max_attention": 0.9261106795072556,
+      "mean_attention_std": 0.09343332082033157
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.03562727943062782,
+      "max_similarity": 0.41935041546821594,
+      "min_similarity": -0.27235838770866394,
+      "similarity_std": 0.09271521866321564,
+      "mean_norm": 1.8023293018341064,
+      "norm_std": 0.2995101511478424
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.898057169020176,
+      "mean_entropy": 0.2309482991695404,
+      "mean_top5_cumsum": 0.9993770337104797,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "140000": {
+    "checkpoint": 140000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 97,
+      "correct_target": 91,
+      "invalid_paths": 3,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09273422562141491,
+      "target_reach_rate": 0.0869980879541109,
+      "invalid_rate": 0.0028680688336520078
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.17438870668411255,
+      "std_entropy": 0.2626720666885376,
+      "mean_max_attention": 0.9237535327672959,
+      "mean_attention_std": 0.09326527290046215
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.04204875975847244,
+      "max_similarity": 0.4235133230686188,
+      "min_similarity": -0.26817384362220764,
+      "similarity_std": 0.0934886559844017,
+      "mean_norm": 1.811673879623413,
+      "norm_std": 0.29940322041511536
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.8978922429680825,
+      "mean_entropy": 0.23004871606826782,
+      "mean_top5_cumsum": 0.9994473099708557,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "160000": {
+    "checkpoint": 160000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 98,
+      "correct_target": 95,
+      "invalid_paths": 2,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09369024856596558,
+      "target_reach_rate": 0.09082217973231357,
+      "invalid_rate": 0.0019120458891013384
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.17081110179424286,
+      "std_entropy": 0.2623624801635742,
+      "mean_max_attention": 0.9272442609071732,
+      "mean_attention_std": 0.09339411161839963
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.04703555256128311,
+      "max_similarity": 0.42882731556892395,
+      "min_similarity": -0.2618255019187927,
+      "similarity_std": 0.09405587613582611,
+      "mean_norm": 1.8152542114257812,
+      "norm_std": 0.29687103629112244
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.9023286816477776,
+      "mean_entropy": 0.22033743560314178,
+      "mean_top5_cumsum": 0.9995282697677612,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "180000": {
+    "checkpoint": 180000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 98,
+      "correct_target": 94,
+      "invalid_paths": 2,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09369024856596558,
+      "target_reach_rate": 0.08986615678776291,
+      "invalid_rate": 0.0019120458891013384
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.15924304723739624,
+      "std_entropy": 0.2576116919517517,
+      "mean_max_attention": 0.9310723155736923,
+      "mean_attention_std": 0.09372272983193397
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.050625432282686234,
+      "max_similarity": 0.42764604091644287,
+      "min_similarity": -0.2569519281387329,
+      "similarity_std": 0.09449958056211472,
+      "mean_norm": 1.8170932531356812,
+      "norm_std": 0.29355570673942566
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.9052657362818718,
+      "mean_entropy": 0.2107226699590683,
+      "mean_top5_cumsum": 0.9995435899496079,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  },
+  "200000": {
+    "checkpoint": 200000,
+    "path_analysis": {
+      "exact_matches": 0,
+      "valid_alternatives": 97,
+      "correct_target": 94,
+      "invalid_paths": 3,
+      "total": 1046,
+      "path_examples": [
+        {
+          "source": 4,
+          "target": 14,
+          "target_path": [
+            4,
+            5,
+            14
+          ],
+          "generated_path": [
+            5,
+            14,
+            24
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": false
+        },
+        {
+          "source": 6,
+          "target": 15,
+          "target_path": [
+            6,
+            14,
+            15
+          ],
+          "generated_path": [
+            14,
+            15
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 1,
+          "target": 16,
+          "target_path": [
+            1,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "target_path": [
+            4,
+            5,
+            16
+          ],
+          "generated_path": [
+            5,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 16,
+          "target_path": [
+            6,
+            14,
+            15,
+            16
+          ],
+          "generated_path": [
+            14,
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 8,
+          "target": 16,
+          "target_path": [
+            8,
+            15,
+            16
+          ],
+          "generated_path": [
+            15,
+            16
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 4,
+          "target": 17,
+          "target_path": [
+            4,
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            5,
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "target_path": [
+            5,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 17,
+          "target_path": [
+            6,
+            14,
+            17
+          ],
+          "generated_path": [
+            14,
+            17
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "target_path": [
+            6,
+            14,
+            15,
+            18
+          ],
+          "generated_path": [
+            14,
+            15,
+            18
+          ],
+          "exact_match": false,
+          "valid": true,
+          "reaches_target": true
+        }
+      ],
+      "exact_match_rate": 0.0,
+      "valid_alternative_rate": 0.09273422562141491,
+      "target_reach_rate": 0.08986615678776291,
+      "invalid_rate": 0.0028680688336520078
+    },
+    "attention_analysis": {
+      "mean_entropy": 0.15595220029354095,
+      "std_entropy": 0.25144675374031067,
+      "mean_max_attention": 0.9323764216899871,
+      "mean_attention_std": 0.09388012111186982
+    },
+    "embedding_analysis": {
+      "mean_similarity": 0.053247515112161636,
+      "max_similarity": 0.42911434173583984,
+      "min_similarity": -0.2515713572502136,
+      "similarity_std": 0.0948520302772522,
+      "mean_norm": 1.8179394006729126,
+      "norm_std": 0.29105105996131897
+    },
+    "distribution_analysis": {
+      "mean_top1_prob": 0.9102693146467209,
+      "mean_entropy": 0.20552422106266022,
+      "mean_top5_cumsum": 0.9996124726533889,
+      "position_3_top1": NaN,
+      "position_3_entropy": NaN
+    }
+  }
+}
