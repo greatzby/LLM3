@@ -1,5 +1,5 @@
 """
-Diversity机制完整分析脚本
+Diversity机制完整分析脚本 - 修复版
 分析diversity训练如何防止相变
 """
 
@@ -33,6 +33,23 @@ def ensure_output_dir():
     """创建输出目录"""
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     print(f"Output directory: {OUTPUT_DIR}")
+
+def convert_to_native_types(obj):
+    """递归地将numpy类型转换为Python原生类型"""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_to_native_types(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_native_types(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_to_native_types(item) for item in obj)
+    else:
+        return obj
 
 def load_checkpoint(checkpoint_path):
     """加载checkpoint"""
@@ -71,22 +88,22 @@ def analyze_parameters(model):
             sim = np.dot(embeddings[i], embeddings[j]) / (
                 np.linalg.norm(embeddings[i]) * np.linalg.norm(embeddings[j]) + 1e-8
             )
-            similarities.append(sim)
+            similarities.append(float(sim))  # 转换为float
     
     results['embedding_similarity'] = {
-        'mean': np.mean(similarities),
-        'std': np.std(similarities),
-        'max': np.max(similarities),
-        'min': np.min(similarities)
+        'mean': float(np.mean(similarities)),
+        'std': float(np.std(similarities)),
+        'max': float(np.max(similarities)),
+        'min': float(np.min(similarities))
     }
     
     # 2. 计算embedding norms
-    norms = [np.linalg.norm(embeddings[i]) for i in range(2, num_nodes + 2)]
+    norms = [float(np.linalg.norm(embeddings[i])) for i in range(2, num_nodes + 2)]
     results['embedding_norms'] = {
-        'mean': np.mean(norms),
-        'std': np.std(norms),
-        'max': np.max(norms),
-        'min': np.min(norms)
+        'mean': float(np.mean(norms)),
+        'std': float(np.std(norms)),
+        'max': float(np.max(norms)),
+        'min': float(np.min(norms))
     }
     
     # 3. 分析lm_head权重（用于预测edge的权重）
@@ -111,6 +128,10 @@ def analyze_parameters(model):
 
 def analyze_output_distribution(model, num_samples=100, device='cuda'):
     """分析模型输出分布（熵、置信度等）"""
+    # 检查CUDA是否可用
+    if not torch.cuda.is_available():
+        device = 'cpu'
+    
     model.to(device)
     results = {
         'entropies': [],
@@ -139,17 +160,17 @@ def analyze_output_distribution(model, num_samples=100, device='cuda'):
             
             # 计算熵
             entropy = -torch.sum(probs * torch.log(probs + 1e-8)).item()
-            results['entropies'].append(entropy)
+            results['entropies'].append(float(entropy))
             
             # Top概率
             top5_probs, _ = torch.topk(probs, 5)
-            results['max_probs'].append(top5_probs[0].item())
-            results['top5_probs'].append(torch.sum(top5_probs).item())
+            results['max_probs'].append(float(top5_probs[0].item()))
+            results['top5_probs'].append(float(torch.sum(top5_probs).item()))
             
             # 置信度比率
             if len(top5_probs) >= 2:
                 ratio = top5_probs[0].item() / (top5_probs[1].item() + 1e-8)
-                results['confidence_ratios'].append(ratio)
+                results['confidence_ratios'].append(float(ratio))
     
     # 计算统计量
     stats = {}
@@ -227,7 +248,8 @@ def visualize_comparison(all_results):
     ax = axes[0, 0]
     ax.plot(iterations, div_entropy, 'g-', marker='o', linewidth=2, markersize=8, label='Diversity')
     if std_entropy:
-        ax.plot(iterations[:len(std_entropy)], std_entropy, 'r-', marker='s', linewidth=2, markersize=8, label='Standard')
+        std_iters = [100000, 200000]  # 只有这两个有standard数据
+        ax.plot(std_iters, std_entropy, 'r-', marker='s', linewidth=2, markersize=8, label='Standard')
     ax.set_xlabel('Iteration')
     ax.set_ylabel('Average Output Entropy')
     ax.set_title('Output Entropy Evolution')
@@ -238,7 +260,7 @@ def visualize_comparison(all_results):
     ax = axes[0, 1]
     ax.plot(iterations, div_similarity, 'g-', marker='o', linewidth=2, markersize=8, label='Diversity')
     if std_similarity:
-        ax.plot(iterations[:len(std_similarity)], std_similarity, 'r-', marker='s', linewidth=2, markersize=8, label='Standard')
+        ax.plot(std_iters, std_similarity, 'r-', marker='s', linewidth=2, markersize=8, label='Standard')
     ax.set_xlabel('Iteration')
     ax.set_ylabel('Mean Embedding Similarity')
     ax.set_title('Embedding Similarity Evolution')
@@ -249,14 +271,48 @@ def visualize_comparison(all_results):
     ax = axes[0, 2]
     ax.plot(iterations, div_max_prob, 'g-', marker='o', linewidth=2, markersize=8, label='Diversity')
     if std_max_prob:
-        ax.plot(iterations[:len(std_max_prob)], std_max_prob, 'r-', marker='s', linewidth=2, markersize=8, label='Standard')
+        ax.plot(std_iters, std_max_prob, 'r-', marker='s', linewidth=2, markersize=8, label='Standard')
     ax.set_xlabel('Iteration')
     ax.set_ylabel('Average Max Probability')
     ax.set_title('Output Confidence Evolution')
     ax.legend()
     ax.grid(True, alpha=0.3)
     
-    # 4-6. 可以添加更多可视化
+    # 4. 熵的差异
+    ax = axes[1, 0]
+    ax.bar(range(len(iterations)), div_entropy, color='green', alpha=0.7, label='Diversity')
+    ax.set_xticks(range(len(iterations)))
+    ax.set_xticklabels([f'{it//1000}k' for it in iterations])
+    ax.set_xlabel('Iteration')
+    ax.set_ylabel('Entropy')
+    ax.set_title('Diversity Entropy Levels')
+    ax.axhline(y=0.05, color='r', linestyle='--', alpha=0.5, label='Critical threshold')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+    
+    # 5. 参数变化率
+    ax = axes[1, 1]
+    sim_changes = []
+    for i in range(1, len(div_similarity)):
+        change = div_similarity[i] - div_similarity[i-1]
+        sim_changes.append(change)
+    
+    ax.bar(range(len(sim_changes)), sim_changes, color='blue', alpha=0.7)
+    ax.set_xticks(range(len(sim_changes)))
+    ax.set_xticklabels([f'{iterations[i]//1000}k-{iterations[i+1]//1000}k' for i in range(len(sim_changes))])
+    ax.set_xlabel('Period')
+    ax.set_ylabel('Similarity Change')
+    ax.set_title('Embedding Similarity Change Rate')
+    ax.grid(True, alpha=0.3)
+    
+    # 6. 置信度比率
+    ax = axes[1, 2]
+    div_conf_ratio = [result['diversity']['output_dist']['confidence_ratios']['mean'] for result in all_results]
+    ax.semilogy(iterations, div_conf_ratio, 'g-', marker='o', linewidth=2, markersize=8)
+    ax.set_xlabel('Iteration')
+    ax.set_ylabel('Confidence Ratio (log scale)')
+    ax.set_title('Max/Second Probability Ratio')
+    ax.grid(True, alpha=0.3)
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'diversity_vs_standard_comparison.png'), dpi=150)
@@ -278,16 +334,43 @@ def generate_report(all_results):
     report.append(f"- 150k: {div_entropies[2]:.3f}\n")
     report.append(f"- 200k: {div_entropies[3]:.3f}\n")
     report.append(f"- 平均: {np.mean(div_entropies):.3f}\n")
-    report.append(f"- 变化: {max(div_entropies) - min(div_entropies):.3f}\n\n")
+    report.append(f"- 标准差: {np.std(div_entropies):.3f}\n")
+    report.append(f"- 变化范围: {max(div_entropies) - min(div_entropies):.3f}\n\n")
+    
+    # 与Standard对比（如果有数据）
+    std_results = [r for r in all_results if r['standard'] and 'output_dist' in r['standard']]
+    if std_results:
+        report.append("### Standard vs Diversity对比 (100k & 200k):\n")
+        for r in std_results:
+            iter_num = r['iteration']
+            div_ent = r['diversity']['output_dist']['entropies']['mean']
+            std_ent = r['standard']['output_dist']['entropies']['mean']
+            report.append(f"\n**Iteration {iter_num}:**\n")
+            report.append(f"- Diversity熵: {div_ent:.3f}\n")
+            report.append(f"- Standard熵: {std_ent:.3f}\n")
+            report.append(f"- 差异: {div_ent - std_ent:.3f} (Diversity保持了{(div_ent/std_ent - 1)*100:.1f}%更高的熵)\n")
     
     # 参数稳定性
-    report.append("### 参数稳定性:\n")
+    report.append("\n### 参数稳定性:\n")
     for i in range(len(all_results)-1):
         iter1 = all_results[i]['iteration']
         iter2 = all_results[i+1]['iteration']
         sim1 = all_results[i]['diversity']['parameters']['embedding_similarity']['mean']
         sim2 = all_results[i+1]['diversity']['parameters']['embedding_similarity']['mean']
-        report.append(f"- {iter1}-{iter2}: 相似度变化 {sim2-sim1:.4f}\n")
+        report.append(f"- {iter1//1000}k-{iter2//1000}k: 相似度变化 {sim2-sim1:.4f}\n")
+    
+    # 总体相似度变化
+    total_sim_change = (all_results[-1]['diversity']['parameters']['embedding_similarity']['mean'] - 
+                       all_results[0]['diversity']['parameters']['embedding_similarity']['mean'])
+    report.append(f"\n总体相似度变化 (50k-200k): {total_sim_change:.4f}\n")
+    
+    # 置信度分析
+    report.append("\n### 输出置信度分析:\n")
+    for r in all_results:
+        iter_num = r['iteration']
+        max_prob = r['diversity']['output_dist']['max_probs']['mean']
+        conf_ratio = r['diversity']['output_dist']['confidence_ratios']['mean']
+        report.append(f"- {iter_num//1000}k: 平均最大概率={max_prob:.3f}, 置信度比={conf_ratio:.1f}x\n")
     
     # 保存报告
     report_path = os.path.join(OUTPUT_DIR, 'diversity_analysis_report.md')
@@ -313,10 +396,13 @@ def main():
         result = compare_models(div_iter, std_iter)
         all_results.append(result)
     
+    # 转换所有结果为原生Python类型
+    all_results_native = convert_to_native_types(all_results)
+    
     # 保存原始结果
     results_path = os.path.join(OUTPUT_DIR, 'raw_analysis_results.json')
     with open(results_path, 'w') as f:
-        json.dump(all_results, f, indent=2)
+        json.dump(all_results_native, f, indent=2)
     print(f"\nRaw results saved to {results_path}")
     
     # 生成可视化
