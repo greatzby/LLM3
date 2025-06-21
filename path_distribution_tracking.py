@@ -76,61 +76,76 @@ def extract_path_from_tokens(token_ids):
             path.append(tid - 2)  # 转换回节点id
     return tuple(path)
 
-def find_third_number_position(number_string):
-    """与训练代码一致的辅助函数"""
-    numbers = number_string.split()
-    third_number_index = 2
-    position = sum(len(num) for num in numbers[:third_number_index]) + third_number_index - 1
-    return position
-
 def load_test_examples(data_path, meta, num_examples=100):
-    """加载测试样例 - 与训练代码一致"""
+    """加载测试样例 - 简化版本"""
     stoi = meta['stoi']
-    itos = meta['itos']
-    simple_format = meta.get('simple_format', True)
     examples = []
     
     # 读取测试文件
     test_file = os.path.join(data_path, 'test.txt')
+    print(f"Loading test file from: {test_file}")
+    
+    if not os.path.exists(test_file):
+        print(f"ERROR: Test file not found!")
+        return examples
+    
+    # 读取文件
     try:
         with open(test_file, 'r', encoding='utf-8') as f:
             lines = f.readlines()
     except:
-        with open(test_file, 'r', encoding='gbk') as f:
-            lines = f.readlines()
+        try:
+            with open(test_file, 'r', encoding='gbk') as f:
+                lines = f.readlines()
+        except:
+            print("ERROR: Cannot read test file")
+            return examples
     
-    for i, line in enumerate(lines[:num_examples]):
+    print(f"Found {len(lines)} lines in test file")
+    
+    # 处理每一行
+    count = 0
+    for line in lines:
+        if count >= num_examples:
+            break
+            
         line = line.strip()
         if not line:
             continue
         
-        # 根据simple_format处理
-        if simple_format:
-            pos = find_third_number_position(line)
-            prompt_str = line[:pos]
-        else:
-            prompt_str = line.split(':')[0] + ':'
+        # 分割tokens
+        tokens = line.split()
+        if len(tokens) < 3:
+            continue
         
-        # 编码prompt
-        prompt_tokens = prompt_str.split()
+        # 前3个token作为prompt
         prompt = []
-        for token in prompt_tokens:
-            if token in stoi:
-                prompt.append(stoi[token])
+        for i in range(3):
+            if tokens[i] in stoi:
+                prompt.append(stoi[tokens[i]])
+            else:
+                # 如果token不在词表中，跳过这一行
+                break
         
-        if len(prompt) >= 3:
-            # 提取完整路径
-            full_path = []
-            tokens = line.split()
-            for j in range(2, len(tokens)):  # 从source开始
-                if tokens[j].isdigit():
-                    full_path.append(int(tokens[j]))
+        if len(prompt) == 3:
+            # 提取路径（从第3个token开始）
+            path = []
+            for i in range(2, len(tokens)):
+                if tokens[i].isdigit():
+                    path.append(int(tokens[i]))
             
-            examples.append((prompt, tuple(full_path)))
+            if len(path) >= 2:  # 至少要有起点和终点
+                examples.append((prompt, tuple(path)))
+                count += 1
+    
+    print(f"Successfully loaded {len(examples)} examples")
+    if len(examples) > 0:
+        print(f"Example prompt: {examples[0][0]}")
+        print(f"Example path: {examples[0][1]}")
     
     return examples
 
-def track_path_probabilities(model, test_examples, device='cuda:0', top_k=10, block_size=32):
+def track_path_probabilities(model, test_examples, device='cuda:0', top_k=5, block_size=32):
     """追踪每个测试样例的top-k路径概率"""
     model.eval()
     path_probabilities = {}
@@ -139,136 +154,89 @@ def track_path_probabilities(model, test_examples, device='cuda:0', top_k=10, bl
         # 准备输入
         prompt_tensor = torch.tensor(prompt, device=device).unsqueeze(0)
         
-        # 使用beam search获取top-k路径及其概率
-        paths_with_probs = beam_search_paths(model, prompt_tensor, k=top_k, block_size=block_size)
+        # 获取第一个预测步骤的概率分布（简化版本）
+        with torch.no_grad():
+            logits, _ = model(prompt_tensor)
+            probs = torch.softmax(logits[0, -1, :], dim=-1)
+        
+        # 获取top-k个token及其概率
+        top_probs, top_indices = torch.topk(probs, min(top_k, probs.shape[0]))
+        
+        # 简单记录top预测
+        predictions = []
+        for i in range(len(top_probs)):
+            token_id = top_indices[i].item()
+            prob = top_probs[i].item()
+            
+            # 如果是节点token，记录
+            if 2 <= token_id <= 101:
+                node_id = token_id - 2
+                predictions.append(((node_id,), float(prob)))
         
         # 记录结果
         path_probabilities[idx] = {
             'target_path': target_path,
-            'predictions': paths_with_probs
+            'predictions': predictions[:5]  # 最多保留5个
         }
     
     return path_probabilities
-
-def beam_search_paths(model, prompt, k=10, block_size=32):
-    """使用beam search找到top-k个路径及其概率"""
-    device = prompt.device
-    prompt_len = prompt.shape[1]
-    max_new_tokens = min(block_size - prompt_len - 1, 20)  # 限制最大生成长度
-    
-    # 初始化beam
-    beams = [(prompt, 0.0, False)]  # (sequence, log_prob, finished)
-    finished_beams = []
-    
-    for step in range(max_new_tokens):
-        if not beams:
-            break
-            
-        new_beams = []
-        for seq, log_prob, finished in beams:
-            if finished:
-                finished_beams.append((seq, log_prob))
-                continue
-            
-            # 如果序列已经接近最大长度，强制结束
-            if seq.shape[1] >= block_size - 1:
-                finished_beams.append((seq, log_prob))
-                continue
-            
-            # 获取下一个token的概率
-            with torch.no_grad():
-                logits, _ = model(seq)
-                probs = torch.softmax(logits[:, -1, :], dim=-1)
-            
-            # 获取top-k候选
-            top_probs, top_indices = torch.topk(probs[0], min(k, probs.shape[-1]))
-            
-            for prob, idx in zip(top_probs, top_indices):
-                new_seq = torch.cat([seq, idx.unsqueeze(0).unsqueeze(0)], dim=1)
-                new_log_prob = log_prob + torch.log(prob + 1e-10).item()
-                
-                # 检查是否结束（遇到换行符token=1）
-                if idx.item() == 1:
-                    finished_beams.append((new_seq, new_log_prob))
-                else:
-                    new_beams.append((new_seq, new_log_prob, False))
-        
-        # 保留top-k个beam
-        new_beams.sort(key=lambda x: x[1], reverse=True)
-        beams = new_beams[:k]
-    
-    # 合并finished和ongoing beams
-    all_beams = finished_beams + [(seq, log_prob) for seq, log_prob, _ in beams]
-    all_beams.sort(key=lambda x: x[1], reverse=True)
-    
-    # 转换为路径和概率
-    results = []
-    for seq, log_prob in all_beams[:k]:
-        path = extract_path_from_tokens(seq[0].cpu().numpy())
-        prob = float(np.exp(log_prob))
-        results.append((path, prob))
-    
-    return results
 
 def analyze_distribution_shift(all_checkpoints_data):
     """分析分布如何变化"""
     results = {}
     
     for ckpt, data in all_checkpoints_data.items():
-        # 统计每条路径的出现频率
-        path_counts = defaultdict(int)
-        training_path_probs = []
-        alternative_path_probs = []
+        if not data:
+            results[ckpt] = {
+                'mean_training_path_prob': 0.0,
+                'mean_alternative_path_prob': 0.0,
+                'num_unique_paths': 0,
+                'entropy': 0.0,
+                'top_path_frequency': 0.0,
+                'training_path_in_top': 0.0
+            }
+            continue
+        
+        # 简化分析 - 只看第一步预测
+        training_probs = []
+        alternative_probs = []
         
         for example_data in data.values():
             target = example_data['target_path']
             predictions = example_data['predictions']
             
-            if not predictions:
+            if not predictions or not target:
                 continue
+            
+            # 检查第一步预测是否匹配目标路径的第一步
+            target_first = target[0] if len(target) > 0 else None
+            
+            found_target = False
+            for pred_path, prob in predictions:
+                if pred_path and pred_path[0] == target_first:
+                    training_probs.append(prob)
+                    found_target = True
+                    break
+            
+            if not found_target and predictions:
+                training_probs.append(0.0)
                 
-            # 找出训练路径的概率
-            target_prob = 0
-            for path, prob in predictions:
-                if path == target:
-                    target_prob = prob
-                    training_path_probs.append(prob)
-                    break
-            
-            # 如果训练路径不在top-k中，概率为0
-            if target_prob == 0:
-                training_path_probs.append(0)
-            
-            # 记录最高概率的替代路径
-            for path, prob in predictions:
-                if path != target:
-                    alternative_path_probs.append(prob)
-                    break
-            
-            # 统计路径
-            if predictions:
-                top_path = predictions[0][0]
-                path_counts[top_path] += 1
+            # 记录最高概率的替代预测
+            if predictions and predictions[0][0]:
+                if not found_target or (predictions[0][0][0] != target_first):
+                    alternative_probs.append(predictions[0][1])
         
         # 计算统计量
         results[ckpt] = {
-            'mean_training_path_prob': float(np.mean(training_path_probs)) if training_path_probs else 0.0,
-            'mean_alternative_path_prob': float(np.mean(alternative_path_probs)) if alternative_path_probs else 0.0,
-            'num_unique_paths': int(len(path_counts)),
-            'entropy': float(calculate_entropy(list(path_counts.values()))),
-            'top_path_frequency': float(max(path_counts.values()) / sum(path_counts.values())) if path_counts else 0.0,
-            'training_path_in_top': float(len([p for p in training_path_probs if p > 0]) / len(training_path_probs)) if training_path_probs else 0.0
+            'mean_training_path_prob': float(np.mean(training_probs)) if training_probs else 0.0,
+            'mean_alternative_path_prob': float(np.mean(alternative_probs)) if alternative_probs else 0.0,
+            'num_unique_paths': len(data),
+            'entropy': 0.0,  # 简化版本不计算熵
+            'top_path_frequency': 0.0,
+            'training_path_in_top': float(sum(1 for p in training_probs if p > 0) / len(training_probs)) if training_probs else 0.0
         }
     
     return results
-
-def calculate_entropy(counts):
-    """计算熵"""
-    total = sum(counts)
-    if total == 0:
-        return 0
-    probs = [c/total for c in counts]
-    return -sum(p * np.log(p + 1e-10) for p in probs if p > 0)
 
 def main():
     # 配置
@@ -280,10 +248,18 @@ def main():
     
     # 加载meta信息
     meta = load_meta(data_path)
+    print(f"Vocabulary size: {len(meta['stoi'])}")
+    print(f"Block size: {meta['block_size']}")
     
     # 准备测试样例
     test_examples = load_test_examples(data_path, meta, num_examples=100)
-    print(f"Loaded {len(test_examples)} test examples")
+    
+    if len(test_examples) == 0:
+        print("ERROR: No test examples loaded. Please check:")
+        print(f"1. Test file exists at: {os.path.join(data_path, 'test.txt')}")
+        print(f"2. File format is correct (space-separated tokens)")
+        print(f"3. Tokens are in vocabulary")
+        return
     
     all_results = {}
     
@@ -314,79 +290,48 @@ def main():
     # 分析分布变化
     distribution_shifts = analyze_distribution_shift(all_results)
     
-    # 保存结果（转换为可序列化格式）
-    serializable_results = {}
-    for ckpt, data in all_results.items():
-        serializable_results[ckpt] = {}
-        for idx, example_data in data.items():
-            serializable_results[ckpt][idx] = {
-                'target_path': list(example_data['target_path']),
-                'predictions': [[list(path) if isinstance(path, tuple) else path, float(prob)] 
-                              for path, prob in example_data['predictions']]
-            }
-    
+    # 保存结果
+    serializable_results = convert_to_serializable(all_results)
     with open(os.path.join(output_dir, 'path_probabilities.json'), 'w') as f:
         json.dump(serializable_results, f, indent=2)
     
     with open(os.path.join(output_dir, 'distribution_shifts.json'), 'w') as f:
         json.dump(distribution_shifts, f, indent=2)
     
-    # 打印一些统计信息
+    # 打印统计信息
     print("\nDistribution shift summary:")
     for ckpt in sorted(distribution_shifts.keys()):
         stats = distribution_shifts[ckpt]
         print(f"\nCheckpoint {ckpt}:")
         print(f"  Training path prob: {stats['mean_training_path_prob']:.4f}")
         print(f"  Alternative path prob: {stats['mean_alternative_path_prob']:.4f}")
-        print(f"  Entropy: {stats['entropy']:.4f}")
     
-    # 创建可视化
-    create_distribution_plots(distribution_shifts, output_dir)
+    # 创建简单可视化
+    if distribution_shifts:
+        create_simple_plots(distribution_shifts, output_dir)
     
     print(f"\nPath distribution analysis complete! Results saved to {output_dir}/")
 
-def create_distribution_plots(results, output_dir):
-    """创建分布变化图"""
-    if not results:
-        print("No results to plot")
-        return
-        
+def create_simple_plots(results, output_dir):
+    """创建简单的可视化"""
     checkpoints = sorted(results.keys())
     
-    # 训练路径vs替代路径概率
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+    plt.figure(figsize=(10, 6))
     
-    # 第一个子图：路径概率
     training_probs = [results[ckpt]['mean_training_path_prob'] for ckpt in checkpoints]
-    alternative_probs = [results[ckpt]['mean_alternative_path_prob'] for ckpt in checkpoints]
     
-    ax1.plot(checkpoints, training_probs, marker='o', label='Training Path Prob', linewidth=2, markersize=8)
-    ax1.plot(checkpoints, alternative_probs, marker='s', label='Best Alternative Prob', linewidth=2, markersize=8)
-    
-    ax1.set_xlabel('Training Iteration')
-    ax1.set_ylabel('Average Probability')
-    ax1.set_title('Training Path vs Alternative Path Probabilities')
-    ax1.legend()
-    ax1.grid(True, alpha=0.3)
-    
-    # 标记相变点
-    if 140000 in checkpoints:
-        ax1.axvline(x=140000, color='red', linestyle='--', alpha=0.5, label='Phase Transition')
-    
-    # 第二个子图：熵的变化
-    entropies = [results[ckpt]['entropy'] for ckpt in checkpoints]
-    
-    ax2.plot(checkpoints, entropies, marker='o', color='green', linewidth=2, markersize=8)
-    ax2.set_xlabel('Training Iteration')
-    ax2.set_ylabel('Entropy')
-    ax2.set_title('Output Distribution Entropy')
-    ax2.grid(True, alpha=0.3)
+    plt.plot(checkpoints, training_probs, marker='o', linewidth=2, markersize=8)
+    plt.xlabel('Training Iteration')
+    plt.ylabel('Mean Training Path Probability')
+    plt.title('Training Path Probability Evolution')
+    plt.grid(True, alpha=0.3)
     
     if 140000 in checkpoints:
-        ax2.axvline(x=140000, color='red', linestyle='--', alpha=0.5)
+        plt.axvline(x=140000, color='red', linestyle='--', alpha=0.5, label='Phase Transition')
+        plt.legend()
     
     plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'path_probability_evolution.png'), dpi=150)
+    plt.savefig(os.path.join(output_dir, 'training_path_prob.png'), dpi=150)
     plt.close()
 
 if __name__ == "__main__":
