@@ -165,8 +165,8 @@ def analyze_embedding_similarity(model):
         'norm_variance': float(np.var(norms)) if norms else 0.0
     }
 
-def prepare_test_loader(data_path, batch_size=32):
-    """准备测试数据加载器"""
+def prepare_test_loader(data_path, batch_size=64):
+    """准备测试数据加载器 - 与训练代码一致"""
     import torch
     from torch.utils.data import DataLoader, TensorDataset
     
@@ -177,12 +177,27 @@ def prepare_test_loader(data_path, batch_size=32):
     meta = load_meta(data_path)
     block_size = meta['block_size']
     
-    # 创建数据集
-    num_samples = len(val_data) // (block_size + 1)
-    val_data_reshaped = val_data[:num_samples * (block_size + 1)].reshape(-1, block_size + 1)
+    # 创建数据集 - 与训练代码中get_batch逻辑一致
+    data_size = block_size + 1
+    num_samples = (len(val_data) - data_size) // data_size
     
-    inputs = torch.from_numpy(val_data_reshaped[:, :-1].astype(np.int64))
-    targets = torch.from_numpy(val_data_reshaped[:, 1:].astype(np.int64))
+    # 创建所有可能的索引
+    all_indices = np.arange(num_samples) * data_size
+    
+    # 采样一部分用于测试
+    sample_size = min(1000, num_samples)
+    sampled_indices = np.random.choice(all_indices, size=sample_size, replace=False)
+    
+    inputs = []
+    targets = []
+    for idx in sampled_indices:
+        x = val_data[idx:idx+block_size].astype(np.int64)
+        y = val_data[idx+1:idx+1+block_size].astype(np.int64)
+        inputs.append(x)
+        targets.append(y)
+    
+    inputs = torch.from_numpy(np.stack(inputs))
+    targets = torch.from_numpy(np.stack(targets))
     
     dataset = TensorDataset(inputs, targets)
     return DataLoader(dataset, batch_size=batch_size, shuffle=False)

@@ -52,7 +52,7 @@ def load_model(checkpoint_path, device='cuda:0'):
     model.load_state_dict(state_dict)
     model.eval()
     model.to(device)
-    return model
+    return model, gptconf.block_size
 
 def decode_tokens(token_ids, itos):
     """解码token序列为字符串"""
@@ -76,33 +76,52 @@ def extract_path_from_tokens(token_ids):
             path.append(tid - 2)  # 转换回节点id
     return tuple(path)
 
+def find_third_number_position(number_string):
+    """与训练代码一致的辅助函数"""
+    numbers = number_string.split()
+    third_number_index = 2
+    position = sum(len(num) for num in numbers[:third_number_index]) + third_number_index - 1
+    return position
+
 def load_test_examples(data_path, meta, num_examples=100):
-    """加载测试样例"""
+    """加载测试样例 - 与训练代码一致"""
     stoi = meta['stoi']
     itos = meta['itos']
+    simple_format = meta.get('simple_format', True)
     examples = []
     
     # 读取测试文件
-    with open(os.path.join(data_path, 'test.txt'), 'r') as f:
-        lines = f.readlines()
+    test_file = os.path.join(data_path, 'test.txt')
+    try:
+        with open(test_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except:
+        with open(test_file, 'r', encoding='gbk') as f:
+            lines = f.readlines()
     
     for i, line in enumerate(lines[:num_examples]):
-        if not line.strip():
+        line = line.strip()
+        if not line:
             continue
-            
-        tokens = line.strip().split()
-        if len(tokens) < 3:
-            continue
-            
-        # 编码前3个token作为prompt
-        prompt = []
-        for j in range(3):
-            if tokens[j] in stoi:
-                prompt.append(stoi[tokens[j]])
         
-        if len(prompt) == 3:
+        # 根据simple_format处理
+        if simple_format:
+            pos = find_third_number_position(line)
+            prompt_str = line[:pos]
+        else:
+            prompt_str = line.split(':')[0] + ':'
+        
+        # 编码prompt
+        prompt_tokens = prompt_str.split()
+        prompt = []
+        for token in prompt_tokens:
+            if token in stoi:
+                prompt.append(stoi[token])
+        
+        if len(prompt) >= 3:
             # 提取完整路径
             full_path = []
+            tokens = line.split()
             for j in range(2, len(tokens)):  # 从source开始
                 if tokens[j].isdigit():
                     full_path.append(int(tokens[j]))
@@ -111,7 +130,7 @@ def load_test_examples(data_path, meta, num_examples=100):
     
     return examples
 
-def track_path_probabilities(model, test_examples, device='cuda:0', top_k=10):
+def track_path_probabilities(model, test_examples, device='cuda:0', top_k=10, block_size=32):
     """追踪每个测试样例的top-k路径概率"""
     model.eval()
     path_probabilities = {}
@@ -121,7 +140,7 @@ def track_path_probabilities(model, test_examples, device='cuda:0', top_k=10):
         prompt_tensor = torch.tensor(prompt, device=device).unsqueeze(0)
         
         # 使用beam search获取top-k路径及其概率
-        paths_with_probs = beam_search_paths(model, prompt_tensor, k=top_k)
+        paths_with_probs = beam_search_paths(model, prompt_tensor, k=top_k, block_size=block_size)
         
         # 记录结果
         path_probabilities[idx] = {
@@ -131,21 +150,28 @@ def track_path_probabilities(model, test_examples, device='cuda:0', top_k=10):
     
     return path_probabilities
 
-def beam_search_paths(model, prompt, k=10, max_length=50):
+def beam_search_paths(model, prompt, k=10, block_size=32):
     """使用beam search找到top-k个路径及其概率"""
     device = prompt.device
+    prompt_len = prompt.shape[1]
+    max_new_tokens = min(block_size - prompt_len - 1, 20)  # 限制最大生成长度
     
     # 初始化beam
     beams = [(prompt, 0.0, False)]  # (sequence, log_prob, finished)
     finished_beams = []
     
-    for step in range(max_length):
+    for step in range(max_new_tokens):
         if not beams:
             break
             
         new_beams = []
         for seq, log_prob, finished in beams:
             if finished:
+                finished_beams.append((seq, log_prob))
+                continue
+            
+            # 如果序列已经接近最大长度，强制结束
+            if seq.shape[1] >= block_size - 1:
                 finished_beams.append((seq, log_prob))
                 continue
             
@@ -269,10 +295,10 @@ def main():
         
         try:
             # 加载模型
-            model = load_model(ckpt_path)
+            model, block_size = load_model(ckpt_path)
             
             # 追踪路径概率
-            path_probs = track_path_probabilities(model, test_examples)
+            path_probs = track_path_probabilities(model, test_examples, block_size=block_size)
             all_results[ckpt] = path_probs
             
             # 清理内存

@@ -239,6 +239,65 @@ def generate_partial_path(graph, length=4):
     
     return path
 
+def probe_multi_hop_reasoning(model, graph, num_samples=500):
+    """测试模型的多跳推理能力"""
+    model.eval()
+    device = next(model.parameters()).device
+    
+    hop_accuracies = {1: [], 2: [], 3: []}
+    
+    for _ in range(num_samples):
+        # 随机选择起点
+        nodes = list(graph.nodes())
+        start = np.random.choice(nodes)
+        
+        # 测试不同跳数的推理
+        for hops in [1, 2, 3]:
+            # 找到所有k跳可达的节点
+            reachable = set()
+            current = {start}
+            
+            for _ in range(hops):
+                next_nodes = set()
+                for node in current:
+                    next_nodes.update(graph.neighbors(node))
+                current = next_nodes
+                reachable.update(current)
+            
+            if not reachable:
+                continue
+            
+            # 随机选择一个目标节点
+            target = np.random.choice(list(reachable))
+            
+            # 构造prompt
+            prompt = torch.tensor([int(start)+2, int(target)+2, int(start)+2], device=device).unsqueeze(0)
+            
+            # 获取模型预测
+            with torch.no_grad():
+                logits, _ = model(prompt)
+                pred = torch.argmax(logits[0, -1, :]).item()
+            
+            # 检查预测是否是有效的第一步
+            if pred >= 2 and pred <= 101:
+                pred_node = pred - 2
+                # 检查是否存在通过这个节点到达目标的路径
+                try:
+                    path = nx.shortest_path(graph, str(pred_node), str(target))
+                    if len(path) <= hops:
+                        hop_accuracies[hops].append(1)
+                    else:
+                        hop_accuracies[hops].append(0)
+                except:
+                    hop_accuracies[hops].append(0)
+            else:
+                hop_accuracies[hops].append(0)
+    
+    return {
+        f'{k}_hop_accuracy': float(np.mean(v)) if v else 0.0
+        for k, v in hop_accuracies.items()
+    }
+
 def main():
     # 配置
     checkpoints = [0, 20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000]
@@ -268,11 +327,13 @@ def main():
             edge_results = probe_edge_prediction(model, graph)
             validity_results = probe_path_validity_understanding(model, graph)
             shortest_results = probe_shortest_path_preference(model, graph)
+            multihop_results = probe_multi_hop_reasoning(model, graph)
             
             all_results[ckpt] = {
                 **edge_results,
                 **validity_results,
-                **shortest_results
+                **shortest_results,
+                **multihop_results
             }
             
             # 打印当前结果
@@ -340,24 +401,34 @@ def create_understanding_plots(results, output_dir):
     ax.axhline(y=0.5, color='r', linestyle='--', alpha=0.5, label='No Preference')
     ax.set_ylim(0.3, 0.8)
     
-    # 4. Combined understanding score
+    # 4. Multi-hop reasoning
     ax = axes[1, 1]
-    # 创建综合得分
-    combined_scores = []
-    for ckpt in checkpoints:
-        score = (
-            results[ckpt]['edge_prediction_auc'] * 0.3 +
-            min(results[ckpt]['path_validity_discrimination'] / 10, 1.0) * 0.4 +
-            results[ckpt]['shortest_path_preference'] * 0.3
-        )
-        combined_scores.append(score)
-    
-    ax.plot(checkpoints, combined_scores, marker='o', linewidth=2, markersize=8, color='green')
+    if '1_hop_accuracy' in results[checkpoints[0]]:
+        hop1 = [results[ckpt].get('1_hop_accuracy', 0) for ckpt in checkpoints]
+        hop2 = [results[ckpt].get('2_hop_accuracy', 0) for ckpt in checkpoints]
+        hop3 = [results[ckpt].get('3_hop_accuracy', 0) for ckpt in checkpoints]
+        
+        ax.plot(checkpoints, hop1, marker='o', label='1-hop', linewidth=2)
+        ax.plot(checkpoints, hop2, marker='s', label='2-hop', linewidth=2)
+        ax.plot(checkpoints, hop3, marker='^', label='3-hop', linewidth=2)
+        ax.legend()
+    else:
+        # 如果没有多跳数据，显示综合得分
+        combined_scores = []
+        for ckpt in checkpoints:
+            score = (
+                results[ckpt]['edge_prediction_auc'] * 0.3 +
+                min(results[ckpt]['path_validity_discrimination'] / 10, 1.0) * 0.4 +
+                results[ckpt]['shortest_path_preference'] * 0.3
+            )
+            combined_scores.append(score)
+        
+        ax.plot(checkpoints, combined_scores, marker='o', linewidth=2, markersize=8, color='green')
+        
     ax.set_xlabel('Training Iteration')
-    ax.set_ylabel('Combined Score')
-    ax.set_title('Overall Graph Understanding')
+    ax.set_ylabel('Score')
+    ax.set_title('Multi-hop Reasoning / Overall Understanding')
     ax.grid(True, alpha=0.3)
-    ax.set_ylim(0, 1)
     
     # 标记相变点
     for ax in axes.flat:

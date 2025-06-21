@@ -13,6 +13,7 @@ from collections import defaultdict
 import pickle
 import networkx as nx
 from model import GPTConfig, GPT
+import re
 
 def convert_to_serializable(obj):
     """递归转换numpy类型为Python原生类型"""
@@ -61,6 +62,13 @@ def decode_tokens(token_ids, itos):
         elif tid in itos:
             decoded.append(itos[tid])
     return ' '.join(decoded)
+
+def find_third_number_position(number_string):
+    """与训练代码一致的辅助函数"""
+    numbers = number_string.split()
+    third_number_index = 2
+    position = sum(len(num) for num in numbers[:third_number_index]) + third_number_index - 1
+    return position
 
 def calculate_token_level_accuracy(predictions, targets, start_pos=3):
     """计算token级别准确率（与训练时一致）"""
@@ -137,62 +145,131 @@ def calculate_position_wise_accuracy(predictions, targets, max_positions=20):
     
     return position_accuracy
 
-def calculate_ar_accuracy(predictions, graph_path):
-    """计算autoregressive准确率（路径是否有效）"""
-    # 加载图
-    graph = nx.read_graphml(graph_path)
-    
+def check_path(G, gen_str):
+    """与训练代码一致的路径检查函数"""
+    path = re.findall(r'\d+', gen_str)
+    if len(path) < 4:
+        return 'wrong syntax'
+    for node in path:
+        if int(node) >= 100 or int(node) < 0:  # 假设100个节点
+            return 'wrong syntax'
+    if path[2] != path[0] or path[-1] != path[1]:
+        return 'incorrect start/end'
+    for i in range(2, len(path) - 1):
+        if not G.has_edge(path[i], path[i + 1]):
+            return f'non-existence path {(path[i], path[i + 1])}'
+    return ''
+
+def calculate_ar_accuracy(predictions, graph):
+    """计算autoregressive准确率（路径是否有效）- 与训练代码一致"""
     valid_count = 0
     total_count = len(predictions)
     
-    for pred in predictions:
-        path = extract_path(pred)
-        if len(path) < 2:
-            continue
-            
-        is_valid = True
-        # 检查路径中的每条边
-        for i in range(len(path) - 1):
-            if not graph.has_edge(str(path[i]), str(path[i+1])):
-                is_valid = False
-                break
-        
-        if is_valid:
-            valid_count += 1
+    error_counts = {
+        "wrong syntax": 0,
+        "incorrect start/end": 0,
+        "non-existence path": 0
+    }
     
-    return float(valid_count / total_count) if total_count > 0 else 0.0
+    for pred in predictions:
+        symbol = check_path(graph, pred)
+        if symbol == "":
+            valid_count += 1
+        else:
+            if symbol == "wrong syntax":
+                error_counts["wrong syntax"] += 1
+            elif symbol == "incorrect start/end":
+                error_counts["incorrect start/end"] += 1
+            elif symbol.startswith("non-existence path"):
+                error_counts["non-existence path"] += 1
+    
+    return float(valid_count / total_count) if total_count > 0 else 0.0, error_counts
 
-def load_test_data(data_path, meta, num_samples=1000):
-    """加载测试数据"""
+def load_test_data(data_path, meta, num_samples=500):
+    """加载测试数据 - 与训练代码一致"""
     test_data = []
     stoi = meta['stoi']
+    simple_format = meta.get('simple_format', True)
     
-    with open(os.path.join(data_path, 'test.txt'), 'r') as f:
-        lines = f.readlines()
+    test_file = os.path.join(data_path, 'test.txt')
+    try:
+        with open(test_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except:
+        with open(test_file, 'r', encoding='gbk') as f:
+            lines = f.readlines()
     
     for line in lines[:num_samples]:
-        if not line.strip():
+        line = line.strip()
+        if not line:
             continue
-            
-        tokens = line.strip().split()
-        if len(tokens) < 3:
-            continue
-            
-        # 编码前3个token作为prompt
-        prompt = []
-        for j in range(3):
-            if tokens[j] in stoi:
-                prompt.append(stoi[tokens[j]])
         
-        if len(prompt) == 3:
-            test_data.append((prompt, line.strip()))
+        # 根据simple_format处理
+        if simple_format:
+            pos = find_third_number_position(line)
+            prompt_str = line[:pos]
+        else:
+            prompt_str = line.split(':')[0] + ':'
+        
+        # 编码prompt
+        prompt_tokens = prompt_str.split()
+        prompt = []
+        for token in prompt_tokens:
+            if token in stoi:
+                prompt.append(stoi[token])
+        
+        if len(prompt) >= 3:
+            test_data.append((prompt, line))
     
     return test_data
 
-def analyze_performance(model, test_data, device, meta, graph_path, max_new_tokens=50):
+def test_teacher_forcing(model, data_path, meta, device, num_eval_batches=10):
+    """使用teacher forcing评估 - 与训练代码一致"""
+    val_data = np.memmap(os.path.join(data_path, 'val.bin'), dtype=np.uint16, mode='r')
+    block_size = meta['block_size']
+    batch_size = 64
+    
+    def get_batch():
+        data_size = block_size + 1
+        ix = torch.randint((len(val_data) - data_size) // data_size, (batch_size,)) * data_size
+        x = torch.stack([torch.from_numpy((val_data[i:i+block_size]).astype(np.int64)) for i in ix])
+        y = torch.stack([torch.from_numpy((val_data[i+1:i+1+block_size]).astype(np.int64)) for i in ix])
+        return x.to(device), y.to(device)
+    
+    total_correct = 0
+    total_count = 0
+    batch_accuracies = []
+    
+    model.eval()
+    with torch.no_grad():
+        for _ in range(num_eval_batches):
+            X, Y = get_batch()
+            logits, _ = model(X, Y)
+            preds = torch.argmax(logits, dim=-1)
+            
+            batch_correct = (preds == Y).float().sum().item()
+            batch_total = Y.numel()
+            batch_accuracy = batch_correct / batch_total
+            batch_accuracies.append(batch_accuracy)
+            
+            total_correct += batch_correct
+            total_count += batch_total
+    
+    overall_accuracy = total_correct / total_count
+    accuracy_std = np.std(batch_accuracies)
+    
+    return overall_accuracy, accuracy_std
+
+def analyze_performance(model, test_data, device, meta, graph, max_new_tokens=None):
     """全面分析模型性能"""
     model.eval()
     itos = meta['itos']
+    top_k = len(itos)
+    
+    # 获取block_size
+    block_size = model.config.block_size
+    if max_new_tokens is None:
+        max_new_tokens = block_size  # 与训练代码一致
     
     predictions = []
     targets = []
@@ -201,19 +278,23 @@ def analyze_performance(model, test_data, device, meta, graph_path, max_new_toke
     for prompt, target in tqdm(test_data, desc="Generating predictions"):
         with torch.no_grad():
             prompt_tensor = torch.tensor(prompt, device=device).unsqueeze(0)
-            generated = model.generate(prompt_tensor, max_new_tokens=max_new_tokens, temperature=1.0)
+            generated = model.generate(prompt_tensor, max_new_tokens=max_new_tokens, 
+                                     temperature=1.0, top_k=top_k)
         
         # 解码预测
-        pred_str = decode_tokens(generated[0].cpu().numpy(), itos)
+        pred_str = decode_tokens(generated[0].cpu().numpy(), itos).split('\n')[0]  # 取第一行
         predictions.append(pred_str)
         targets.append(target)
     
     # 计算各种指标
+    ar_acc, error_counts = calculate_ar_accuracy(predictions, graph)
+    
     results = {
         'token_level_accuracy': calculate_token_level_accuracy(predictions, targets),
         'path_level_accuracy': calculate_path_level_accuracy(predictions, targets),
         'position_wise_accuracy': calculate_position_wise_accuracy(predictions, targets),
-        'ar_accuracy': calculate_ar_accuracy(predictions, graph_path)
+        'ar_accuracy': ar_acc,
+        'error_counts': error_counts
     }
     
     return results, predictions
@@ -236,8 +317,9 @@ def main():
     output_dir = 'analysis_results/multilevel_performance'
     os.makedirs(output_dir, exist_ok=True)
     
-    # 加载meta信息
+    # 加载meta信息和图
     meta = load_meta(data_path)
+    graph = nx.read_graphml(graph_path)
     
     # 加载测试数据
     test_data = load_test_data(data_path, meta, num_samples=500)
@@ -253,15 +335,26 @@ def main():
         
         try:
             model = load_model(ckpt_path)
-            results, predictions = analyze_performance(model, test_data, 'cuda:0', meta, graph_path)
+            
+            # Teacher forcing评估
+            tf_acc, tf_std = test_teacher_forcing(model, data_path, meta, 'cuda:0')
+            
+            # Autoregressive评估
+            results, predictions = analyze_performance(model, test_data, 'cuda:0', meta, graph)
+            
+            # 合并结果
+            results['tf_accuracy'] = tf_acc
+            results['tf_accuracy_std'] = tf_std
             
             all_results[ckpt] = results
             
             # 打印当前结果
             print(f"\nCheckpoint {ckpt}:")
+            print(f"  Teacher Forcing accuracy: {tf_acc:.4f} (±{tf_std:.4f})")
             print(f"  Token-level accuracy: {results['token_level_accuracy']:.4f}")
             print(f"  Path-level accuracy: {results['path_level_accuracy']:.4f}")
             print(f"  AR accuracy: {results['ar_accuracy']:.4f}")
+            print(f"  Error counts: {results['error_counts']}")
             
             # 保存一些预测样例
             if ckpt in [100000, 140000, 200000]:  # 关键checkpoint
@@ -298,20 +391,22 @@ def create_performance_plots(results, output_dir):
     # 1. Token vs Path level accuracy对比
     fig, ax = plt.subplots(figsize=(12, 6))
     
+    tf_acc = [results[ckpt]['tf_accuracy'] for ckpt in checkpoints]
     token_acc = [results[ckpt]['token_level_accuracy'] for ckpt in checkpoints]
     path_acc = [results[ckpt]['path_level_accuracy'] for ckpt in checkpoints]
     ar_acc = [results[ckpt]['ar_accuracy'] for ckpt in checkpoints]
     
-    ax.plot(checkpoints, token_acc, marker='o', label='Token-level Accuracy', linewidth=2, markersize=8)
-    ax.plot(checkpoints, path_acc, marker='s', label='Path-level Accuracy', linewidth=2, markersize=8)
-    ax.plot(checkpoints, ar_acc, marker='^', label='AR Accuracy (Valid Paths)', linewidth=2, markersize=8)
+    ax.plot(checkpoints, tf_acc, marker='o', label='Teacher Forcing (TF)', linewidth=2, markersize=8)
+    ax.plot(checkpoints, token_acc, marker='s', label='Token-level (AR)', linewidth=2, markersize=8)
+    ax.plot(checkpoints, path_acc, marker='^', label='Path-level (AR)', linewidth=2, markersize=8)
+    ax.plot(checkpoints, ar_acc, marker='d', label='AR Valid Paths', linewidth=2, markersize=8)
     
     # 添加25%随机基线
     ax.axhline(y=0.25, color='gray', linestyle=':', alpha=0.5, label='Random Baseline (25%)')
     
     ax.set_xlabel('Training Iteration')
     ax.set_ylabel('Accuracy')
-    ax.set_title('Token-level vs Path-level vs AR Accuracy')
+    ax.set_title('Multiple Accuracy Metrics Comparison')
     ax.legend()
     ax.grid(True, alpha=0.3)
     ax.set_ylim(0, 1.05)
