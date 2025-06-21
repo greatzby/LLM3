@@ -14,61 +14,7 @@ import pickle
 import networkx as nx
 from model import GPTConfig, GPT
 import re
-
-def convert_to_serializable(obj):
-    """递归转换numpy类型为Python原生类型"""
-    if isinstance(obj, np.integer):
-        return int(obj)
-    elif isinstance(obj, np.floating):
-        return float(obj)
-    elif isinstance(obj, np.ndarray):
-        return obj.tolist()
-    elif isinstance(obj, dict):
-        return {key: convert_to_serializable(value) for key, value in obj.items()}
-    elif isinstance(obj, list):
-        return [convert_to_serializable(item) for item in obj]
-    else:
-        return obj
-
-def load_meta(data_path):
-    """加载meta信息"""
-    with open(os.path.join(data_path, 'meta.pkl'), 'rb') as f:
-        return pickle.load(f)
-
-def load_model(checkpoint_path, device='cuda:0'):
-    """加载模型"""
-    checkpoint = torch.load(checkpoint_path, map_location=device)
-    gptconf = GPTConfig(**checkpoint['model_args'])
-    model = GPT(gptconf)
-    
-    state_dict = checkpoint['model']
-    unwanted_prefix = '_orig_mod.'
-    for k, v in list(state_dict.items()):
-        if k.startswith(unwanted_prefix):
-            state_dict[k[len(unwanted_prefix):]] = state_dict.pop(k)
-    
-    model.load_state_dict(state_dict)
-    model.eval()
-    model.to(device)
-    return model
-
-def decode_tokens(token_ids, itos):
-    """解码token序列为字符串"""
-    decoded = []
-    for tid in token_ids:
-        if tid == 1:  # 换行符
-            decoded.append('\n')
-            break
-        elif tid in itos:
-            decoded.append(itos[tid])
-    return ' '.join(decoded)
-
-def find_third_number_position(number_string):
-    """与训练代码一致的辅助函数"""
-    numbers = number_string.split()
-    third_number_index = 2
-    position = sum(len(num) for num in numbers[:third_number_index]) + third_number_index - 1
-    return position
+from utils import load_meta, convert_to_serializable, load_model, decode_tokens, load_test_examples
 
 def calculate_token_level_accuracy(predictions, targets, start_pos=3):
     """计算token级别准确率（与训练时一致）"""
@@ -185,44 +131,6 @@ def calculate_ar_accuracy(predictions, graph):
     
     return float(valid_count / total_count) if total_count > 0 else 0.0, error_counts
 
-def load_test_data(data_path, meta, num_samples=500):
-    """加载测试数据 - 与训练代码一致"""
-    test_data = []
-    stoi = meta['stoi']
-    simple_format = meta.get('simple_format', True)
-    
-    test_file = os.path.join(data_path, 'test.txt')
-    try:
-        with open(test_file, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-    except:
-        with open(test_file, 'r', encoding='gbk') as f:
-            lines = f.readlines()
-    
-    for line in lines[:num_samples]:
-        line = line.strip()
-        if not line:
-            continue
-        
-        # 根据simple_format处理
-        if simple_format:
-            pos = find_third_number_position(line)
-            prompt_str = line[:pos]
-        else:
-            prompt_str = line.split(':')[0] + ':'
-        
-        # 编码prompt
-        prompt_tokens = prompt_str.split()
-        prompt = []
-        for token in prompt_tokens:
-            if token in stoi:
-                prompt.append(stoi[token])
-        
-        if len(prompt) >= 3:
-            test_data.append((prompt, line))
-    
-    return test_data
-
 def test_teacher_forcing(model, data_path, meta, device, num_eval_batches=10):
     """使用teacher forcing评估 - 与训练代码一致"""
     val_data = np.memmap(os.path.join(data_path, 'val.bin'), dtype=np.uint16, mode='r')
@@ -275,7 +183,7 @@ def analyze_performance(model, test_data, device, meta, graph, max_new_tokens=No
     targets = []
     
     # 生成预测
-    for prompt, target in tqdm(test_data, desc="Generating predictions"):
+    for prompt, target, _ in tqdm(test_data, desc="Generating predictions"):
         with torch.no_grad():
             prompt_tensor = torch.tensor(prompt, device=device).unsqueeze(0)
             generated = model.generate(prompt_tensor, max_new_tokens=max_new_tokens, 
@@ -322,8 +230,12 @@ def main():
     graph = nx.read_graphml(graph_path)
     
     # 加载测试数据
-    test_data = load_test_data(data_path, meta, num_samples=500)
+    test_data = load_test_examples(data_path, meta, num_examples=500)
     print(f"Loaded {len(test_data)} test samples")
+    
+    if len(test_data) == 0:
+        print("ERROR: No test data loaded!")
+        return
     
     all_results = {}
     
@@ -358,7 +270,7 @@ def main():
             
             # 保存一些预测样例
             if ckpt in [100000, 140000, 200000]:  # 关键checkpoint
-                save_prediction_samples(predictions, [t for _, t in test_data], 
+                save_prediction_samples(predictions, [t for _, t, _ in test_data], 
                                       os.path.join(output_dir, f'predictions_{ckpt}.txt'))
             
             del model

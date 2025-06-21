@@ -14,43 +14,7 @@ import json
 import pickle
 import networkx as nx
 from model import GPTConfig, GPT
-
-def convert_to_serializable(obj):
-    """递归转换numpy类型为Python原生类型"""
-    if isinstance(obj, np.integer):
-        return int(obj)
-    elif isinstance(obj, np.floating):
-        return float(obj)
-    elif isinstance(obj, np.ndarray):
-        return obj.tolist()
-    elif isinstance(obj, dict):
-        return {key: convert_to_serializable(value) for key, value in obj.items()}
-    elif isinstance(obj, list):
-        return [convert_to_serializable(item) for item in obj]
-    else:
-        return obj
-
-def load_meta(data_path):
-    """加载meta信息"""
-    with open(os.path.join(data_path, 'meta.pkl'), 'rb') as f:
-        return pickle.load(f)
-
-def load_model(checkpoint_path, device='cuda:0'):
-    """加载模型"""
-    checkpoint = torch.load(checkpoint_path, map_location=device)
-    gptconf = GPTConfig(**checkpoint['model_args'])
-    model = GPT(gptconf)
-    
-    state_dict = checkpoint['model']
-    unwanted_prefix = '_orig_mod.'
-    for k, v in list(state_dict.items()):
-        if k.startswith(unwanted_prefix):
-            state_dict[k[len(unwanted_prefix):]] = state_dict.pop(k)
-    
-    model.load_state_dict(state_dict)
-    model.eval()
-    model.to(device)
-    return model
+from utils import load_meta, convert_to_serializable, load_model
 
 def analyze_weight_gap(model, graph_path):
     """分析edge vs non-edge权重差异"""
@@ -166,7 +130,7 @@ def analyze_embedding_similarity(model):
     }
 
 def prepare_test_loader(data_path, batch_size=64):
-    """准备测试数据加载器 - 与训练代码一致"""
+    """准备测试数据加载器"""
     import torch
     from torch.utils.data import DataLoader, TensorDataset
     
@@ -177,22 +141,20 @@ def prepare_test_loader(data_path, batch_size=64):
     meta = load_meta(data_path)
     block_size = meta['block_size']
     
-    # 创建数据集 - 与训练代码中get_batch逻辑一致
+    # 创建数据集
     data_size = block_size + 1
     num_samples = (len(val_data) - data_size) // data_size
     
-    # 创建所有可能的索引
-    all_indices = np.arange(num_samples) * data_size
-    
     # 采样一部分用于测试
     sample_size = min(1000, num_samples)
-    sampled_indices = np.random.choice(all_indices, size=sample_size, replace=False)
+    indices = np.random.choice(num_samples, size=sample_size, replace=False)
     
     inputs = []
     targets = []
-    for idx in sampled_indices:
-        x = val_data[idx:idx+block_size].astype(np.int64)
-        y = val_data[idx+1:idx+1+block_size].astype(np.int64)
+    for idx in indices:
+        start = idx * data_size
+        x = val_data[start:start+block_size].astype(np.int64)
+        y = val_data[start+1:start+1+block_size].astype(np.int64)
         inputs.append(x)
         targets.append(y)
     

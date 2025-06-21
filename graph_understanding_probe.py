@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, roc_auc_score
 import pickle
 from model import GPTConfig, GPT
+from utils import load_meta, convert_to_serializable, load_model, decode_tokens, encode_tokens, load_test_examples
 
 def convert_to_serializable(obj):
     """递归转换numpy类型为Python原生类型"""
