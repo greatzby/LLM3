@@ -57,7 +57,10 @@ def analyze_checkpoint_distribution(model, test_examples, device='cuda:0'):
     total_examples = len(test_examples)
     path_counter = defaultdict(int)
     
-    for prompt, target_str, target_path in tqdm(test_examples, desc="Analyzing"):
+    # 添加调试信息
+    debug_mismatches = []
+    
+    for idx, (prompt, target_str, target_path) in enumerate(tqdm(test_examples, desc="Analyzing")):
         # 生成完整路径
         prompt_tensor = torch.tensor(prompt, device=device).unsqueeze(0)
         generated_tokens = generate_full_path(model, prompt_tensor, device)
@@ -71,6 +74,12 @@ def analyze_checkpoint_distribution(model, test_examples, device='cuda:0'):
         # 检查是否匹配训练路径
         if generated_path == target_path:
             training_path_matches += 1
+        elif idx < 5:  # 记录前几个不匹配的例子
+            debug_mismatches.append({
+                'prompt': prompt,
+                'target_path': target_path,
+                'generated_path': generated_path
+            })
     
     # 计算统计信息
     training_path_ratio = training_path_matches / total_examples
@@ -79,12 +88,49 @@ def analyze_checkpoint_distribution(model, test_examples, device='cuda:0'):
     # 找出最常见的路径
     most_common_paths = sorted(path_counter.items(), key=lambda x: x[1], reverse=True)[:5]
     
+    # 转换path_counter的keys为字符串（解决JSON序列化问题）
+    path_distribution_str = {}
+    for path, count in path_counter.items():
+        path_str = str(path) if path else "empty"
+        path_distribution_str[path_str] = count
+    
+    # 转换most_common_paths
+    most_common_paths_str = []
+    for path, count in most_common_paths:
+        most_common_paths_str.append([list(path) if path else [], count])
+    
     return {
         'training_path_ratio': float(training_path_ratio),
         'unique_paths': unique_paths,
-        'most_common_paths': most_common_paths,
-        'path_distribution': dict(path_counter)
+        'most_common_paths': most_common_paths_str,
+        'path_distribution': path_distribution_str,
+        'debug_mismatches': debug_mismatches[:3]  # 只保留前3个用于调试
     }
+def debug_path_matching(model, test_examples, device='cuda:0', num_debug=5):
+    """调试路径匹配问题"""
+    model.eval()
+    
+    print("\n=== PATH MATCHING DEBUG ===")
+    
+    for idx, (prompt, target_str, target_path) in enumerate(test_examples[:num_debug]):
+        prompt_tensor = torch.tensor(prompt, device=device).unsqueeze(0)
+        generated_tokens = generate_full_path(model, prompt_tensor, device)
+        generated_path = extract_path_from_generation(generated_tokens)
+        
+        print(f"\nExample {idx + 1}:")
+        print(f"  Target string: {target_str}")
+        print(f"  Target path: {target_path}")
+        print(f"  Generated tokens: {generated_tokens}")
+        print(f"  Generated path: {generated_path}")
+        print(f"  Match: {generated_path == target_path}")
+        
+        # 解码生成的完整序列
+        meta = load_meta('data/simple_graph/100')
+        itos = meta['itos']
+        generated_str = decode_tokens(generated_tokens, itos)
+        print(f"  Generated string: {generated_str}")
+
+
 
 def main():
     # 配置
@@ -115,8 +161,12 @@ def main():
         try:
             model = load_model(ckpt_path)
             
+            # 在第一个训练过的checkpoint添加调试
+            if ckpt == 20000:
+                debug_path_matching(model, test_examples[:5], 'cuda:0')
+            
             # 分析分布
-            distribution_analysis = analyze_checkpoint_distribution(model, test_examples[:50])  # 用50个例子
+            distribution_analysis = analyze_checkpoint_distribution(model, test_examples[:50])
             all_results[ckpt] = distribution_analysis
             
             # 打印结果
@@ -124,8 +174,9 @@ def main():
             print(f"  Training path match ratio: {distribution_analysis['training_path_ratio']:.4f}")
             print(f"  Unique paths generated: {distribution_analysis['unique_paths']}")
             print(f"  Most common paths:")
-            for path, count in distribution_analysis['most_common_paths']:
-                print(f"    {path}: {count} times")
+            for path_count in distribution_analysis['most_common_paths']:
+                path, count = path_count
+                print(f"    {tuple(path) if path else 'empty'}: {count} times")
             
             del model
             torch.cuda.empty_cache()
@@ -136,7 +187,7 @@ def main():
             traceback.print_exc()
             continue
     
-    # 保存结果
+    # 保存结果（已经修复了序列化问题）
     serializable_results = convert_to_serializable(all_results)
     with open(os.path.join(output_dir, 'path_distribution_analysis.json'), 'w') as f:
         json.dump(serializable_results, f, indent=2)
