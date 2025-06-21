@@ -1,0 +1,200 @@
+=== Example 1 ===
+Target:     4 14 4 5 14
+Prediction: 4 14 4 5 14 24 
+
+=== Example 2 ===
+Target:     6 15 6 14 15
+Prediction: 6 15 6 14 15 
+
+=== Example 3 ===
+Target:     1 16 1 5 16
+Prediction: 1 16 1 5 14 15 16 
+
+=== Example 4 ===
+Target:     4 16 4 5 16
+Prediction: 4 16 4 5 14 15 16 
+
+=== Example 5 ===
+Target:     6 16 6 14 15 16
+Prediction: 6 16 6 14 15 16 
+
+=== Example 6 ===
+Target:     8 16 8 15 16
+Prediction: 8 16 8 15 16 
+
+=== Example 7 ===
+Target:     4 17 4 5 14 17
+Prediction: 4 17 4 5 14 15 26 17 
+
+=== Example 8 ===
+Target:     5 17 5 14 17
+Prediction: 5 17 5 14 17 
+
+=== Example 9 ===
+Target:     6 17 6 14 17
+Prediction: 6 17 6 14 17 
+
+=== Example 10 ===
+Target:     6 18 6 14 15 18
+Prediction: 6 18 6 14 15 18 
+
+=== Example 11 ===
+Target:     8 18 8 15 18
+Prediction: 8 18 8 15 18 
+
+=== Example 12 ===
+Target:     4 24 4 5 14 24
+Prediction: 4 24 4 5 14 24 
+
+=== Example 13 ===
+Target:     5 24 5 14 24
+Prediction: 5 24 5 14 24 
+
+=== Example 14 ===
+Target:     3 26 3 9 26
+Prediction: 3 26 3 9 26 
+
+=== Example 15 ===
+Target:     4 26 4 5 14 15 26
+Prediction: 4 26 4 29 
+
+=== Example 16 ===
+Target:     5 26 5 14 24 26
+Prediction: 5 26 5 14 24 26 
+
+=== Example 17 ===
+Target:     6 26 6 14 24 26
+Prediction: 6 26 6 14 24 26 
+
+=== Example 18 ===
+Target:     8 26 8 15 26
+Prediction: 8 26 8 15 26 
+
+=== Example 19 ===
+Target:     1 27 1 3 20 27
+Prediction: 1 27 1 5 14 27 
+
+=== Example 20 ===
+Target:     3 27 3 20 27
+Prediction: 3 27 3 20 27 
+
+=== Example 21 ===
+Target:     5 27 5 14 27
+Prediction: 5 27 5 14 24 27 
+
+=== Example 22 ===
+Target:     6 27 6 14 27
+Prediction: 6 27 6 14 27 
+
+=== Example 23 ===
+Target:     12 27 12 20 27
+Prediction: 12 27 12 20 27 
+
+=== Example 24 ===
+Target:     3 29 3 9 26 29
+Prediction: 3 29 3 9 26 29 
+
+=== Example 25 ===
+Target:     5 29 5 14 24 26 29
+Prediction: 5 29 5 14 15 26 29 
+
+=== Example 26 ===
+Target:     14 29 14 15 26 29
+Prediction: 14 29 14 15 26 29 
+
+=== Example 27 ===
+Target:     24 29 24 26 29
+Prediction: 24 29 24 26 29 
+
+=== Example 28 ===
+Target:     4 30 4 5 14 15 18 25 30
+Prediction: 4 30 4 5 14 15 18 25 30 
+
+=== Example 29 ===
+Target:     5 30 5 14 15 18 25 30
+Prediction: 5 30 5 14 15 18 25 30 
+
+=== Example 30 ===
+Target:     14 30 14 15 18 25 30
+Prediction: 14 30 14 15 18 
+
+=== Example 31 ===
+Target:     15 30 15 18 25 30
+Prediction: 15 30 15 18 25 30 
+
+=== Example 32 ===
+Target:     18 30 18 25 30
+Prediction: 18 30 18 25 30 
+
+=== Example 33 ===
+Target:     3 31 3 9 26 31
+Prediction: 3 31 3 9 26 31 
+
+=== Example 34 ===
+Target:     9 31 9 26 31
+Prediction: 9 31 9 26 31 
+
+=== Example 35 ===
+Target:     14 31 14 15 18 31
+Prediction: 14 31 14 24 26 31 
+
+=== Example 36 ===
+Target:     15 31 15 26 31
+Prediction: 15 31 15 18 31 
+
+=== Example 37 ===
+Target:     1 32 1 5 14 27 32
+Prediction: 1 32 1 3 9 26 32 
+
+=== Example 38 ===
+Target:     2 32 2 27 32
+Prediction: 2 32 2 27 32 
+
+=== Example 39 ===
+Target:     4 32 4 5 14 27 32
+Prediction: 4 32 4 5 14 15 26 32 
+
+=== Example 40 ===
+Target:     5 32 5 14 27 32
+Prediction: 5 32 5 14 15 26 32 
+
+=== Example 41 ===
+Target:     6 32 6 14 27 32
+Prediction: 6 32 6 14 24 27 32 
+
+=== Example 42 ===
+Target:     9 32 9 26 32
+Prediction: 9 32 9 26 32 
+
+=== Example 43 ===
+Target:     10 32 10 27 32
+Prediction: 10 32 10 27 32 
+
+=== Example 44 ===
+Target:     12 32 12 20 27 32
+Prediction: 12 32 12 20 27 32 
+
+=== Example 45 ===
+Target:     14 32 14 27 32
+Prediction: 14 32 14 15 26 32 
+
+=== Example 46 ===
+Target:     21 32 21 22 32
+Prediction: 21 32 21 22 32 
+
+=== Example 47 ===
+Target:     3 35 3 9 26 29 35
+Prediction: 3 35 3 9 26 29 35 
+
+=== Example 48 ===
+Target:     4 35 4 29 35
+Prediction: 4 35 4 29 35 
+
+=== Example 49 ===
+Target:     8 35 8 15 18 25 30 35
+Prediction: 8 35 8 15 26 29 35 
+
+=== Example 50 ===
+Target:     9 35 9 26 29 35
+Prediction: 9 35 9 26 29 35 
+

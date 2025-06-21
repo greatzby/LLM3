@@ -1,0 +1,19 @@
+# Causal Chain Analysis Summary
+Generated on: 2025-06-21 20:29:46.981172
+
+## Phase Transition Detection
+
+## Causal Chain Evidence
+### Chain 1: Parameter Saturation → Distribution Shift
+- Weight gap range: 0.00028 to 0.12325
+- Embedding similarity range: -0.001 to 0.053
+- Correlation (weight_gap vs training_prob): r=-0.966, p=0.000
+
+### Chain 2: Distribution Shift → Performance Divergence
+- Training path probability: 0.026 → 0.000
+
+## Key Findings
+
+## Graph Understanding Analysis
+- Edge prediction AUC: 0.527 → 0.824
+- ✓ Model's graph structure understanding improved
