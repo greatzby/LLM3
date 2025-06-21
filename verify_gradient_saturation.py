@@ -70,8 +70,9 @@ def prepare_test_samples(num_samples=100):
     
     for idx in selected_indices:
         start = idx * data_size
-        sequence = val_data[start:start + block_size]
-        target = val_data[start + 1:start + 1 + block_size]
+        # 修复：先转换为int64
+        sequence = val_data[start:start + block_size].astype(np.int64)
+        target = val_data[start + 1:start + 1 + block_size].astype(np.int64)
         
         # 找到第4个位置（source target source之后的第一个预测位置）
         # 这是最关键的预测位置
@@ -87,16 +88,21 @@ def prepare_test_samples(num_samples=100):
 
 def compute_gradient_distribution(model, samples, device='cuda'):
     """计算模型在样本上的梯度分布"""
-    model.eval()  # 但我们仍需要梯度
+    model.train()  # 需要梯度计算
     
     # 收集每个可能的下一跳节点的梯度
     node_gradients = defaultdict(list)
     node_probabilities = defaultdict(list)
+    true_answer_gradients = []
+    true_answer_probs = []
     
     for sample in tqdm(samples, desc="Computing gradients"):
         # 准备输入
         x = sample['input'].unsqueeze(0).to(device)
         y = sample['target'].unsqueeze(0).to(device)
+        
+        # 确保需要梯度
+        x.requires_grad = False
         
         # 前向传播
         model.zero_grad()
@@ -114,46 +120,58 @@ def compute_gradient_distribution(model, samples, device='cuda'):
         loss.backward()
         
         # 收集lm_head的梯度信息
-        lm_head_grad = model.lm_head.weight.grad
-        
-        # 分析top-k可能的下一跳
-        top_k = 10
-        top_probs, top_indices = torch.topk(key_probs, top_k)
-        
-        for i in range(top_k):
-            node_id = top_indices[i].item()
-            if node_id >= 2:  # 跳过特殊token
-                actual_node = node_id - 2
+        if model.lm_head.weight.grad is not None:
+            lm_head_grad = model.lm_head.weight.grad.clone()
+            
+            # 分析top-k可能的下一跳
+            top_k = 10
+            top_probs, top_indices = torch.topk(key_probs, top_k)
+            
+            for i in range(top_k):
+                node_id = top_indices[i].item()
+                if node_id >= 2:  # 跳过特殊token
+                    actual_node = node_id - 2
+                    
+                    # 记录该节点的梯度范数
+                    grad_norm = torch.norm(lm_head_grad[node_id]).item()
+                    node_gradients[actual_node].append(grad_norm)
+                    
+                    # 记录概率
+                    prob = top_probs[i].item()
+                    node_probabilities[actual_node].append(prob)
+            
+            # 特别记录真实答案的梯度
+            if true_next >= 2:
+                true_node = true_next.item() - 2
+                true_grad_norm = torch.norm(lm_head_grad[true_next]).item()
+                true_prob = key_probs[true_next].item()
                 
-                # 记录该节点的梯度范数
-                grad_norm = torch.norm(lm_head_grad[node_id]).item()
-                node_gradients[actual_node].append(grad_norm)
-                
-                # 记录概率
-                prob = top_probs[i].item()
-                node_probabilities[actual_node].append(prob)
-        
-        # 特别记录真实答案的梯度
-        if true_next >= 2:
-            true_node = true_next.item() - 2
-            true_grad_norm = torch.norm(lm_head_grad[true_next]).item()
-            if true_node not in [n for n, _ in enumerate(top_indices) if n >= 2]:
-                node_gradients[true_node].append(true_grad_norm)
-                node_probabilities[true_node].append(key_probs[true_next].item())
+                true_answer_gradients.append(true_grad_norm)
+                true_answer_probs.append(true_prob)
     
     # 计算统计信息
     gradient_stats = {}
     for node, grads in node_gradients.items():
         if grads:
             gradient_stats[node] = {
-                'mean_gradient': np.mean(grads),
-                'std_gradient': np.std(grads),
-                'max_gradient': np.max(grads),
-                'min_gradient': np.min(grads),
+                'mean_gradient': float(np.mean(grads)),
+                'std_gradient': float(np.std(grads)),
+                'max_gradient': float(np.max(grads)),
+                'min_gradient': float(np.min(grads)),
                 'count': len(grads),
-                'mean_probability': np.mean(node_probabilities[node])
+                'mean_probability': float(np.mean(node_probabilities[node]))
             }
     
+    # 添加真实答案的统计
+    if true_answer_gradients:
+        gradient_stats['_true_answers'] = {
+            'mean_gradient': float(np.mean(true_answer_gradients)),
+            'std_gradient': float(np.std(true_answer_gradients)),
+            'mean_probability': float(np.mean(true_answer_probs)),
+            'count': len(true_answer_gradients)
+        }
+    
+    model.eval()  # 恢复eval模式
     return gradient_stats
 
 def analyze_phase_transition():
@@ -172,90 +190,146 @@ def analyze_phase_transition():
         print(f"\n{'='*60}")
         print(f"Analyzing checkpoint {ckpt_iter}...")
         
-        # 加载模型
-        model = load_model_checkpoint(ckpt_iter)
-        
-        # 计算梯度分布
-        gradient_stats = compute_gradient_distribution(model, samples)
-        
-        # 保存结果
-        all_results[ckpt_iter] = gradient_stats
-        
-        # 打印关键节点的梯度信息
-        print(f"\nTop nodes by frequency at {ckpt_iter}:")
-        sorted_nodes = sorted(gradient_stats.items(), 
-                            key=lambda x: x[1]['count'], 
-                            reverse=True)[:10]
-        
-        for node, stats in sorted_nodes:
-            print(f"  Node {node}: "
-                  f"grad={stats['mean_gradient']:.6f}, "
-                  f"prob={stats['mean_probability']:.4f}, "
-                  f"count={stats['count']}")
-        
-        # 清理GPU内存
-        del model
-        torch.cuda.empty_cache()
+        try:
+            # 加载模型
+            model = load_model_checkpoint(ckpt_iter)
+            
+            # 计算梯度分布
+            gradient_stats = compute_gradient_distribution(model, samples)
+            
+            # 保存结果
+            all_results[ckpt_iter] = gradient_stats
+            
+            # 打印关键节点的梯度信息
+            print(f"\nTop nodes by frequency at {ckpt_iter}:")
+            
+            # 过滤掉特殊键
+            regular_nodes = {k: v for k, v in gradient_stats.items() if not str(k).startswith('_')}
+            sorted_nodes = sorted(regular_nodes.items(), 
+                                key=lambda x: x[1]['count'], 
+                                reverse=True)[:10]
+            
+            for node, stats in sorted_nodes:
+                print(f"  Node {node}: "
+                      f"grad={stats['mean_gradient']:.6f}, "
+                      f"prob={stats['mean_probability']:.4f}, "
+                      f"count={stats['count']}")
+            
+            # 打印真实答案的统计
+            if '_true_answers' in gradient_stats:
+                true_stats = gradient_stats['_true_answers']
+                print(f"\nTrue answers stats:")
+                print(f"  Mean gradient: {true_stats['mean_gradient']:.6f}")
+                print(f"  Mean probability: {true_stats['mean_probability']:.4f}")
+            
+            # 清理GPU内存
+            del model
+            torch.cuda.empty_cache()
+            
+        except Exception as e:
+            print(f"Error processing checkpoint {ckpt_iter}: {e}")
+            continue
     
     # 保存完整结果
     with open(os.path.join(OUTPUT_DIR, 'gradient_analysis.json'), 'w') as f:
         json.dump(all_results, f, indent=2)
     
-    # 分析node 2的梯度演化（假设node 2是最常见的）
-    analyze_specific_node_evolution(all_results, target_node=2)
+    # 分析梯度演化
+    analyze_gradient_evolution_patterns(all_results)
     
     # 生成可视化
     visualize_gradient_evolution(all_results)
     
     return all_results
 
-def analyze_specific_node_evolution(all_results, target_node=2):
-    """分析特定节点的梯度演化"""
+def analyze_gradient_evolution_patterns(all_results):
+    """分析梯度演化模式"""
     print(f"\n{'='*60}")
-    print(f"Node {target_node} gradient evolution:")
+    print("Gradient Evolution Analysis:")
     
-    iterations = []
-    gradients = []
-    probabilities = []
+    # 追踪真实答案的梯度变化
+    if all([k in all_results and '_true_answers' in all_results[k] for k in CHECKPOINTS]):
+        print("\nTrue Answer Gradient Evolution:")
+        for ckpt in CHECKPOINTS:
+            if ckpt in all_results and '_true_answers' in all_results[ckpt]:
+                stats = all_results[ckpt]['_true_answers']
+                print(f"  {ckpt}: grad={stats['mean_gradient']:.6f}, prob={stats['mean_probability']:.4f}")
     
-    for ckpt_iter in CHECKPOINTS:
-        if target_node in all_results[ckpt_iter]:
-            stats = all_results[ckpt_iter][target_node]
-            iterations.append(ckpt_iter)
-            gradients.append(stats['mean_gradient'])
-            probabilities.append(stats['mean_probability'])
-            
-            print(f"  {ckpt_iter}: grad={stats['mean_gradient']:.6f}, "
-                  f"prob={stats['mean_probability']:.4f}")
+    # 找出梯度变化最大的节点
+    print("\nNodes with largest gradient changes:")
+    node_changes = {}
     
-    # 检测梯度饱和
-    if len(gradients) > 1:
-        # 计算梯度下降率
-        grad_reduction = (gradients[0] - gradients[-1]) / gradients[0]
-        print(f"\nGradient reduction: {grad_reduction:.2%}")
+    # 计算每个节点的梯度变化
+    all_nodes = set()
+    for result in all_results.values():
+        all_nodes.update([k for k in result.keys() if not str(k).startswith('_')])
+    
+    for node in all_nodes:
+        gradients = []
+        for ckpt in CHECKPOINTS:
+            if ckpt in all_results and node in all_results[ckpt]:
+                gradients.append(all_results[ckpt][node]['mean_gradient'])
         
-        # 检查是否存在梯度崩溃点
-        for i in range(1, len(gradients)):
-            if gradients[i] < gradients[i-1] * 0.1:  # 梯度下降90%以上
-                print(f"WARNING: Gradient collapse detected between "
-                      f"{iterations[i-1]} and {iterations[i]}!")
+        if len(gradients) >= 2:
+            change = max(gradients) - min(gradients)
+            node_changes[node] = {
+                'change': change,
+                'gradients': gradients
+            }
+    
+    # 排序并打印top变化
+    sorted_changes = sorted(node_changes.items(), key=lambda x: x[1]['change'], reverse=True)[:5]
+    for node, info in sorted_changes:
+        print(f"  Node {node}: change={info['change']:.6f}")
 
 def visualize_gradient_evolution(all_results):
     """可视化梯度演化过程"""
     fig, axes = plt.subplots(2, 2, figsize=(15, 12))
     
-    # 1. Top节点的梯度演化
+    # 1. 真实答案的梯度和概率演化
     ax = axes[0, 0]
     
-    # 找出最常见的节点
-    all_nodes = set()
-    for result in all_results.values():
-        all_nodes.update(result.keys())
+    true_grads = []
+    true_probs = []
+    iterations = []
     
-    node_counts = {}
-    for node in all_nodes:
-        count = sum(1 for r in all_results.values() if node in r)
-        node_counts[node] = count
+    for ckpt in CHECKPOINTS:
+        if ckpt in all_results and '_true_answers' in all_results[ckpt]:
+            stats = all_results[ckpt]['_true_answers']
+            true_grads.append(stats['mean_gradient'])
+            true_probs.append(stats['mean_probability'])
+            iterations.append(ckpt)
+    
+    if iterations:
+        ax2 = ax.twinx()
+        
+        line1 = ax.plot(iterations, true_grads, 'b-', marker='o', markersize=8, 
+                        linewidth=2, label='Gradient')
+        line2 = ax2.plot(iterations, true_probs, 'r-', marker='s', markersize=8, 
+                         linewidth=2, label='Probability')
+        
+        ax.set_xlabel('Iteration')
+        ax.set_ylabel('Mean Gradient', color='b')
+        ax2.set_ylabel('Mean Probability', color='r')
+        ax.set_title('True Answer: Gradient vs Probability')
+        
+        # 标记相变区域
+        ax.axvspan(130000, 150000, alpha=0.2, color='gray', label='Transition zone')
+        
+        lines = line1 + line2
+        labels = [l.get_label() for l in lines]
+        ax.legend(lines, labels, loc='best')
+        ax.grid(True, alpha=0.3)
+    
+    # 2. Top节点的梯度演化
+    ax = axes[0, 1]
+    
+    # 找出最常见的节点
+    node_counts = defaultdict(int)
+    for result in all_results.values():
+        for node in result:
+            if not str(node).startswith('_'):
+                node_counts[node] += 1
     
     top_nodes = sorted(node_counts.items(), key=lambda x: x[1], reverse=True)[:5]
     
@@ -263,10 +337,10 @@ def visualize_gradient_evolution(all_results):
         iterations = []
         gradients = []
         
-        for ckpt_iter in CHECKPOINTS:
-            if node in all_results[ckpt_iter]:
-                iterations.append(ckpt_iter)
-                gradients.append(all_results[ckpt_iter][node]['mean_gradient'])
+        for ckpt in CHECKPOINTS:
+            if ckpt in all_results and node in all_results[ckpt]:
+                iterations.append(ckpt)
+                gradients.append(all_results[ckpt][node]['mean_gradient'])
         
         if iterations:
             ax.plot(iterations, gradients, marker='o', label=f'Node {node}')
@@ -277,75 +351,64 @@ def visualize_gradient_evolution(all_results):
     ax.legend()
     ax.grid(True, alpha=0.3)
     
-    # 2. 梯度vs概率散点图
-    ax = axes[0, 1]
-    
-    for i, (ckpt_iter, color) in enumerate(zip([100000, 140000, 180000], ['blue', 'orange', 'red'])):
-        if ckpt_iter in all_results:
-            probs = []
-            grads = []
-            
-            for node, stats in all_results[ckpt_iter].items():
-                probs.append(stats['mean_probability'])
-                grads.append(stats['mean_gradient'])
-            
-            ax.scatter(probs, grads, alpha=0.6, color=color, label=f'{ckpt_iter//1000}k')
-    
-    ax.set_xlabel('Mean Probability')
-    ax.set_ylabel('Mean Gradient Norm')
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_title('Gradient vs Probability')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-    
-    # 3. 梯度分布直方图
+    # 3. 梯度vs概率散点图（140k时刻）
     ax = axes[1, 0]
     
-    for ckpt_iter, color in zip([100000, 140000, 180000], ['blue', 'orange', 'red']):
-        if ckpt_iter in all_results:
-            all_gradients = []
-            for stats in all_results[ckpt_iter].values():
-                all_gradients.append(stats['mean_gradient'])
-            
-            ax.hist(all_gradients, bins=30, alpha=0.5, color=color, 
-                   label=f'{ckpt_iter//1000}k', density=True)
+    if 140000 in all_results:
+        probs = []
+        grads = []
+        nodes = []
+        
+        for node, stats in all_results[140000].items():
+            if not str(node).startswith('_'):
+                probs.append(stats['mean_probability'])
+                grads.append(stats['mean_gradient'])
+                nodes.append(node)
+        
+        scatter = ax.scatter(probs, grads, alpha=0.6, s=100)
+        
+        # 标注一些关键点
+        for i, node in enumerate(nodes):
+            if probs[i] > 0.5 or grads[i] < 0.001:
+                ax.annotate(f'{node}', (probs[i], grads[i]), 
+                           xytext=(5, 5), textcoords='offset points')
+        
+        ax.set_xlabel('Mean Probability')
+        ax.set_ylabel('Mean Gradient Norm')
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.set_title('Gradient vs Probability at 140k (Phase Transition)')
+        ax.grid(True, alpha=0.3)
     
-    ax.set_xlabel('Gradient Norm')
-    ax.set_ylabel('Density')
-    ax.set_title('Gradient Distribution Evolution')
-    ax.legend()
-    ax.set_yscale('log')
-    
-    # 4. 相变指标
+    # 4. 梯度比率演化
     ax = axes[1, 1]
     
+    ratios = []
     iterations = []
-    total_gradient = []
-    gradient_variance = []
     
-    for ckpt_iter in CHECKPOINTS:
-        if ckpt_iter in all_results:
-            grads = [stats['mean_gradient'] for stats in all_results[ckpt_iter].values()]
-            iterations.append(ckpt_iter)
-            total_gradient.append(np.mean(grads))
-            gradient_variance.append(np.var(grads))
+    for ckpt in CHECKPOINTS:
+        if ckpt in all_results and '_true_answers' in all_results[ckpt]:
+            true_grad = all_results[ckpt]['_true_answers']['mean_gradient']
+            
+            # 计算其他节点的平均梯度
+            other_grads = []
+            for node, stats in all_results[ckpt].items():
+                if not str(node).startswith('_'):
+                    other_grads.append(stats['mean_gradient'])
+            
+            if other_grads:
+                avg_other = np.mean(other_grads)
+                ratio = true_grad / (avg_other + 1e-8)
+                ratios.append(ratio)
+                iterations.append(ckpt)
     
-    ax2 = ax.twinx()
-    
-    line1 = ax.plot(iterations, total_gradient, 'b-', marker='o', label='Mean Gradient')
-    line2 = ax2.plot(iterations, gradient_variance, 'r-', marker='s', label='Gradient Variance')
-    
-    ax.set_xlabel('Iteration')
-    ax.set_ylabel('Mean Gradient', color='b')
-    ax2.set_ylabel('Gradient Variance', color='r')
-    ax.set_title('Phase Transition Indicators')
-    
-    lines = line1 + line2
-    labels = [l.get_label() for l in lines]
-    ax.legend(lines, labels, loc='best')
-    
-    ax.grid(True, alpha=0.3)
+    if iterations:
+        ax.plot(iterations, ratios, 'g-', marker='o', markersize=8, linewidth=2)
+        ax.axhline(y=1.0, color='k', linestyle='--', alpha=0.5)
+        ax.set_xlabel('Iteration')
+        ax.set_ylabel('True Answer Gradient / Average Other Gradient')
+        ax.set_title('Relative Gradient Strength')
+        ax.grid(True, alpha=0.3)
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'gradient_evolution.png'), dpi=150)
@@ -360,13 +423,14 @@ def run_controlled_experiment():
     
     # 加载一个模型
     model = load_model_checkpoint(120000)
+    model.train()  # 需要梯度
     
     # 创建合成输入
     # source=0, target=5, current=0
     synthetic_input = torch.tensor([[2, 7, 2]], dtype=torch.long).cuda()  # +2 for token offset
     
     # 测试不同的目标概率
-    target_probs = [0.5, 0.8, 0.9, 0.95, 0.98, 0.99, 0.999]
+    target_probs = [0.5, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99, 0.995, 0.999]
     
     results = []
     
@@ -377,33 +441,45 @@ def run_controlled_experiment():
         logits, _ = model(synthetic_input)
         key_logits = logits[0, -1, :]  # 最后一个位置
         
-        # 创建目标分布：大部分概率给node 2 (token 4)
-        target_dist = torch.zeros_like(key_logits)
-        target_dist[4] = target_prob  # node 2
-        target_dist[5] = (1 - target_prob) / 2  # node 3
-        target_dist[6] = (1 - target_prob) / 2  # node 4
+        # 假设node 2 (token 4)是目标
+        target_token = 4
         
-        # KL损失（模拟训练）
+        # 使用交叉熵损失
+        # 创建one-hot目标（但是使用soft标签）
+        soft_target = torch.zeros_like(key_logits)
+        soft_target[target_token] = target_prob
+        # 剩余概率均匀分布
+        remaining_prob = (1 - target_prob) / (len(key_logits) - 1)
+        soft_target[soft_target == 0] = remaining_prob
+        
+        # 计算损失
         log_probs = F.log_softmax(key_logits, dim=0)
-        loss = F.kl_div(log_probs, target_dist, reduction='sum')
+        loss = -torch.sum(soft_target * log_probs)
         
         # 反向传播
         loss.backward()
         
-        # 获取node 2的梯度
-        node2_grad = torch.norm(model.lm_head.weight.grad[4]).item()
+        # 获取目标token的梯度
+        target_grad = torch.norm(model.lm_head.weight.grad[target_token]).item()
+        
+        # 获取当前概率
+        current_prob = F.softmax(key_logits, dim=0)[target_token].item()
         
         results.append({
             'target_prob': target_prob,
-            'gradient': node2_grad,
+            'current_prob': current_prob,
+            'gradient': target_grad,
             'loss': loss.item()
         })
         
-        print(f"Target prob={target_prob:.3f}: grad={node2_grad:.6f}, loss={loss.item():.6f}")
+        print(f"Target prob={target_prob:.3f}: current_prob={current_prob:.3f}, "
+              f"grad={target_grad:.6f}, loss={loss.item():.6f}")
     
     # 绘制结果
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 5))
     
+    # 子图1：梯度vs目标概率
+    plt.subplot(1, 2, 1)
     probs = [r['target_prob'] for r in results]
     grads = [r['gradient'] for r in results]
     
@@ -417,10 +493,23 @@ def run_controlled_experiment():
     plt.axvspan(0.95, 1.0, alpha=0.2, color='red', label='Saturation Zone')
     plt.legend()
     
+    # 子图2：损失vs目标概率
+    plt.subplot(1, 2, 2)
+    losses = [r['loss'] for r in results]
+    
+    plt.plot(probs, losses, 'ro-', markersize=8, linewidth=2)
+    plt.xlabel('Target Probability')
+    plt.ylabel('Loss')
+    plt.title('Loss vs Target Probability')
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'gradient_saturation_curve.png'), dpi=150)
     plt.close()
     
     print(f"Saturation curve saved to {OUTPUT_DIR}/gradient_saturation_curve.png")
+    
+    model.eval()
 
 if __name__ == "__main__":
     print("="*60)
