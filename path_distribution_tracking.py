@@ -15,6 +15,23 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from model import GPTConfig, GPT
 
+def convert_to_serializable(obj):
+    """递归转换numpy类型为Python原生类型"""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_to_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_to_serializable(item) for item in obj)
+    else:
+        return obj
+
 def load_meta(data_path):
     """加载meta信息"""
     with open(os.path.join(data_path, 'meta.pkl'), 'rb') as f:
@@ -162,7 +179,7 @@ def beam_search_paths(model, prompt, k=10, max_length=50):
     results = []
     for seq, log_prob in all_beams[:k]:
         path = extract_path_from_tokens(seq[0].cpu().numpy())
-        prob = np.exp(log_prob)
+        prob = float(np.exp(log_prob))
         results.append((path, prob))
     
     return results
@@ -209,12 +226,12 @@ def analyze_distribution_shift(all_checkpoints_data):
         
         # 计算统计量
         results[ckpt] = {
-            'mean_training_path_prob': np.mean(training_path_probs) if training_path_probs else 0,
-            'mean_alternative_path_prob': np.mean(alternative_path_probs) if alternative_path_probs else 0,
-            'num_unique_paths': len(path_counts),
-            'entropy': calculate_entropy(list(path_counts.values())),
-            'top_path_frequency': max(path_counts.values()) / sum(path_counts.values()) if path_counts else 0,
-            'training_path_in_top': len([p for p in training_path_probs if p > 0]) / len(training_path_probs) if training_path_probs else 0
+            'mean_training_path_prob': float(np.mean(training_path_probs)) if training_path_probs else 0.0,
+            'mean_alternative_path_prob': float(np.mean(alternative_path_probs)) if alternative_path_probs else 0.0,
+            'num_unique_paths': int(len(path_counts)),
+            'entropy': float(calculate_entropy(list(path_counts.values()))),
+            'top_path_frequency': float(max(path_counts.values()) / sum(path_counts.values())) if path_counts else 0.0,
+            'training_path_in_top': float(len([p for p in training_path_probs if p > 0]) / len(training_path_probs)) if training_path_probs else 0.0
         }
     
     return results
@@ -271,18 +288,18 @@ def main():
     # 分析分布变化
     distribution_shifts = analyze_distribution_shift(all_results)
     
-    # 保存结果
+    # 保存结果（转换为可序列化格式）
+    serializable_results = {}
+    for ckpt, data in all_results.items():
+        serializable_results[ckpt] = {}
+        for idx, example_data in data.items():
+            serializable_results[ckpt][idx] = {
+                'target_path': list(example_data['target_path']),
+                'predictions': [[list(path) if isinstance(path, tuple) else path, float(prob)] 
+                              for path, prob in example_data['predictions']]
+            }
+    
     with open(os.path.join(output_dir, 'path_probabilities.json'), 'w') as f:
-        # 转换为可序列化格式
-        serializable_results = {}
-        for ckpt, data in all_results.items():
-            serializable_results[ckpt] = {}
-            for idx, example_data in data.items():
-                serializable_results[ckpt][idx] = {
-                    'target_path': list(example_data['target_path']) if isinstance(example_data['target_path'], tuple) else example_data['target_path'],
-                    'predictions': [(list(path) if isinstance(path, tuple) else path, float(prob)) 
-                                  for path, prob in example_data['predictions']]
-                }
         json.dump(serializable_results, f, indent=2)
     
     with open(os.path.join(output_dir, 'distribution_shifts.json'), 'w') as f:

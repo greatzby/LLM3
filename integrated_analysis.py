@@ -148,15 +148,15 @@ def create_causal_chain_visualization(df, output_dir):
     ax2 = ax.twinx()
     
     # 处理缺失值
-    weight_gap = df['weight_gap'].fillna(method='linear') if 'weight_gap' in df else []
-    embedding_sim = df['embedding_similarity'].fillna(method='linear') if 'embedding_similarity' in df else []
+    weight_gap = df['weight_gap'].values if 'weight_gap' in df else []
+    embedding_sim = df['embedding_similarity'].values if 'embedding_similarity' in df else []
     
-    if len(weight_gap) > 0:
+    if len(weight_gap) > 0 and not all(np.isnan(weight_gap)):
         line1 = ax.plot(checkpoints, weight_gap, 'b-', marker='o', label='Weight Gap', markersize=8)
         ax.set_ylabel('Weight Gap', color='b')
         ax.tick_params(axis='y', labelcolor='b')
     
-    if len(embedding_sim) > 0:
+    if len(embedding_sim) > 0 and not all(np.isnan(embedding_sim)):
         line2 = ax2.plot(checkpoints, embedding_sim, 'r-', marker='s', label='Embedding Similarity', markersize=8)
         ax2.set_ylabel('Embedding Similarity', color='r')
         ax2.tick_params(axis='y', labelcolor='r')
@@ -175,15 +175,15 @@ def create_causal_chain_visualization(df, output_dir):
     ax = axes[1]
     ax2 = ax.twinx()
     
-    training_prob = df['training_path_prob'].fillna(method='linear') if 'training_path_prob' in df else []
-    entropy = df['entropy'].fillna(method='linear') if 'entropy' in df else []
+    training_prob = df['training_path_prob'].values if 'training_path_prob' in df else []
+    entropy = df['entropy'].values if 'entropy' in df else []
     
-    if len(training_prob) > 0:
+    if len(training_prob) > 0 and not all(np.isnan(training_prob)):
         line1 = ax.plot(checkpoints, training_prob, 'g-', marker='o', label='Training Path Prob', markersize=8)
         ax.set_ylabel('Training Path Probability', color='g')
         ax.tick_params(axis='y', labelcolor='g')
     
-    if len(entropy) > 0:
+    if len(entropy) > 0 and not all(np.isnan(entropy)):
         line2 = ax2.plot(checkpoints, entropy, 'm-', marker='s', label='Output Entropy', markersize=8)
         ax2.set_ylabel('Entropy', color='m')
         ax2.tick_params(axis='y', labelcolor='m')
@@ -200,15 +200,15 @@ def create_causal_chain_visualization(df, output_dir):
     # 3. 性能分歧
     ax = axes[2]
     
-    token_acc = df['token_accuracy'].fillna(0) if 'token_accuracy' in df else []
-    path_acc = df['path_accuracy'].fillna(0) if 'path_accuracy' in df else []
-    ar_acc = df['ar_accuracy'].fillna(0) if 'ar_accuracy' in df else []
+    token_acc = df['token_accuracy'].values if 'token_accuracy' in df else []
+    path_acc = df['path_accuracy'].values if 'path_accuracy' in df else []
+    ar_acc = df['ar_accuracy'].values if 'ar_accuracy' in df else []
     
-    if len(token_acc) > 0:
+    if len(token_acc) > 0 and not all(np.isnan(token_acc)):
         ax.plot(checkpoints, token_acc, 'b-', marker='o', label='Token Accuracy', linewidth=2, markersize=8)
-    if len(path_acc) > 0:
+    if len(path_acc) > 0 and not all(np.isnan(path_acc)):
         ax.plot(checkpoints, path_acc, 'g-', marker='s', label='Path Accuracy', linewidth=2, markersize=8)
-    if len(ar_acc) > 0:
+    if len(ar_acc) > 0 and not all(np.isnan(ar_acc)):
         ax.plot(checkpoints, ar_acc, 'r--', marker='^', label='AR Accuracy', linewidth=2, markersize=8)
     
     ax.axhline(y=0.25, color='gray', linestyle=':', alpha=0.5, label='Random Baseline')
@@ -270,7 +270,9 @@ def generate_summary_report(df, correlations, output_dir):
     
     report.append("\n### Chain 2: Distribution Shift → Performance Divergence\n")
     if 'training_path_prob' in df.columns:
-        report.append(f"- Training path probability: {df['training_path_prob'].iloc[0]:.3f} → {df['training_path_prob'].iloc[-1]:.3f}\n")
+        first_prob = df.loc[df['training_path_prob'].first_valid_index(), 'training_path_prob']
+        last_prob = df.loc[df['training_path_prob'].last_valid_index(), 'training_path_prob']
+        report.append(f"- Training path probability: {first_prob:.3f} → {last_prob:.3f}\n")
     
     if 'training_prob_vs_token_acc' in correlations:
         r, p = correlations['training_prob_vs_token_acc']
@@ -281,28 +283,30 @@ def generate_summary_report(df, correlations, output_dir):
     
     # 检查是否符合预期模式
     if 'token_accuracy' in df.columns:
-        final_token_acc = df['token_accuracy'].iloc[-1]
+        final_token_acc = df.loc[df['token_accuracy'].last_valid_index(), 'token_accuracy']
         if final_token_acc < 0.25:
             report.append(f"- ✓ Final token accuracy ({final_token_acc:.3f}) below random baseline (0.25)\n")
         else:
             report.append(f"- ✗ Final token accuracy ({final_token_acc:.3f}) above random baseline (0.25)\n")
     
     if 'ar_accuracy' in df.columns:
-        ar_maintained = df['ar_accuracy'].iloc[-1] > 0.9
-        if ar_maintained:
-            report.append(f"- ✓ AR accuracy maintained high ({df['ar_accuracy'].iloc[-1]:.3f})\n")
+        final_ar = df.loc[df['ar_accuracy'].last_valid_index(), 'ar_accuracy']
+        if final_ar > 0.9:
+            report.append(f"- ✓ AR accuracy maintained high ({final_ar:.3f})\n")
     
     if 'weight_gap' in df.columns:
-        final_gap = abs(df['weight_gap'].iloc[-1])
+        final_gap = abs(df.loc[df['weight_gap'].last_valid_index(), 'weight_gap'])
         if final_gap < 0.001:
             report.append(f"- ✓ Weight gap approaches zero ({final_gap:.5f})\n")
     
     # 4. 图理解分析
     if 'edge_prediction_auc' in df.columns:
         report.append("\n## Graph Understanding Analysis\n")
-        report.append(f"- Edge prediction AUC: {df['edge_prediction_auc'].iloc[0]:.3f} → {df['edge_prediction_auc'].iloc[-1]:.3f}\n")
+        first_auc = df.loc[df['edge_prediction_auc'].first_valid_index(), 'edge_prediction_auc']
+        last_auc = df.loc[df['edge_prediction_auc'].last_valid_index(), 'edge_prediction_auc']
+        report.append(f"- Edge prediction AUC: {first_auc:.3f} → {last_auc:.3f}\n")
         
-        if df['edge_prediction_auc'].iloc[-1] > df['edge_prediction_auc'].iloc[0]:
+        if last_auc > first_auc:
             report.append("- ✓ Model's graph structure understanding improved\n")
     
     # 保存报告

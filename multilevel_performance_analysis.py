@@ -14,6 +14,21 @@ import pickle
 import networkx as nx
 from model import GPTConfig, GPT
 
+def convert_to_serializable(obj):
+    """递归转换numpy类型为Python原生类型"""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_to_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(item) for item in obj]
+    else:
+        return obj
+
 def load_meta(data_path):
     """加载meta信息"""
     with open(os.path.join(data_path, 'meta.pkl'), 'rb') as f:
@@ -65,7 +80,7 @@ def calculate_token_level_accuracy(predictions, targets, start_pos=3):
                 correct += 1
             total += 1
     
-    return correct / total if total > 0 else 0
+    return float(correct / total) if total > 0 else 0.0
 
 def calculate_path_level_accuracy(predictions, targets):
     """计算路径级别准确率"""
@@ -79,7 +94,7 @@ def calculate_path_level_accuracy(predictions, targets):
         if pred_path == target_path:
             correct += 1
     
-    return correct / total if total > 0 else 0
+    return float(correct / total) if total > 0 else 0.0
 
 def extract_path(sequence_str):
     """从序列字符串中提取路径"""
@@ -116,7 +131,7 @@ def calculate_position_wise_accuracy(predictions, targets, max_positions=20):
     position_accuracy = {}
     for pos in range(max_positions):
         if position_total[pos] > 0:
-            position_accuracy[pos] = position_correct[pos] / position_total[pos]
+            position_accuracy[pos] = float(position_correct[pos] / position_total[pos])
         else:
             position_accuracy[pos] = 0.0
     
@@ -145,7 +160,7 @@ def calculate_ar_accuracy(predictions, graph_path):
         if is_valid:
             valid_count += 1
     
-    return valid_count / total_count if total_count > 0 else 0
+    return float(valid_count / total_count) if total_count > 0 else 0.0
 
 def load_test_data(data_path, meta, num_samples=1000):
     """加载测试数据"""
@@ -262,9 +277,10 @@ def main():
             traceback.print_exc()
             continue
     
-    # 保存结果
+    # 保存结果（转换为可序列化格式）
+    serializable_results = convert_to_serializable(all_results)
     with open(os.path.join(output_dir, 'performance_results.json'), 'w') as f:
-        json.dump(all_results, f, indent=2)
+        json.dump(serializable_results, f, indent=2)
     
     # 创建可视化
     create_performance_plots(all_results, output_dir)

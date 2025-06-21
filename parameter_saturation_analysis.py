@@ -15,6 +15,21 @@ import pickle
 import networkx as nx
 from model import GPTConfig, GPT
 
+def convert_to_serializable(obj):
+    """递归转换numpy类型为Python原生类型"""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_to_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(item) for item in obj]
+    else:
+        return obj
+
 def load_meta(data_path):
     """加载meta信息"""
     with open(os.path.join(data_path, 'meta.pkl'), 'rb') as f:
@@ -66,11 +81,11 @@ def analyze_weight_gap(model, graph_path):
                     non_edge_weights.append(similarity)
     
     return {
-        'edge_mean': np.mean(edge_weights) if edge_weights else 0,
-        'non_edge_mean': np.mean(non_edge_weights) if non_edge_weights else 0,
-        'weight_gap': (np.mean(edge_weights) if edge_weights else 0) - (np.mean(non_edge_weights) if non_edge_weights else 0),
-        'edge_std': np.std(edge_weights) if edge_weights else 0,
-        'non_edge_std': np.std(non_edge_weights) if non_edge_weights else 0
+        'edge_mean': float(np.mean(edge_weights)) if edge_weights else 0.0,
+        'non_edge_mean': float(np.mean(non_edge_weights)) if non_edge_weights else 0.0,
+        'weight_gap': float(np.mean(edge_weights) if edge_weights else 0) - float(np.mean(non_edge_weights) if non_edge_weights else 0),
+        'edge_std': float(np.std(edge_weights)) if edge_weights else 0.0,
+        'non_edge_std': float(np.std(non_edge_weights)) if non_edge_weights else 0.0
     }
 
 def analyze_gradient_responsiveness(model, test_loader, device, num_samples=100):
@@ -100,28 +115,27 @@ def analyze_gradient_responsiveness(model, test_loader, device, num_samples=100)
             for i, grad_norm in enumerate(grad_norms):
                 if i not in token_gradients:
                     token_gradients[i] = []
-                token_gradients[i].append(grad_norm)
+                token_gradients[i].append(float(grad_norm))
     
     # 计算平均梯度响应
     avg_gradients = {}
     for token_id, grads in token_gradients.items():
-        avg_gradients[token_id] = np.mean(grads)
+        avg_gradients[token_id] = float(np.mean(grads))
     
     # 分析常见vs罕见token的梯度差异
     # 假设token 2-11是最常见的路径节点（节点0-9）
     common_tokens = range(2, 12)  # token id
     rare_tokens = range(52, 62)   # token id (节点50-59)
     
-    common_grad = np.mean([avg_gradients.get(t, 0) for t in common_tokens])
-    rare_grad = np.mean([avg_gradients.get(t, 0) for t in rare_tokens])
+    common_grad = float(np.mean([avg_gradients.get(t, 0) for t in common_tokens]))
+    rare_grad = float(np.mean([avg_gradients.get(t, 0) for t in rare_tokens]))
     
     model.eval()  # 恢复eval模式
     
     return {
         'common_token_grad': common_grad,
         'rare_token_grad': rare_grad,
-        'grad_ratio': rare_grad / (common_grad + 1e-8),
-        'all_gradients': avg_gradients
+        'grad_ratio': float(rare_grad / (common_grad + 1e-8))
     }
 
 def analyze_embedding_similarity(model):
@@ -138,17 +152,17 @@ def analyze_embedding_similarity(model):
             sim = np.dot(node_embeddings[i], node_embeddings[j]) / (
                 np.linalg.norm(node_embeddings[i]) * np.linalg.norm(node_embeddings[j]) + 1e-8
             )
-            similarities.append(sim)
+            similarities.append(float(sim))
     
     # 计算embedding norms
-    norms = [np.linalg.norm(emb) for emb in node_embeddings]
+    norms = [float(np.linalg.norm(emb)) for emb in node_embeddings]
     
     return {
-        'mean_similarity': np.mean(similarities) if similarities else 0,
-        'std_similarity': np.std(similarities) if similarities else 0,
-        'mean_norm': np.mean(norms) if norms else 0,
-        'std_norm': np.std(norms) if norms else 0,
-        'norm_variance': np.var(norms) if norms else 0
+        'mean_similarity': float(np.mean(similarities)) if similarities else 0.0,
+        'std_similarity': float(np.std(similarities)) if similarities else 0.0,
+        'mean_norm': float(np.mean(norms)) if norms else 0.0,
+        'std_norm': float(np.std(norms)) if norms else 0.0,
+        'norm_variance': float(np.var(norms)) if norms else 0.0
     }
 
 def prepare_test_loader(data_path, batch_size=32):
@@ -227,9 +241,10 @@ def main():
             traceback.print_exc()
             continue
     
-    # 保存结果
+    # 保存结果（转换为可序列化格式）
+    serializable_results = convert_to_serializable(results)
     with open(os.path.join(output_dir, 'parameter_saturation_results.json'), 'w') as f:
-        json.dump(results, f, indent=2)
+        json.dump(serializable_results, f, indent=2)
     
     # 创建可视化
     create_parameter_plots(results, output_dir)

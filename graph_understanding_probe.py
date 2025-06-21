@@ -14,6 +14,21 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 import pickle
 from model import GPTConfig, GPT
 
+def convert_to_serializable(obj):
+    """递归转换numpy类型为Python原生类型"""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_to_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(item) for item in obj]
+    else:
+        return obj
+
 def load_meta(data_path):
     """加载meta信息"""
     with open(os.path.join(data_path, 'meta.pkl'), 'rb') as f:
@@ -62,7 +77,7 @@ def probe_edge_prediction(model, graph, num_samples=1000):
             
             # 检查node2的logit
             node2_logit = next_token_logits[int(node2)+2].item()
-            predictions.append(node2_logit)
+            predictions.append(float(node2_logit))
             
             # 真实标签
             is_edge = (node1, node2) in edges or (node2, node1) in edges
@@ -70,14 +85,14 @@ def probe_edge_prediction(model, graph, num_samples=1000):
     
     # 计算AUC
     if len(set(labels)) > 1:
-        auc = roc_auc_score(labels, predictions)
+        auc = float(roc_auc_score(labels, predictions))
     else:
         auc = 0.5
     
     # 计算准确率（使用中位数作为阈值）
     threshold = np.median(predictions)
     binary_preds = [1 if p > threshold else 0 for p in predictions]
-    accuracy = accuracy_score(labels, binary_preds)
+    accuracy = float(accuracy_score(labels, binary_preds))
     
     return {
         'edge_prediction_auc': auc,
@@ -119,12 +134,12 @@ def probe_path_validity_understanding(model, graph, num_samples=500):
             next_token_logits = logits[0, -1, :]
         
         # 比较valid vs invalid节点的平均logit
-        valid_logits = [next_token_logits[int(n)+2].item() for n in valid_next_nodes]
+        valid_logits = [float(next_token_logits[int(n)+2].item()) for n in valid_next_nodes]
         invalid_sample = np.random.choice(invalid_nodes, min(10, len(invalid_nodes)), replace=False)
-        invalid_logits = [next_token_logits[int(n)+2].item() for n in invalid_sample]
+        invalid_logits = [float(next_token_logits[int(n)+2].item()) for n in invalid_sample]
         
-        avg_valid = np.mean(valid_logits)
-        avg_invalid = np.mean(invalid_logits)
+        avg_valid = float(np.mean(valid_logits))
+        avg_invalid = float(np.mean(invalid_logits))
         
         results.append({
             'valid_score': avg_valid,
@@ -137,14 +152,14 @@ def probe_path_validity_understanding(model, graph, num_samples=500):
         discriminations = [r['discrimination'] for r in results]
         
         return {
-            'path_validity_discrimination': np.mean(discriminations),
-            'discrimination_std': np.std(discriminations),
-            'positive_discrimination_rate': sum(1 for d in discriminations if d > 0) / len(discriminations)
+            'path_validity_discrimination': float(np.mean(discriminations)),
+            'discrimination_std': float(np.std(discriminations)),
+            'positive_discrimination_rate': float(sum(1 for d in discriminations if d > 0) / len(discriminations))
         }
     else:
         return {
-            'path_validity_discrimination': 0,
-            'discrimination_std': 0,
+            'path_validity_discrimination': 0.0,
+            'discrimination_std': 0.0,
             'positive_discrimination_rate': 0.5
         }
 
@@ -187,8 +202,8 @@ def probe_shortest_path_preference(model, graph, num_samples=200):
             longer_first_steps = set(p[1] for p in longer_paths if len(p) > 1) - shortest_first_steps
             
             if shortest_first_steps and longer_first_steps:
-                shortest_prob = sum(probs[int(n)+2].item() for n in shortest_first_steps)
-                longer_prob = sum(probs[int(n)+2].item() for n in longer_first_steps)
+                shortest_prob = float(sum(probs[int(n)+2].item() for n in shortest_first_steps))
+                longer_prob = float(sum(probs[int(n)+2].item() for n in longer_first_steps))
                 
                 # 归一化
                 total = shortest_prob + longer_prob
@@ -202,8 +217,8 @@ def probe_shortest_path_preference(model, graph, num_samples=200):
             continue
     
     return {
-        'shortest_path_preference': np.mean(preferences) if preferences else 0.5,
-        'preference_std': np.std(preferences) if preferences else 0.0,
+        'shortest_path_preference': float(np.mean(preferences)) if preferences else 0.5,
+        'preference_std': float(np.std(preferences)) if preferences else 0.0,
         'num_samples_analyzed': len(preferences)
     }
 
@@ -274,9 +289,10 @@ def main():
             traceback.print_exc()
             continue
     
-    # 保存结果
+    # 保存结果（转换为可序列化格式）
+    serializable_results = convert_to_serializable(all_results)
     with open(os.path.join(output_dir, 'graph_understanding_results.json'), 'w') as f:
-        json.dump(all_results, f, indent=2)
+        json.dump(serializable_results, f, indent=2)
     
     # 创建可视化
     create_understanding_plots(all_results, output_dir)
