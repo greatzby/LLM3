@@ -1,0 +1,33 @@
+================================================================================
+PHASE TRANSITION INTERNAL MECHANISM ANALYSIS
+================================================================================
+
+HYPOTHESIS: Parameter saturation → Distribution shift → Performance divergence
+
+1. PARAMETER SATURATION EVIDENCE:
+----------------------------------------
+   Pre-transition saturation: 0.0081
+   Post-transition saturation: 0.0082
+   Change: 0.01pp
+
+2. DISTRIBUTION SHIFT EVIDENCE:
+----------------------------------------
+   Entropy change: 0.1850 → 0.2124
+   Distribution diversity: 0.2088 → 0.3261
+   Dominant path shift detected: 0 paths changed
+
+3. GRADIENT DYNAMICS:
+----------------------------------------
+   Peak gradient activity at iteration: 147000
+   Maximum relative change: 0.0060
+
+4. CAUSAL CHAIN VERIFICATION:
+----------------------------------------
+   Saturation begins: iteration nan
+   Distribution shift begins: iteration 142000
+   Time lag: nan iterations
+
+CONCLUSION:
+----------------------------------------
+   ✗ Timeline does not clearly support the hypothesized causal chain
+   → Alternative mechanisms may be at play
