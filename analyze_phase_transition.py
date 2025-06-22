@@ -1,6 +1,6 @@
 """
 analyze_phase_transition.py
-分析神经网络相变的完整过程 - 适配1k间隔checkpoint
+分析神经网络相变的完整过程 - 修复数据类型问题
 """
 
 import os
@@ -85,6 +85,9 @@ class PhaseTransitionAnalyzer:
             idx = np.random.randint(0, len(self.val_data) - self.block_size - 1)
             seq = self.val_data[idx:idx + self.block_size + 1]
             
+            # 转换为int64类型（修复）
+            seq = seq.astype(np.int64)
+            
             # 找到实际序列长度（第一个PAD之前）
             seq_len = np.where(seq == 0)[0]
             if len(seq_len) > 0:
@@ -110,7 +113,7 @@ class PhaseTransitionAnalyzer:
                     
                     distributions.append({
                         'position': pos,
-                        'target': target,
+                        'target': int(target),  # 确保是Python int
                         'target_prob': probs[target].item(),
                         'top1_prob': top_probs[0].item(),
                         'top1_token': top_indices[0].item(),
@@ -133,6 +136,9 @@ class PhaseTransitionAnalyzer:
             idx = np.random.randint(0, len(self.val_data) - self.block_size - 1)
             seq = self.val_data[idx:idx + self.block_size + 1]
             
+            # 转换为int64类型（修复）
+            seq = seq.astype(np.int64)
+            
             # 找到有效序列
             seq_len = np.where(seq == 0)[0]
             if len(seq_len) > 0:
@@ -144,7 +150,7 @@ class PhaseTransitionAnalyzer:
                 test_cases.append({
                     'sequence': seq[:seq_len],
                     'position': 4,  # 固定位置
-                    'target': seq[4]
+                    'target': int(seq[4])  # 确保是Python int
                 })
         
         # 对每个iteration分析
@@ -478,8 +484,8 @@ class PhaseTransitionAnalyzer:
         if len(df) > 2:
             # 找到准确率下降最快的点
             acc_diff = np.diff(df['accuracy'])
-            if len(acc_diff) > 0:
-                min_idx = np.argmin(acc_diff)
+            if len(acc_diff) > 0 and not np.all(np.isnan(acc_diff)):
+                min_idx = np.nanargmin(acc_diff)
                 critical_iter = df['iteration'].iloc[min_idx + 1]
                 
                 for ax in axes.flat:
