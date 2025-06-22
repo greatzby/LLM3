@@ -1,0 +1,38 @@
+================================================================================
+DETAILED PHASE TRANSITION ANALYSIS REPORT
+================================================================================
+
+OVERALL STATISTICS:
+----------------------------------------
+Analysis range: 135000 - 175000
+Initial TF accuracy: 0.9116 (91.16%)
+Final TF accuracy: 0.1539 (15.39%)
+Total drop: 75.77 percentage points
+Relative drop: 83.1%
+
+PHASE-BY-PHASE ANALYSIS:
+----------------------------------------
+
+1. PRE-TRANSITION PHASE (135k-142k):
+   - Start: 0.9116 (91.16%)
+   - End: 0.8663 (86.63%)
+   - Change: -4.53pp
+   - Status: Relatively stable, slight decline
+
+2. CRITICAL TRANSITION PHASE (145k-150k):
+   - Start: 0.8439 (84.39%)
+   - End: 0.5828 (58.28%)
+   - Change: -26.11pp
+   - Drop rate: 5.22pp per 1k iterations
+   - Status: CATASTROPHIC COLLAPSE
+
+3. STEEPEST DECLINE ANALYSIS:
+   - Occurs at: 153000 iterations
+   - Magnitude: 17.67pp in 1k iterations
+
+4. MODEL BEHAVIOR INTERPRETATION:
+----------------------------------------
+   - 135k-140k: Model maintains memorization of training paths
+   - 140k-145k: Increasing tension, gradient conflicts emerge
+   - 145k-150k: Catastrophic reorganization, model abandons training paths
+   - 150k+: New equilibrium, model prefers alternative valid paths
