@@ -1,0 +1,40 @@
+============================================================
+Gradient Competition Analysis Report
+============================================================
+
+Key Findings:
+----------------------------------------
+
+1. Gradient Competition Before Transition (140k):
+   Strongest gradient: 1212.2558
+   Second gradient: 1204.4124
+   Ratio: 1.01x
+
+2. At Critical Point (145k):
+   Strongest gradient: 1249.6898
+   Second gradient: 1242.0850
+   Ratio: 1.01x
+
+3. After Transition (150k):
+   Strongest gradient: 1303.9444
+   Second gradient: 1294.5107
+   Ratio: 1.01x
+
+4. Path Switching Events:
+   Total switches: 8
+   Switch details:
+     - At 141000: token 53 → 47
+     - At 142000: token 47 → 53
+     - At 143000: token 53 → 47
+     - At 147000: token 47 → 53
+     - At 148000: token 53 → 47
+     ... and 3 more switches
+
+5. Competition Dynamics Summary:
+   Maximum dominance: 1.02x at iteration 141000
+   Minimum dominance: 1.00x at iteration 142000
+
+6. Phase Transition Characteristics (145k-150k):
+   Average competition ratio: 1.01x
+   Ratio volatility (std): 0.00
+   Path switches during transition: 2

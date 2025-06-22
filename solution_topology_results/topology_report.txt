@@ -1,0 +1,28 @@
+============================================================
+Solution Space Topology Analysis Report
+============================================================
+
+1. Trajectory Statistics:
+----------------------------------------
+   Total checkpoints analyzed: 10
+   Iteration range: 135000 - 160000
+
+2. Movement Analysis:
+----------------------------------------
+   Total distance traveled: 7.1995
+   Average speed: 0.000422
+   Maximum speed: 0.001023 at 144000
+
+3. Dimensionality Analysis:
+----------------------------------------
+   Components for 90% variance: 4
+   Components for 95% variance: 6
+   Components for 99% variance: 7
+   Total variance explained by all components: 1.0000
+   Top 3 PC variance: [0.4043, 0.2666, 0.1316]
+
+4. Phase Transition Characteristics:
+----------------------------------------
+   Distance during transition: 2.1107
+   Average speed during transition: 0.000494
+   Speed ratio (transition/overall): 1.17x

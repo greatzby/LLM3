@@ -1,0 +1,21 @@
+============================================================
+Critical Dynamics Analysis Report
+============================================================
+
+1. Critical Point Identification:
+----------------------------------------
+   Maximum fluctuation at: 145000
+   Peak entropy STD: 0.6706
+   Entropy at peak: 0.4083
+
+2. Phase Transition Characteristics:
+----------------------------------------
+   Entropy change (145k→150k): -5.7%
+   Temperature change: +0.04
+   Path diversity change: -0.077
+
+3. Critical Behavior Summary:
+----------------------------------------
+   Maximum probability fluctuation: 0.0191 at 145000
+   Maximum path diversity: 0.538 at 145000
+   Minimum confidence: 0.829 at 150000
