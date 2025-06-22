@@ -1,0 +1,18 @@
+============================================================
+Phase Transition Analysis Report
+============================================================
+
+Accuracy before transition (≤140k): 0.4076
+Accuracy after transition (≥145k): 0.4101
+Accuracy drop: -0.0025
+
+Entropy before transition: 0.2699
+Entropy after transition: 0.3542
+Entropy change: 0.0843
+
+Critical Period Analysis:
+----------------------------------------
+Sharpest accuracy drop at iteration: 141000.0
+  Accuracy: 0.3636
+  Entropy: 0.2976
+  Confidence ratio: 17950767.5
