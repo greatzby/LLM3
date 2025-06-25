@@ -1,6 +1,6 @@
 """
 分析不同训练阶段模型的输出分布，验证反偏好现象
-修正版本：正确计算TF准确率和分析反偏好
+修正版本：与训练代码完全一致的TF准确率计算
 """
 import os
 import torch
@@ -43,7 +43,7 @@ def load_graph_and_metadata(data_dir):
     return G, meta
 
 def compute_tf_accuracy(model, val_data, block_size, device, num_eval_batches=10, batch_size=64):
-    """计算Teacher Forcing准确率（与训练代码一致）"""
+    """计算Teacher Forcing准确率（与训练代码完全一致）"""
     device_type = 'cuda' if 'cuda' in str(device) else 'cpu'
     ptdtype = torch.bfloat16 if device_type == 'cuda' else torch.float32
     ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
@@ -51,6 +51,7 @@ def compute_tf_accuracy(model, val_data, block_size, device, num_eval_batches=10
     data_size = block_size + 1
     total_correct = 0
     total_count = 0
+    batch_accuracies = []
     
     with torch.no_grad():
         for _ in range(num_eval_batches):
@@ -66,17 +67,21 @@ def compute_tf_accuracy(model, val_data, block_size, device, num_eval_batches=10
             with ctx:
                 logits, _ = model(x, y)
             
-            # 计算准确率
+            # 计算准确率（与训练代码完全一致，包括padding）
             preds = torch.argmax(logits, dim=-1)
             
-            # 只计算非padding位置的准确率
-            mask = (y != 0)
-            correct = (preds == y) & mask
+            batch_correct = (preds == y).float().sum().item()
+            batch_total = y.numel()
+            batch_accuracy = batch_correct / batch_total
+            batch_accuracies.append(batch_accuracy)
             
-            total_correct += correct.sum().item()
-            total_count += mask.sum().item()
+            total_correct += batch_correct
+            total_count += batch_total
     
-    return total_correct / total_count if total_count > 0 else 0
+    overall_accuracy = total_correct / total_count
+    accuracy_std = np.std(batch_accuracies)
+    
+    return overall_accuracy, accuracy_std
 
 def analyze_path_preferences(model, train_file, test_file, G, stoi, itos, device='cuda', num_samples=500):
     """分析模型对不同类型路径的偏好"""
@@ -195,16 +200,34 @@ def main():
     data_dir = 'data/simple_graph/100'
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
-    # 要分析的checkpoints
-    checkpoints_to_analyze = {
-        '50k': 50000,
-        '100k': 100000,
-        '190k': 190000,
-        '200k': 200000
-    }
+    # 要分析的checkpoints - 检查正确的文件名
+    print("Checking available checkpoints...")
+    available_checkpoints = {}
+    for filename in os.listdir(base_dir):
+        if filename.startswith('ckpt_') and filename.endswith('.pt'):
+            iteration = int(filename[5:-3])
+            available_checkpoints[iteration] = filename
+    
+    print(f"Available checkpoints: {sorted(available_checkpoints.keys())}")
+    
+    # 根据实际的checkpoint选择要分析的
+    # 从你的训练日志看，checkpoint_interval是1000，不是50000
+    checkpoints_to_analyze = {}
+    
+    # 选择稳定期的checkpoint（TF > 0.9）
+    for iter_num in [50000, 100000]:
+        if iter_num in available_checkpoints:
+            checkpoints_to_analyze[f'{iter_num//1000}k'] = iter_num
+    
+    # 选择崩溃后的checkpoint（TF < 0.2）
+    for iter_num in [190000, 200000]:
+        if iter_num in available_checkpoints:
+            checkpoints_to_analyze[f'{iter_num//1000}k'] = iter_num
+    
+    print(f"Will analyze: {checkpoints_to_analyze}")
     
     # 加载图和元数据
-    print("Loading graph and metadata...")
+    print("\nLoading graph and metadata...")
     G, meta = load_graph_and_metadata(data_dir)
     stoi, itos = meta['stoi'], meta['itos']
     block_size = meta['block_size']
@@ -228,9 +251,18 @@ def main():
         checkpoint_path = os.path.join(base_dir, f'ckpt_{iteration}.pt')
         model, checkpoint = load_checkpoint_and_model(checkpoint_path, device)
         
-        # 1. 计算TF准确率（与训练时一致）
-        tf_accuracy = compute_tf_accuracy(model, val_data, block_size, device)
-        print(f"Teacher Forcing Accuracy: {tf_accuracy:.4f}")
+        # 1. 计算TF准确率（与训练时完全一致）
+        tf_accuracy, tf_std = compute_tf_accuracy(model, val_data, block_size, device)
+        print(f"Teacher Forcing Accuracy: {tf_accuracy:.4f} (±{tf_std:.4f})")
+        
+        # 查看checkpoint中保存的TF历史（如果有）
+        if 'tf_history' in checkpoint:
+            tf_history = checkpoint['tf_history']
+            if len(tf_history) > 0:
+                # 找到最接近当前iteration的记录
+                test_iters = checkpoint.get('test_iters', list(range(2000, len(tf_history)*2000+1, 2000)))
+                closest_idx = min(range(len(test_iters)), key=lambda i: abs(test_iters[i] - iteration))
+                print(f"  (Training log TF at nearest iteration: {tf_history[closest_idx]:.4f})")
         
         # 2. 分析路径偏好
         preferences = analyze_path_preferences(model, train_file, test_file, G, stoi, itos, device)
@@ -259,8 +291,44 @@ def main():
         
         all_results[name] = {
             'tf_accuracy': tf_accuracy,
+            'tf_std': tf_std,
             'preferences': preferences
         }
+    
+    # 绘制可视化
+    if len(all_results) >= 4:
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+        
+        # TF准确率对比
+        names = list(all_results.keys())
+        tf_accs = [all_results[name]['tf_accuracy'] for name in names]
+        tf_stds = [all_results[name]['tf_std'] for name in names]
+        
+        ax1.bar(names, tf_accs, yerr=tf_stds, capsize=10)
+        ax1.set_ylabel('Teacher Forcing Accuracy')
+        ax1.set_title('TF Accuracy Across Checkpoints')
+        ax1.set_ylim(0, 1)
+        ax1.grid(True, alpha=0.3)
+        
+        # 路径偏好对比
+        pref_ratios = []
+        for name in names:
+            if all_results[name]['preferences']['total_decisions'] > 0:
+                ratio = all_results[name]['preferences']['prefers_alternative'] / \
+                       all_results[name]['preferences']['total_decisions']
+                pref_ratios.append(ratio)
+            else:
+                pref_ratios.append(0)
+        
+        ax2.bar(names, pref_ratios)
+        ax2.set_ylabel('Preference for Alternative Paths')
+        ax2.set_title('Path Preference Analysis')
+        ax2.set_ylim(0, 1)
+        ax2.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(base_dir, 'anti_preference_analysis.png'), dpi=150)
+        plt.close()
     
     # 总结
     print("\n" + "="*60)
@@ -270,42 +338,24 @@ def main():
     # TF准确率对比
     print("\nTeacher Forcing Accuracy:")
     for name, results in all_results.items():
-        print(f"  {name}: {results['tf_accuracy']:.4f}")
+        print(f"  {name}: {results['tf_accuracy']:.4f} (±{results['tf_std']:.4f})")
     
-    # 路径偏好对比
-    print("\nPath Preferences (when both training and alternative paths exist):")
-    for name, results in all_results.items():
-        if results['preferences']['total_decisions'] > 0:
-            pref_ratio = results['preferences']['prefers_alternative'] / results['preferences']['total_decisions']
-            print(f"  {name}: {pref_ratio:.1%} prefer alternatives")
-    
-    # 检测反偏好
-    stable_tf = (all_results['50k']['tf_accuracy'] + all_results['100k']['tf_accuracy']) / 2
-    collapsed_tf = (all_results['190k']['tf_accuracy'] + all_results['200k']['tf_accuracy']) / 2
-    
-    print(f"\nPhase Transition Detection:")
-    print(f"  Stable phase TF: {stable_tf:.4f}")
-    print(f"  Collapsed phase TF: {collapsed_tf:.4f}")
-    print(f"  TF Drop: {stable_tf - collapsed_tf:.4f}")
-    
-    if collapsed_tf < stable_tf * 0.5:  # TF下降超过50%
-        print("\n✓ PHASE TRANSITION CONFIRMED!")
+    # 检测是否有明显的TF下降
+    if len(all_results) >= 4:
+        early_keys = [k for k in all_results.keys() if int(k[:-1]) <= 100]
+        late_keys = [k for k in all_results.keys() if int(k[:-1]) >= 190]
         
-        # 检查是否有反偏好
-        stable_pref = (all_results['50k']['preferences']['prefers_alternative'] + 
-                      all_results['100k']['preferences']['prefers_alternative']) / \
-                     (all_results['50k']['preferences']['total_decisions'] + 
-                      all_results['100k']['preferences']['total_decisions'])
-        
-        collapsed_pref = (all_results['190k']['preferences']['prefers_alternative'] + 
-                         all_results['200k']['preferences']['prefers_alternative']) / \
-                        (all_results['190k']['preferences']['total_decisions'] + 
-                         all_results['200k']['preferences']['total_decisions'])
-        
-        if collapsed_pref > stable_pref:
-            print(f"✓ ANTI-PREFERENCE DETECTED: Alternative preference increased from {stable_pref:.1%} to {collapsed_pref:.1%}")
-    
-    print("="*60)
+        if early_keys and late_keys:
+            early_tf = np.mean([all_results[k]['tf_accuracy'] for k in early_keys])
+            late_tf = np.mean([all_results[k]['tf_accuracy'] for k in late_keys])
+            
+            print(f"\nPhase Analysis:")
+            print(f"  Early phase average TF: {early_tf:.4f}")
+            print(f"  Late phase average TF: {late_tf:.4f}")
+            print(f"  TF Drop: {early_tf - late_tf:.4f}")
+            
+            if early_tf - late_tf > 0.3:  # 显著下降
+                print("\n✓ SIGNIFICANT TF DROP DETECTED!")
 
 if __name__ == "__main__":
     main()
