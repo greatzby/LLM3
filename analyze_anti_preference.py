@@ -1,5 +1,6 @@
 """
 分析不同训练阶段模型的输出分布，验证反偏好现象
+修正版本：正确区分训练路径和图结构
 """
 import os
 import torch
@@ -40,33 +41,39 @@ def load_graph_and_metadata(data_dir):
     
     return G, meta
 
-def extract_training_edges(train_file_path):
-    """从训练文件中提取所有出现过的边"""
-    training_edges = set()
+def extract_training_paths(train_file_path):
+    """从训练文件中提取训练路径信息"""
+    # 存储每个(source, target, current_position) -> next_node的映射
+    training_next_nodes = {}
     
     with open(train_file_path, 'r') as f:
         for line in f:
             line = line.strip()
             if line and line != 'x':
                 tokens = line.split()
-                # 解析路径：source target path...
-                path = tokens[2:]  # 跳过source和target
+                source = tokens[0]
+                target = tokens[1]
+                path = tokens[2:]  # 完整路径
                 
-                # 提取路径中的所有边
+                # 对于路径中的每个位置，记录训练时的下一个节点
                 for i in range(len(path) - 1):
-                    edge = (path[i], path[i+1])
-                    training_edges.add(edge)
+                    # key是(source, target, 当前节点位置的上下文)
+                    context = tuple(tokens[:2+i+1])  # source, target, path_so_far
+                    next_node = path[i + 1]
+                    training_next_nodes[context] = next_node
     
-    return training_edges
+    return training_next_nodes
 
-def analyze_predictions(model, test_data, G, training_edges, stoi, itos, device='cuda', num_samples=1000):
+def analyze_predictions(model, test_data, G, training_next_nodes, stoi, itos, device='cuda', num_samples=1000):
     """分析模型在测试数据上的预测分布"""
     
     results = {
-        'train_path_prob': [],
-        'valid_non_train_prob': [],
-        'invalid_prob': [],
-        'predictions': []
+        'matches_training': [],  # 预测是否匹配训练路径
+        'valid_alternative': [],  # 预测是否是有效的替代路径
+        'invalid': [],  # 预测是否无效
+        'predictions': [],
+        'tf_correct': 0,
+        'tf_total': 0
     }
     
     # 读取测试数据
@@ -86,8 +93,13 @@ def analyze_predictions(model, test_data, G, training_edges, stoi, itos, device=
             current_node = path[i]
             true_next = path[i + 1]
             
-            # 构建输入序列：source target path_so_far
+            # 构建输入序列和上下文
             input_sequence = [source, target] + path[:i+1]
+            context = tuple(input_sequence)
+            
+            # 获取训练时这个上下文对应的下一个节点
+            training_next = training_next_nodes.get(context, None)
+            
             input_ids = [stoi[token] for token in input_sequence]
             input_tensor = torch.tensor(input_ids, dtype=torch.long, device=device).unsqueeze(0)
             
@@ -98,9 +110,18 @@ def analyze_predictions(model, test_data, G, training_edges, stoi, itos, device=
                 last_logits = logits[0, -1, :]
                 probs = F.softmax(last_logits, dim=-1)
             
+            # 获取预测的节点
+            pred_idx = torch.argmax(probs).item()
+            pred_node = itos[pred_idx] if pred_idx < len(itos) else 'UNK'
+            
+            # 检查TF准确率（预测是否匹配测试集的真实下一个节点）
+            results['tf_total'] += 1
+            if pred_node == true_next:
+                results['tf_correct'] += 1
+            
             # 分析预测分布
-            train_prob = 0.0
-            valid_non_train_prob = 0.0
+            matches_training_prob = 0.0
+            valid_alternative_prob = 0.0
             invalid_prob = 0.0
             
             # 获取当前节点的所有可能的下一跳
@@ -114,19 +135,20 @@ def analyze_predictions(model, test_data, G, training_edges, stoi, itos, device=
                 next_node = itos[next_node_idx]
                 prob = probs[next_node_idx].item()
                 
-                edge = (current_node, next_node)
-                
                 # 分类
-                if edge in training_edges:
-                    train_prob += prob
+                if training_next and next_node == training_next:
+                    # 匹配训练路径
+                    matches_training_prob += prob
                 elif next_node in current_node_neighbors:
-                    valid_non_train_prob += prob
+                    # 有效的替代路径
+                    valid_alternative_prob += prob
                 else:
+                    # 无效路径
                     invalid_prob += prob
             
-            results['train_path_prob'].append(train_prob)
-            results['valid_non_train_prob'].append(valid_non_train_prob)
-            results['invalid_prob'].append(invalid_prob)
+            results['matches_training'].append(matches_training_prob)
+            results['valid_alternative'].append(valid_alternative_prob)
+            results['invalid'].append(invalid_prob)
             
             # 记录预测细节
             top_k = 5
@@ -134,20 +156,29 @@ def analyze_predictions(model, test_data, G, training_edges, stoi, itos, device=
             predictions = []
             for idx, prob in zip(top_indices, top_probs):
                 if idx >= 2 and idx < len(itos):
-                    pred_node = itos[idx.item()]
-                    edge = (current_node, pred_node)
-                    edge_type = 'train' if edge in training_edges else \
-                               'valid_non_train' if pred_node in current_node_neighbors else \
-                               'invalid'
+                    pred_node_top = itos[idx.item()]
+                    
+                    # 判断类型
+                    if training_next and pred_node_top == training_next:
+                        edge_type = 'matches_training'
+                    elif pred_node_top in current_node_neighbors:
+                        edge_type = 'valid_alternative'
+                    else:
+                        edge_type = 'invalid'
+                    
                     predictions.append({
-                        'node': pred_node,
+                        'node': pred_node_top,
                         'prob': prob.item(),
-                        'type': edge_type
+                        'type': edge_type,
+                        'is_true_next': pred_node_top == true_next
                     })
             
             results['predictions'].append({
+                'context': input_sequence,
                 'current': current_node,
                 'true_next': true_next,
+                'training_next': training_next,
+                'predicted': pred_node,
                 'top_predictions': predictions
             })
     
@@ -164,46 +195,27 @@ def plot_distribution_comparison(results_dict, save_path):
         ax = axes[idx // 2, idx % 2]
         
         # 计算平均概率
-        avg_train = np.mean(results['train_path_prob'])
-        avg_valid_non_train = np.mean(results['valid_non_train_prob'])
-        avg_invalid = np.mean(results['invalid_prob'])
+        avg_matches = np.mean(results['matches_training'])
+        avg_alternative = np.mean(results['valid_alternative'])
+        avg_invalid = np.mean(results['invalid'])
+        
+        # 计算TF准确率
+        tf_accuracy = results['tf_correct'] / results['tf_total'] if results['tf_total'] > 0 else 0
         
         # 绘制饼图
-        labels = ['Training Path', 'Valid Non-Training', 'Invalid']
-        sizes = [avg_train, avg_valid_non_train, avg_invalid]
+        labels = ['Matches Training', 'Valid Alternative', 'Invalid']
+        sizes = [avg_matches, avg_alternative, avg_invalid]
         colors = ['#2ecc71', '#3498db', '#e74c3c']
         
         wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, 
                                           autopct='%1.1f%%', startangle=90)
         
         ax.set_title(f'Checkpoint {checkpoint}\n'
-                    f'Avg probs: Train={avg_train:.3f}, Valid-NonTrain={avg_valid_non_train:.3f}, Invalid={avg_invalid:.3f}')
+                    f'TF Accuracy: {tf_accuracy:.1%}\n'
+                    f'Avg probs: Training={avg_matches:.3f}, Alternative={avg_alternative:.3f}, Invalid={avg_invalid:.3f}')
     
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
-    plt.close()
-    
-    # 绘制概率分布直方图
-    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
-    fig.suptitle('Probability Distribution Histograms', fontsize=16)
-    
-    for idx, (checkpoint, results) in enumerate(results_dict.items()):
-        ax = axes[idx // 2, idx % 2]
-        
-        # 绘制直方图
-        bins = np.linspace(0, 1, 21)
-        ax.hist(results['train_path_prob'], bins=bins, alpha=0.6, label='Training Path', color='#2ecc71')
-        ax.hist(results['valid_non_train_prob'], bins=bins, alpha=0.6, label='Valid Non-Training', color='#3498db')
-        ax.hist(results['invalid_prob'], bins=bins, alpha=0.6, label='Invalid', color='#e74c3c')
-        
-        ax.set_xlabel('Probability')
-        ax.set_ylabel('Count')
-        ax.set_title(f'Checkpoint {checkpoint}')
-        ax.legend()
-        ax.grid(True, alpha=0.3)
-    
-    plt.tight_layout()
-    plt.savefig(save_path.replace('.png', '_hist.png'), dpi=150, bbox_inches='tight')
     plt.close()
 
 def main():
@@ -225,16 +237,15 @@ def main():
     G, meta = load_graph_and_metadata(data_dir)
     stoi, itos = meta['stoi'], meta['itos']
     
-    # 提取训练集中的所有边
-    print("Extracting training edges...")
+    # 提取训练路径信息
+    print("Extracting training paths...")
     train_file = os.path.join(data_dir, 'train_20.txt')
-    training_edges = extract_training_edges(train_file)
-    print(f"Found {len(training_edges)} unique edges in training data")
+    training_next_nodes = extract_training_paths(train_file)
+    print(f"Found {len(training_next_nodes)} training contexts")
     
-    # 统计图中的总边数
+    # 统计图信息
     total_edges = G.number_of_edges()
     print(f"Total edges in graph: {total_edges}")
-    print(f"Training coverage: {len(training_edges)/total_edges*100:.1f}%")
     
     # 测试文件
     test_file = os.path.join(data_dir, 'test.txt')
@@ -250,26 +261,32 @@ def main():
         model, checkpoint = load_checkpoint_and_model(checkpoint_path, device)
         
         # 分析预测
-        results = analyze_predictions(model, test_file, G, training_edges, stoi, itos, device)
+        results = analyze_predictions(model, test_file, G, training_next_nodes, stoi, itos, device)
         results_dict[name] = results
         
-        # 打印统计
-        avg_train = np.mean(results['train_path_prob'])
-        avg_valid_non_train = np.mean(results['valid_non_train_prob'])
-        avg_invalid = np.mean(results['invalid_prob'])
+        # 计算TF准确率
+        tf_accuracy = results['tf_correct'] / results['tf_total'] if results['tf_total'] > 0 else 0
         
+        # 打印统计
+        avg_matches = np.mean(results['matches_training'])
+        avg_alternative = np.mean(results['valid_alternative'])
+        avg_invalid = np.mean(results['invalid'])
+        
+        print(f"Teacher Forcing Accuracy: {tf_accuracy:.3f}")
         print(f"Average probabilities:")
-        print(f"  Training path nodes: {avg_train:.3f}")
-        print(f"  Valid non-training nodes: {avg_valid_non_train:.3f}")
-        print(f"  Invalid nodes: {avg_invalid:.3f}")
+        print(f"  Matches training path: {avg_matches:.3f}")
+        print(f"  Valid alternative paths: {avg_alternative:.3f}")
+        print(f"  Invalid paths: {avg_invalid:.3f}")
         
         # 打印一些具体的预测示例
         print(f"\nExample predictions:")
         for i in range(min(3, len(results['predictions']))):
             pred = results['predictions'][i]
-            print(f"  Current: {pred['current']}, True next: {pred['true_next']}")
+            print(f"  Context: {' '.join(pred['context'])}")
+            print(f"    True next: {pred['true_next']}, Training next: {pred['training_next']}, Predicted: {pred['predicted']}")
             for j, top_pred in enumerate(pred['top_predictions'][:3]):
-                print(f"    Top-{j+1}: {top_pred['node']} (p={top_pred['prob']:.3f}, type={top_pred['type']})")
+                mark = "✓" if top_pred['is_true_next'] else ""
+                print(f"    Top-{j+1}: {top_pred['node']} (p={top_pred['prob']:.3f}, type={top_pred['type']}) {mark}")
     
     # 绘制对比图
     print("\nGenerating visualization...")
@@ -290,26 +307,39 @@ def main():
     print("ANTI-PREFERENCE ANALYSIS SUMMARY")
     print("="*60)
     
-    stable_avg_train = np.mean([results_dict['50k']['train_path_prob'] + results_dict['100k']['train_path_prob']]) / 2
-    collapsed_avg_train = np.mean([results_dict['190k']['train_path_prob'] + results_dict['200k']['train_path_prob']]) / 2
+    # 计算稳定期和崩溃期的平均值
+    stable_tf = (results_dict['50k']['tf_correct'] / results_dict['50k']['tf_total'] + 
+                 results_dict['100k']['tf_correct'] / results_dict['100k']['tf_total']) / 2
+    collapsed_tf = (results_dict['190k']['tf_correct'] / results_dict['190k']['tf_total'] + 
+                    results_dict['200k']['tf_correct'] / results_dict['200k']['tf_total']) / 2
     
-    stable_avg_valid = np.mean([results_dict['50k']['valid_non_train_prob'] + results_dict['100k']['valid_non_train_prob']]) / 2
-    collapsed_avg_valid = np.mean([results_dict['190k']['valid_non_train_prob'] + results_dict['200k']['valid_non_train_prob']]) / 2
+    stable_matches = np.mean([np.mean(results_dict['50k']['matches_training']), 
+                             np.mean(results_dict['100k']['matches_training'])])
+    collapsed_matches = np.mean([np.mean(results_dict['190k']['matches_training']), 
+                                np.mean(results_dict['200k']['matches_training'])])
+    
+    stable_alternative = np.mean([np.mean(results_dict['50k']['valid_alternative']), 
+                                 np.mean(results_dict['100k']['valid_alternative'])])
+    collapsed_alternative = np.mean([np.mean(results_dict['190k']['valid_alternative']), 
+                                    np.mean(results_dict['200k']['valid_alternative'])])
     
     print(f"\nStable Phase (50k-100k):")
-    print(f"  Training path preference: {stable_avg_train:.1%}")
-    print(f"  Valid non-training paths: {stable_avg_valid:.1%}")
+    print(f"  Teacher Forcing accuracy: {stable_tf:.1%}")
+    print(f"  Matches training path: {stable_matches:.1%}")
+    print(f"  Valid alternatives: {stable_alternative:.1%}")
     
     print(f"\nCollapsed Phase (190k-200k):")
-    print(f"  Training path preference: {collapsed_avg_train:.1%}")
-    print(f"  Valid non-training paths: {collapsed_avg_valid:.1%}")
+    print(f"  Teacher Forcing accuracy: {collapsed_tf:.1%}")
+    print(f"  Matches training path: {collapsed_matches:.1%}")
+    print(f"  Valid alternatives: {collapsed_alternative:.1%}")
     
     print(f"\nChange:")
-    print(f"  Training path: {stable_avg_train:.1%} → {collapsed_avg_train:.1%} (Δ = {collapsed_avg_train - stable_avg_train:.1%})")
-    print(f"  Valid non-training: {stable_avg_valid:.1%} → {collapsed_avg_valid:.1%} (Δ = {collapsed_avg_valid - stable_avg_valid:.1%})")
+    print(f"  TF Accuracy: {stable_tf:.1%} → {collapsed_tf:.1%} (Δ = {collapsed_tf - stable_tf:.1%})")
+    print(f"  Training path preference: {stable_matches:.1%} → {collapsed_matches:.1%} (Δ = {collapsed_matches - stable_matches:.1%})")
+    print(f"  Alternative paths: {stable_alternative:.1%} → {collapsed_alternative:.1%} (Δ = {collapsed_alternative - stable_alternative:.1%})")
     
-    if collapsed_avg_train < stable_avg_train and collapsed_avg_valid > stable_avg_valid:
-        print("\n✓ ANTI-PREFERENCE CONFIRMED: Model actively avoids training paths!")
+    if collapsed_tf < stable_tf and collapsed_alternative > stable_alternative:
+        print("\n✓ ANTI-PREFERENCE CONFIRMED: Model shifts from training paths to alternatives!")
     
     print("="*60)
 
