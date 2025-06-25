@@ -124,7 +124,7 @@ def generate_paths_and_analyze(model, val_data, meta, device, num_samples=500):
             if pred_token == 0:
                 special_token_counts['[PAD]'] += 1
             elif pred_token == 1:
-                special_token_counts['\\n'] += 1
+                special_token_counts['newline'] += 1
             
             # 分析节点预测
             node = token_to_node(pred_token)
@@ -160,10 +160,10 @@ def compare_strategies(results_before, results_after, graph_props, val_freqs):
     print("\n0. Special Token Analysis:")
     print(f"\nBefore collapse:")
     print(f"  [PAD] predictions: {special_before['[PAD]']}")
-    print(f"  \\n predictions: {special_before['\\n']}")
+    print(f"  newline predictions: {special_before['newline']}")
     print(f"\nAfter collapse:")
     print(f"  [PAD] predictions: {special_after['[PAD]']}")
-    print(f"  \\n predictions: {special_after['\\n']}")
+    print(f"  newline predictions: {special_after['newline']}")
     
     # 1. 节点偏好变化
     print("\n1. Node Preference Changes:")
