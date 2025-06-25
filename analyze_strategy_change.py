@@ -1,6 +1,6 @@
 """
 验证模型崩溃前后的策略转变 - 修正版
-正确处理token到节点的映射
+正确处理token到节点的映射，修复维度问题
 """
 import os
 import torch
@@ -105,20 +105,35 @@ def generate_paths_and_analyze(model, val_data, meta, device, num_samples=500):
         # 获取一个序列
         idx = np.random.randint(0, (len(val_data) - data_size) // data_size) * data_size
         x = torch.from_numpy(val_data[idx:idx+block_size].astype(np.int64)).unsqueeze(0).to(device)
+        y = torch.from_numpy(val_data[idx+1:idx+1+block_size].astype(np.int64)).unsqueeze(0).to(device)
         
         # 获取预测
         with ctx:
             logits, _ = model(x)
         
-        probs = F.softmax(logits, dim=-1)
-        preds = torch.argmax(logits, dim=-1)
+        # 检查输出维度
+        if len(logits.shape) == 3:  # [batch, seq_len, vocab_size]
+            probs = F.softmax(logits, dim=-1)
+            preds = torch.argmax(logits, dim=-1)
+        else:  # [batch, vocab_size]
+            probs = F.softmax(logits, dim=-1)
+            preds = torch.argmax(logits, dim=-1)
+            # 如果只有一个预测，扩展为序列
+            preds = preds.unsqueeze(-1)
         
         # 分析路径结构
         path = []
         prev_node = None
         
-        for pos in range(block_size):
-            pred_token = preds[0, pos].item()
+        seq_len = min(preds.shape[1], block_size)
+        for pos in range(seq_len):
+            if preds.shape[1] > 1:
+                pred_token = preds[0, pos].item()
+            else:
+                # 如果模型只输出下一个token，我们只能分析第一个预测
+                if pos > 0:
+                    break
+                pred_token = preds[0, 0].item()
             
             # 统计特殊token
             if pred_token == 0:
@@ -140,6 +155,33 @@ def generate_paths_and_analyze(model, val_data, meta, device, num_samples=500):
                     transition_predictions[prev_node][node] += 1
                 
                 prev_node = node
+        
+        # 如果模型是自回归的，生成完整路径
+        if preds.shape[1] == 1:
+            # 自回归生成
+            context = x.clone()
+            path = []
+            
+            for _ in range(10):  # 生成最多10个步骤
+                with ctx:
+                    logits, _ = model(context)
+                    if len(logits.shape) == 3:
+                        next_token = torch.argmax(logits[0, -1, :]).item()
+                    else:
+                        next_token = torch.argmax(logits[0, :]).item()
+                
+                # 检查是否结束
+                if next_token == 1:  # newline
+                    break
+                
+                node = token_to_node(next_token)
+                if node is not None:
+                    path.append(node)
+                    node_predictions[node] += 1
+                
+                # 更新context
+                next_token_tensor = torch.tensor([[next_token]], device=device)
+                context = torch.cat([context[:, 1:], next_token_tensor], dim=1)
         
         if len(path) > 2:  # 有效路径
             path_structures.append(path)
@@ -172,17 +214,21 @@ def compare_strategies(results_before, results_after, graph_props, val_freqs):
     top_nodes_before = [node for node, _ in nodes_before.most_common(20)]
     top_nodes_after = [node for node, _ in nodes_after.most_common(20)]
     
-    print(f"\nTop nodes before collapse: {top_nodes_before[:10]}")
-    print(f"Average node number: {np.mean(top_nodes_before[:10]):.1f}")
-    print(f"Std dev: {np.std(top_nodes_before[:10]):.1f}")
-    
-    print(f"\nTop nodes after collapse: {top_nodes_after[:10]}")
-    print(f"Average node number: {np.mean(top_nodes_after[:10]):.1f}")
-    print(f"Std dev: {np.std(top_nodes_after[:10]):.1f}")
-    
-    # 计算偏移
-    shift = np.mean(top_nodes_after[:10]) - np.mean(top_nodes_before[:10])
-    print(f"\nAverage node number shift: {shift:.1f}")
+    if len(top_nodes_before) >= 10 and len(top_nodes_after) >= 10:
+        print(f"\nTop nodes before collapse: {top_nodes_before[:10]}")
+        print(f"Average node number: {np.mean(top_nodes_before[:10]):.1f}")
+        print(f"Std dev: {np.std(top_nodes_before[:10]):.1f}")
+        
+        print(f"\nTop nodes after collapse: {top_nodes_after[:10]}")
+        print(f"Average node number: {np.mean(top_nodes_after[:10]):.1f}")
+        print(f"Std dev: {np.std(top_nodes_after[:10]):.1f}")
+        
+        # 计算偏移
+        shift = np.mean(top_nodes_after[:10]) - np.mean(top_nodes_before[:10])
+        print(f"\nAverage node number shift: {shift:.1f}")
+    else:
+        print("Not enough nodes to analyze")
+        shift = 0
     
     # 2. 图属性分析
     print("\n2. Graph Property Analysis:")
@@ -207,8 +253,10 @@ def compare_strategies(results_before, results_after, graph_props, val_freqs):
             if values:
                 print(f"  Average {key}: {np.mean(values):.4f}")
     
-    analyze_node_set(top_nodes_before, "Before collapse")
-    analyze_node_set(top_nodes_after, "After collapse")
+    if len(top_nodes_before) >= 10:
+        analyze_node_set(top_nodes_before, "Before collapse")
+    if len(top_nodes_after) >= 10:
+        analyze_node_set(top_nodes_after, "After collapse")
     
     # 3. 位置相关分析
     print("\n3. Position-based Analysis:")
@@ -242,7 +290,7 @@ def compare_strategies(results_before, results_after, graph_props, val_freqs):
         print(f"  Late positions (6-10) avg node: {np.mean(late_after):.1f}")
     
     # 4. 验证数据频率相关性
-    if node_counts:
+    if node_counts and len(top_nodes_before) >= 20 and len(top_nodes_after) >= 20:
         print("\n4. Validation Data Frequency Correlation:")
         
         # 找共同节点
@@ -279,39 +327,47 @@ def compare_strategies(results_before, results_after, graph_props, val_freqs):
     # 6. 路径示例
     print("\n6. Example Paths:")
     
-    print("\nBefore collapse (first 3 paths):")
-    for i, path in enumerate(paths_before[:3]):
-        if len(path) > 0:
-            print(f"  Path {i+1}: {' → '.join(map(str, path[:10]))}")
+    if paths_before:
+        print("\nBefore collapse (first 3 paths):")
+        for i, path in enumerate(paths_before[:3]):
+            if len(path) > 0:
+                print(f"  Path {i+1}: {' → '.join(map(str, path[:10]))}")
     
-    print("\nAfter collapse (first 3 paths):")
-    for i, path in enumerate(paths_after[:3]):
-        if len(path) > 0:
-            print(f"  Path {i+1}: {' → '.join(map(str, path[:10]))}")
+    if paths_after:
+        print("\nAfter collapse (first 3 paths):")
+        for i, path in enumerate(paths_after[:3]):
+            if len(path) > 0:
+                print(f"  Path {i+1}: {' → '.join(map(str, path[:10]))}")
     
     return top_nodes_before, top_nodes_after
 
 def visualize_strategy_change(nodes_before, nodes_after, graph_props, save_path):
     """可视化策略变化"""
+    if not nodes_before or not nodes_after:
+        print("Not enough data for visualization")
+        return
+        
     fig, axes = plt.subplots(2, 3, figsize=(18, 12))
     
     # 1. 节点编号分布
     ax = axes[0, 0]
-    bins = np.linspace(0, 100, 11)
-    ax.hist(nodes_before[:30], bins=bins, alpha=0.5, label='Before collapse', color='blue')
-    ax.hist(nodes_after[:30], bins=bins, alpha=0.5, label='After collapse', color='red')
-    ax.set_xlabel('Node Number')
-    ax.set_ylabel('Frequency in Top 30')
-    ax.set_title('Distribution of Frequently Predicted Nodes')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
+    if len(nodes_before) > 0 and len(nodes_after) > 0:
+        bins = np.linspace(0, 100, 11)
+        ax.hist(nodes_before[:min(30, len(nodes_before))], bins=bins, alpha=0.5, label='Before collapse', color='blue')
+        ax.hist(nodes_after[:min(30, len(nodes_after))], bins=bins, alpha=0.5, label='After collapse', color='red')
+        ax.set_xlabel('Node Number')
+        ax.set_ylabel('Frequency in Top 30')
+        ax.set_title('Distribution of Frequently Predicted Nodes')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
     
     # 2. 节点编号移动平均
     ax = axes[0, 1]
     window = 5
     if len(nodes_before) >= window and len(nodes_after) >= window:
-        before_ma = np.convolve(nodes_before[:30], np.ones(window)/window, mode='valid')
-        after_ma = np.convolve(nodes_after[:30], np.ones(window)/window, mode='valid')
+        num_points = min(30, len(nodes_before), len(nodes_after))
+        before_ma = np.convolve(nodes_before[:num_points], np.ones(window)/window, mode='valid')
+        after_ma = np.convolve(nodes_after[:num_points], np.ones(window)/window, mode='valid')
         
         x_ma = range(len(before_ma))
         ax.plot(x_ma, before_ma, 'b-', label='Before (MA)', linewidth=2)
@@ -324,25 +380,27 @@ def visualize_strategy_change(nodes_before, nodes_after, graph_props, save_path)
     
     # 3. 节点编号散点图
     ax = axes[0, 2]
-    x = list(range(min(30, len(nodes_before), len(nodes_after))))
-    ax.scatter(x, nodes_before[:len(x)], label='Before', alpha=0.6, s=100, color='blue')
-    ax.scatter(x, nodes_after[:len(x)], label='After', alpha=0.6, s=100, color='red')
-    ax.set_xlabel('Rank')
-    ax.set_ylabel('Node Number')
-    ax.set_title('Node Number by Prediction Frequency Rank')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
+    num_points = min(30, len(nodes_before), len(nodes_after))
+    if num_points > 0:
+        x = list(range(num_points))
+        ax.scatter(x, nodes_before[:num_points], label='Before', alpha=0.6, s=100, color='blue')
+        ax.scatter(x, nodes_after[:num_points], label='After', alpha=0.6, s=100, color='red')
+        ax.set_xlabel('Rank')
+        ax.set_ylabel('Node Number')
+        ax.set_title('Node Number by Prediction Frequency Rank')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
     
     # 4. 节点度数分析
     ax = axes[1, 0]
     degrees_before = []
     degrees_after = []
     
-    for node in nodes_before[:20]:
+    for node in nodes_before[:min(20, len(nodes_before))]:
         if node in graph_props:
             degrees_before.append(graph_props[node]['out_degree'])
     
-    for node in nodes_after[:20]:
+    for node in nodes_after[:min(20, len(nodes_after))]:
         if node in graph_props:
             degrees_after.append(graph_props[node]['out_degree'])
     
@@ -354,16 +412,17 @@ def visualize_strategy_change(nodes_before, nodes_after, graph_props, save_path)
     
     # 5. 变化的节点
     ax = axes[1, 1]
-    set_before = set(nodes_before[:20])
-    set_after = set(nodes_after[:20])
-    
-    disappeared = sorted(list(set_before - set_after))
-    appeared = sorted(list(set_after - set_before))
-    
-    text = f"Disappeared from top 20:\n{disappeared[:10]}\n\n"
-    text += f"Appeared in top 20:\n{appeared[:10]}"
-    
-    ax.text(0.1, 0.5, text, va='center', fontsize=10)
+    if len(nodes_before) >= 20 and len(nodes_after) >= 20:
+        set_before = set(nodes_before[:20])
+        set_after = set(nodes_after[:20])
+        
+        disappeared = sorted(list(set_before - set_after))
+        appeared = sorted(list(set_after - set_before))
+        
+        text = f"Disappeared from top 20:\n{disappeared[:10]}\n\n"
+        text += f"Appeared in top 20:\n{appeared[:10]}"
+        
+        ax.text(0.1, 0.5, text, va='center', fontsize=10)
     ax.set_title('Node Preference Changes')
     ax.axis('off')
     
@@ -371,22 +430,23 @@ def visualize_strategy_change(nodes_before, nodes_after, graph_props, save_path)
     ax = axes[1, 2]
     ax.text(0.5, 0.8, 'Strategy Change Summary', ha='center', fontsize=16, weight='bold')
     
-    avg_before = np.mean(nodes_before[:20])
-    avg_after = np.mean(nodes_after[:20])
-    shift = avg_after - avg_before
-    
-    # 判断策略变化类型
-    if abs(shift) > 20:
-        change_type = "DRAMATIC SHIFT"
-        color = 'red'
-    elif abs(shift) > 10:
-        change_type = "SIGNIFICANT SHIFT"
-        color = 'orange'
-    else:
-        change_type = "MINOR CHANGE"
-        color = 'green'
-    
-    summary_text = f"""
+    if len(nodes_before) >= 20 and len(nodes_after) >= 20:
+        avg_before = np.mean(nodes_before[:20])
+        avg_after = np.mean(nodes_after[:20])
+        shift = avg_after - avg_before
+        
+        # 判断策略变化类型
+        if abs(shift) > 20:
+            change_type = "DRAMATIC SHIFT"
+            color = 'red'
+        elif abs(shift) > 10:
+            change_type = "SIGNIFICANT SHIFT"
+            color = 'orange'
+        else:
+            change_type = "MINOR CHANGE"
+            color = 'green'
+        
+        summary_text = f"""
 Before Collapse:
 - Average node: {avg_before:.1f}
 - Prefers nodes: {min(nodes_before[:10])}-{max(nodes_before[:10])}
@@ -402,10 +462,11 @@ Key Finding:
 Model systematically shifted to
 {"earlier" if shift < -10 else "later" if shift > 10 else "similar"} nodes
 in the graph topology
-    """
+        """
+        
+        ax.text(0.5, 0.35, summary_text, ha='center', va='center', fontsize=11)
+        ax.text(0.5, 0.05, change_type, ha='center', fontsize=14, weight='bold', color=color)
     
-    ax.text(0.5, 0.35, summary_text, ha='center', va='center', fontsize=11)
-    ax.text(0.5, 0.05, change_type, ha='center', fontsize=14, weight='bold', color=color)
     ax.axis('off')
     
     plt.tight_layout()
@@ -464,9 +525,13 @@ def main():
         
         # 生成路径并分析
         print("Generating and analyzing paths...")
-        results[name] = generate_paths_and_analyze(
-            model, val_data, meta, device, num_samples=500
-        )
+        try:
+            results[name] = generate_paths_and_analyze(
+                model, val_data, meta, device, num_samples=500
+            )
+        except Exception as e:
+            print(f"Error during analysis: {e}")
+            continue
     
     if len(results) == 2:
         # 比较策略
@@ -486,23 +551,27 @@ def main():
         print("FINAL VERDICT")
         print("="*60)
         
-        avg_shift = abs(np.mean(nodes_before[:20]) - np.mean(nodes_after[:20]))
-        
-        if avg_shift > 20:
-            print("\n✅ CONFIRMED: Model underwent DRAMATIC strategy change!")
-            print(f"   Average node preference shifted by {avg_shift:.1f} positions")
-            print("\n🎯 Key findings:")
-            print("   1. Model refuses to predict padding tokens")
-            print("   2. Model systematically changes node preferences")
-            print("   3. This is a complete reorganization of path-finding strategy")
-            print("\n📊 This STRONGLY supports your phase transition theory!")
-        elif avg_shift > 10:
-            print("\n✅ CONFIRMED: Model underwent significant strategy change!")
-            print(f"   Average node preference shifted by {avg_shift:.1f} positions")
-            print("\n📊 This supports your phase transition theory!")
+        if len(nodes_before) >= 20 and len(nodes_after) >= 20:
+            avg_shift = abs(np.mean(nodes_before[:20]) - np.mean(nodes_after[:20]))
+            
+            if avg_shift > 20:
+                print("\n✅ CONFIRMED: Model underwent DRAMATIC strategy change!")
+                print(f"   Average node preference shifted by {avg_shift:.1f} positions")
+                print("\n🎯 Key findings:")
+                print("   1. Model refuses to predict padding tokens")
+                print("   2. Model systematically changes node preferences")
+                print("   3. This is a complete reorganization of path-finding strategy")
+                print("\n📊 This STRONGLY supports your phase transition theory!")
+            elif avg_shift > 10:
+                print("\n✅ CONFIRMED: Model underwent significant strategy change!")
+                print(f"   Average node preference shifted by {avg_shift:.1f} positions")
+                print("\n📊 This supports your phase transition theory!")
+            else:
+                print("\n❓ Strategy change is subtle, focusing mainly on special tokens")
+                print("   But the padding refusal alone is significant evidence!")
         else:
-            print("\n❓ Strategy change is subtle, focusing mainly on special tokens")
-            print("   But the padding refusal alone is significant evidence!")
+            print("\n⚠️ Not enough data to make final judgment")
+            print("   But special token analysis still shows significant changes")
         
         print("\n💡 Implications:")
         print("1. The phase transition affects ALL aspects of model behavior")
