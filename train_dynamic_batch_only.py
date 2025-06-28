@@ -1,5 +1,7 @@
 """
-Dynamic Batching - 通过智能分组最小化padding
+Dynamic Batching (Only) - 通过智能分组最小化padding
+纯Dynamic Batching，不使用Masked Loss
+输出格式与Masked Loss和Dynamic+Masked完全兼容
 """
 import os
 import pickle
@@ -9,14 +11,23 @@ import torch.nn.functional as F
 from collections import defaultdict
 import matplotlib.pyplot as plt
 from datetime import datetime
+import random
 
 from model import GPTConfig, GPT
 from logger import get_logger
-from train_masked_loss import compute_masked_loss, set_seed
+
+def set_seed(seed=42):
+    """设置随机种子"""
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
 
 def parse_args():
     import argparse
-    parser = argparse.ArgumentParser(description='Dynamic Batching Training')
+    parser = argparse.ArgumentParser(description='Dynamic Batching Training (Without Masked Loss)')
     parser.add_argument('--dataset', type=str, default='simple_graph')
     parser.add_argument('--n_layer', type=int, default=1)
     parser.add_argument('--n_head', type=int, default=1)
@@ -31,7 +42,7 @@ def parse_args():
                       help='Target total tokens per batch')
     parser.add_argument('--max_padding_ratio', type=float, default=0.2,
                       help='Maximum allowed padding ratio in a batch')
-    parser.add_argument('--checkpoint_interval', type=int, default=50000)
+    parser.add_argument('--checkpoint_interval', type=int, default=2000)
     parser.add_argument('--seed', type=int, default=42)
     return parser.parse_args()
 
@@ -190,19 +201,70 @@ class DynamicBatchDataset:
         
         return x.to(self.device), y.to(self.device), padding_ratio
 
+def compute_stats_standard_loss(model, X, Y, pad_token=0):
+    """
+    使用标准loss计算，但返回与masked loss兼容的统计信息
+    """
+    logits, loss = model(X, Y)
+    
+    with torch.no_grad():
+        # 预测
+        preds = torch.argmax(logits, dim=-1)
+        
+        # 创建masks
+        mask = Y != pad_token  # 非padding位置
+        path_mask = Y > 1  # 路径节点
+        newline_mask = Y == 1  # newline
+        pad_mask = Y == pad_token  # padding
+        
+        # 计算padding比例
+        padding_ratio = pad_mask.float().mean()
+        
+        # 路径准确率
+        if path_mask.sum() > 0:
+            path_accuracy = (preds[path_mask] == Y[path_mask]).float().mean()
+        else:
+            path_accuracy = torch.tensor(0.0)
+        
+        # Newline准确率
+        if newline_mask.sum() > 0:
+            newline_accuracy = (preds[newline_mask] == Y[newline_mask]).float().mean()
+        else:
+            newline_accuracy = torch.tensor(0.0)
+        
+        # Padding位置的预测分析
+        if pad_mask.sum() > 0:
+            pad_preds = preds[pad_mask]
+            pad_pred_ratio = (pad_preds == pad_token).float().mean()
+            newline_pred_at_pad = (pad_preds == 1).float().mean()
+        else:
+            pad_pred_ratio = torch.tensor(0.0)
+            newline_pred_at_pad = torch.tensor(0.0)
+    
+    stats = {
+        'loss': loss.item(),
+        'padding_ratio': padding_ratio.item(),
+        'path_accuracy': path_accuracy.item(),
+        'newline_accuracy': newline_accuracy.item(),
+        'pad_pred_ratio': pad_pred_ratio.item(),
+        'newline_pred_at_pad': newline_pred_at_pad.item()
+    }
+    
+    return loss, stats
+
 def main():
     args = parse_args()
     set_seed(args.seed)
     
     # 创建输出目录
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_dir = f'out/dynamic_batch_{timestamp}'
+    out_dir = f'out/dynamic_batch_only_{timestamp}'
     os.makedirs(out_dir, exist_ok=True)
     
     logger = get_logger(os.path.join(out_dir, "train.log"))
     
     print("="*60)
-    print("Dynamic Batching Training")
+    print("Dynamic Batching Training (Without Masked Loss)")
     print(f"Target batch size: {args.target_batch_size} tokens")
     print(f"Max padding ratio: {args.max_padding_ratio}")
     print("="*60)
@@ -247,6 +309,8 @@ def main():
     gptconf = GPTConfig(**model_args)
     model = GPT(gptconf).to(args.device)
     
+    print(f"Model parameters: {sum(p.numel() for p in model.parameters())/1e6:.2f}M")
+    
     optimizer = model.configure_optimizers(
         weight_decay=1e-1,
         learning_rate=args.learning_rate,
@@ -254,17 +318,21 @@ def main():
         device_type='cuda' if 'cuda' in args.device else 'cpu'
     )
     
-    # 训练历史
+    # 训练历史 - 完全匹配其他两个版本的格式
     history = {
         'iter': [],
         'train_loss': [],
         'val_loss': [],
-        'tf_accuracy': [],
+        'tf_accuracy': [],  # 这应该是不含padding的准确率
         'train_padding_ratio': [],
         'val_padding_ratio': [],
         'batch_sizes': [],
         'path_accuracy': [],
-        'newline_pred_at_pad': []
+        'newline_accuracy': [],
+        'pad_pred_ratio': [],
+        'newline_pred_at_pad': [],
+        # 可选：添加AR准确率以匹配masked loss版本
+        'ar_accuracy': []
     }
     
     # 评估函数
@@ -275,25 +343,51 @@ def main():
         val_losses = []
         val_stats = []
         val_pad_ratios = []
+        batch_sizes = []
+        
+        # TF准确率计算（不含padding）
+        tf_correct = 0
+        tf_total = 0
         
         for _ in range(20):
             X_val, Y_val, pad_ratio = val_dataset.get_dynamic_batch()
-            loss, stats = compute_masked_loss(model, X_val, Y_val)
-            val_losses.append(loss.item())
+            loss, stats = compute_stats_standard_loss(model, X_val, Y_val)
+            
+            val_losses.append(stats['loss'])
             val_stats.append(stats)
             val_pad_ratios.append(pad_ratio)
+            batch_sizes.append(X_val.shape[0])
+            
+            # 计算TF准确率（只在非padding位置）
+            logits, _ = model(X_val, Y_val)
+            preds = torch.argmax(logits, dim=-1)
+            mask = Y_val != 0
+            if mask.sum() > 0:
+                tf_correct += (preds[mask] == Y_val[mask]).sum().item()
+                tf_total += mask.sum().item()
         
+        # 计算平均值
         avg_stats = {}
         for key in val_stats[0].keys():
-            if key != 'loss':
-                avg_stats[key] = np.mean([s[key] for s in val_stats])
+            avg_stats[key] = np.mean([s[key] for s in val_stats])
+        
+        tf_accuracy = tf_correct / tf_total if tf_total > 0 else 0
         
         model.train()
         
-        return np.mean(val_losses), avg_stats, np.mean(val_pad_ratios)
+        return {
+            'val_loss': np.mean(val_losses),
+            'tf_accuracy': tf_accuracy,
+            'val_padding_ratio': np.mean(val_pad_ratios),
+            'batch_size': np.mean(batch_sizes),
+            'path_accuracy': avg_stats['path_accuracy'],
+            'newline_accuracy': avg_stats['newline_accuracy'],
+            'pad_pred_ratio': avg_stats['pad_pred_ratio'],
+            'newline_pred_at_pad': avg_stats['newline_pred_at_pad']
+        }
     
     # 训练
-    print("\nStarting training with dynamic batching...")
+    print("\nStarting training with dynamic batching (standard loss)...")
     running_loss = 0
     running_padding = []
     running_batch_sizes = []
@@ -313,35 +407,59 @@ def main():
             avg_train_padding = np.mean(running_padding) if running_padding else 0
             avg_batch_size = np.mean(running_batch_sizes) if running_batch_sizes else 0
             
-            val_loss, val_stats, val_pad_ratio = evaluate()
+            # 验证集评估
+            eval_results = evaluate()
             
-            # 记录
+            # 记录历史
             history['iter'].append(iter_num)
             history['train_loss'].append(avg_train_loss)
-            history['val_loss'].append(val_loss)
-            history['tf_accuracy'].append(val_stats.get('path_accuracy', 0))
+            history['val_loss'].append(eval_results['val_loss'])
+            history['tf_accuracy'].append(eval_results['tf_accuracy'])
             history['train_padding_ratio'].append(avg_train_padding)
-            history['val_padding_ratio'].append(val_pad_ratio)
+            history['val_padding_ratio'].append(eval_results['val_padding_ratio'])
             history['batch_sizes'].append(avg_batch_size)
-            history['path_accuracy'].append(val_stats.get('path_accuracy', 0))
-            history['newline_pred_at_pad'].append(val_stats.get('newline_pred_at_pad', 0))
+            history['path_accuracy'].append(eval_results['path_accuracy'])
+            history['newline_accuracy'].append(eval_results['newline_accuracy'])
+            history['pad_pred_ratio'].append(eval_results['pad_pred_ratio'])
+            history['newline_pred_at_pad'].append(eval_results['newline_pred_at_pad'])
+            history['ar_accuracy'].append(0.0)  # 占位符，保持格式一致
             
             # 打印
             print(f"\n{'='*60}")
             print(f"Iteration {iter_num}:")
-            print(f"  Loss: train={avg_train_loss:.4f}, val={val_loss:.4f}")
-            print(f"  Path Accuracy: {val_stats.get('path_accuracy', 0):.4f}")
+            print(f"  Loss: train={avg_train_loss:.4f}, val={eval_results['val_loss']:.4f}")
+            print(f"  TF Accuracy (w/o padding): {eval_results['tf_accuracy']:.4f}")
+            print(f"  Path Accuracy: {eval_results['path_accuracy']:.4f}")
+            print(f"  Newline Accuracy: {eval_results['newline_accuracy']:.4f}")
             print(f"  Avg batch size: {avg_batch_size:.1f} sequences")
-            print(f"  Padding ratio: train={avg_train_padding:.2%}, val={val_pad_ratio:.2%}")
-            print(f"  Newline at PAD: {val_stats.get('newline_pred_at_pad', 0):.2%}")
+            print(f"  Padding ratio: train={avg_train_padding:.2%}, val={eval_results['val_padding_ratio']:.2%}")
+            print(f"  Newline at PAD: {eval_results['newline_pred_at_pad']:.2%}")
             
-            if val_stats.get('newline_pred_at_pad', 0) > 0.5:
+            if eval_results['newline_pred_at_pad'] > 0.5:
                 print("  ⚠️  Anti-preference detected!")
+            
+            logger.info(f"Iter {iter_num}: train_loss={avg_train_loss:.4f}, "
+                       f"val_loss={eval_results['val_loss']:.4f}, "
+                       f"TF={eval_results['tf_accuracy']:.4f}, "
+                       f"path_acc={eval_results['path_accuracy']:.4f}, "
+                       f"newline_at_pad={eval_results['newline_pred_at_pad']:.2%}")
             
             running_loss = 0
             running_padding = []
             running_batch_sizes = []
             loss_count = 0
+        
+        # 保存checkpoint
+        if iter_num % args.checkpoint_interval == 0 and iter_num > 0:
+            checkpoint = {
+                'model': model.state_dict(),
+                'optimizer': optimizer.state_dict(),
+                'model_args': model_args,
+                'iter_num': iter_num,
+                'history': history
+            }
+            torch.save(checkpoint, os.path.join(out_dir, f'ckpt_{iter_num}.pt'))
+            print(f"  Checkpoint saved")
         
         if iter_num == 0:
             continue
@@ -349,7 +467,8 @@ def main():
         # 训练步
         X, Y, pad_ratio = train_dataset.get_dynamic_batch()
         
-        logits, loss = model(X, Y)
+        # 使用标准loss
+        loss, _ = compute_stats_standard_loss(model, X, Y)
         
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
@@ -361,11 +480,11 @@ def main():
         running_batch_sizes.append(X.shape[0])
         loss_count += 1
     
-    # 保存结果
+    # 保存最终结果
     with open(os.path.join(out_dir, 'history.pkl'), 'wb') as f:
         pickle.dump(history, f)
     
-    # 绘图
+    # 绘图（与其他版本类似的布局）
     plt.figure(figsize=(15, 10))
     
     plt.subplot(2, 3, 1)
@@ -402,11 +521,30 @@ def main():
     plt.title('Anti-preference Monitor')
     plt.grid(True)
     
+    plt.subplot(2, 3, 5)
+    plt.plot(history['iter'], history['tf_accuracy'])
+    plt.xlabel('Iteration')
+    plt.ylabel('TF Accuracy')
+    plt.title('Teacher Forcing Accuracy (w/o padding)')
+    plt.grid(True)
+    
+    plt.subplot(2, 3, 6)
+    plt.plot(history['iter'], history['batch_sizes'])
+    plt.xlabel('Iteration')
+    plt.ylabel('Batch Size')
+    plt.title('Average Batch Size (sequences)')
+    plt.grid(True)
+    
     plt.tight_layout()
     plt.savefig(os.path.join(out_dir, 'dynamic_batch_results.png'))
     
     print(f"\nTraining complete! Results saved to {out_dir}")
     print(f"Average padding reduction: {78.9 - np.mean(history['train_padding_ratio'])*100:.1f}%")
+    
+    # 检查anti-preference
+    if max(history['newline_pred_at_pad']) > 0.5:
+        print(f"\n⚠️  WARNING: Anti-preference detected!")
+        print(f"  Maximum newline at PAD: {max(history['newline_pred_at_pad']):.2%}")
 
 if __name__ == "__main__":
     main()
